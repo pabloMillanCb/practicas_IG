@@ -18,6 +18,8 @@
 //
 // *****************************************************************************
 
+enum modos {INMEDIATO, DIFERIDO};
+
 class Malla3D
 {
    public:
@@ -35,6 +37,11 @@ class Malla3D
 
    void cambiar_visibilidad() ;
    bool es_visible() ;
+   void activar_inmediato() ;
+   void activar_diferido() ;
+   void cambiar_puntos() ;
+   void cambiar_lineas() ;
+   void cambiar_solido() ;
 
    GLuint CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram );
 
@@ -49,6 +56,8 @@ class Malla3D
    int id_vbo_ver;
    float colorArray[24];
    float visible = false;
+   int modo_dibujado = INMEDIATO;
+   bool dibujar[3] = {true, false, false};
 
    // completar: tabla de colores, tabla de normales de vértices
 } ;

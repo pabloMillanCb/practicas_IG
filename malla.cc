@@ -12,6 +12,8 @@
 
 void Malla3D::draw_ModoInmediato()
 {
+
+   std::cout << "modo inmediato\n";
   // visualizar la malla usando glDrawElements,
   // completar (práctica 1)
   // ...
@@ -24,8 +26,25 @@ void Malla3D::draw_ModoInmediato()
 
    glColorPointer(3, GL_FLOAT, 0, colorArray );
 
-   glDrawElements( GL_TRIANGLES , f.size ()*3,
-   GL_UNSIGNED_INT , f.data() );
+   if (dibujar[0])
+   {
+      glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+      glDrawElements( GL_TRIANGLES , f.size ()*3, GL_UNSIGNED_INT , f.data() );
+   }
+      
+   if (dibujar[1])
+   {
+      glPointSize(7);
+      glPolygonMode(GL_FRONT_AND_BACK,GL_POINTS);
+      glDrawElements( GL_POINTS , f.size ()*3, GL_UNSIGNED_INT , f.data() );
+   }
+      
+   if (dibujar[2])
+   {
+      glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+      glDrawElements( GL_LINE_LOOP , f.size ()*3, GL_UNSIGNED_INT , f.data() );
+   }
+      
 
    glDrawElements( GL_POINTS , v.size (),
    GL_FLOAT , v.data() );
@@ -42,6 +61,8 @@ void Malla3D::draw_ModoDiferido()
    // completar (práctica 1)
    // .....
 
+   std::cout << "modo diferido\n";
+
    if (id_vbo_ver == 0)
       id_vbo_ver = CrearVBO(GL_ARRAY_BUFFER, v.size()*3*sizeof(float), v.data());
    if (id_vbo_tri == 0)
@@ -56,20 +77,41 @@ void Malla3D::draw_ModoDiferido()
    glColorPointer(3, GL_FLOAT, 0, colorArray );
 
    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER , id_vbo_tri );// activar VBOde triángulos
-   glDrawElements( GL_TRIANGLES , 3*f.size(), GL_UNSIGNED_INT , 0 ) ;
+   
+   if (dibujar[0])
+   {
+      glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+      glDrawElements( GL_TRIANGLES , f.size ()*3, GL_UNSIGNED_INT , f.data() );
+   }
+      
+   if (dibujar[1])
+   {
+      glPointSize(7);
+      glPolygonMode(GL_FRONT_AND_BACK,GL_POINTS);
+      glDrawElements( GL_POINTS , f.size ()*3, GL_UNSIGNED_INT , f.data() );
+   }
+      
+   if (dibujar[2])
+   {
+      glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+      glDrawElements( GL_LINE_LOOP , f.size ()*3, GL_UNSIGNED_INT , f.data() );
+   }
+
    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER , 0 ); // desactivar VBOde triángulos
    // desactivar uso de array de vértices
    glDisableClientState( GL_VERTEX_ARRAY );
 }
 // -----------------------------------------------------------------------------
 // Función de visualización de la malla,
-// puede llamar a  draw_ModoInmediato o bien a draw_ModoDiferido
+// puede llamar a  draw_ModoInmediato o bien a draw_ModoDiferido D6UJUW
 
 void Malla3D::draw()
 {
    // completar .....(práctica 1)
-   //draw_ModoInmediato();
-   draw_ModoDiferido();
+   if (modo_dibujado == INMEDIATO)
+      draw_ModoInmediato();
+   else if (modo_dibujado == DIFERIDO)
+      draw_ModoDiferido();
 }
 
 GLuint Malla3D::CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram )
@@ -91,4 +133,27 @@ void Malla3D:: cambiar_visibilidad()
 bool Malla3D:: es_visible()
 {
    return visible;
+}
+
+void Malla3D::activar_inmediato()
+{
+   modo_dibujado = INMEDIATO;
+}
+
+void Malla3D::activar_diferido()
+{
+   modo_dibujado = DIFERIDO;
+}
+
+void Malla3D::cambiar_solido()
+{
+   dibujar[0] = !dibujar[0];
+}
+void Malla3D::cambiar_puntos()
+{
+   dibujar[1] = !dibujar[1];
+}
+void Malla3D::cambiar_lineas()
+{
+   dibujar[2] = !dibujar[2];
 }

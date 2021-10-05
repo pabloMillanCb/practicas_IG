@@ -24,6 +24,8 @@ Escena::Escena()
     // .....
     cubo = new Cubo(60);
     tetraedro = new Tetraedro();
+    objetos[0] = cubo;
+    objetos[1] = tetraedro;
 
 }
 
@@ -66,8 +68,6 @@ void Escena::dibujar()
     if (tetraedro->es_visible())
       tetraedro->draw();
 
-    if (modoMenu == SELOBJETO)
-      std::cout << "hola\n";
     // COMPLETAR
     //   Dibujar los diferentes elementos de la escena
     // Habrá que tener en esta primera práctica una variable que indique qué objeto se ha de visualizar
@@ -103,6 +103,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
       case 'O' :
          // ESTAMOS EN MODO SELECCION DE OBJETO
          modoMenu=SELOBJETO; 
+         std::cout << "Selecciona un objeto\n";
          break ;
         case 'V' :
          // ESTAMOS EN MODO SELECCION DE MODO DE VISUALIZACION
@@ -111,6 +112,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case 'D' :
          // ESTAMOS EN MODO SELECCION DE DIBUJADO
          modoMenu=SELDIBUJADO;
+         std::cout << "Selecciona un modo de dibujados\n";
          break ;
          // COMPLETAR con los diferentes opciones de teclado
       case 'C':
@@ -122,6 +124,36 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          if (modoMenu == SELOBJETO)
             tetraedro->cambiar_visibilidad();
          break;
+      
+      case '1':
+         for (int i = 0; i < 2 && modoMenu==SELDIBUJADO; i++)
+            objetos[i]->activar_inmediato();
+         break;
+      
+      case '2':
+         for (int i = 0; i < 2 && modoMenu==SELDIBUJADO; i++)
+            objetos[i]->activar_diferido();
+         break;
+
+      case 'P':
+         for (int i = 0; i < 2 && modoMenu==SELVISUALIZACION; i++)
+            objetos[i]->cambiar_puntos();
+         break;
+
+      case 'L':
+         for (int i = 0; i < 2 && modoMenu==SELVISUALIZACION; i++)
+            objetos[i]->cambiar_lineas();
+         break;
+
+      case 'S':
+         for (int i = 0; i < 2 && modoMenu==SELVISUALIZACION; i++)
+            objetos[i]->cambiar_solido();
+         break;
+
+      case 'A':
+         
+         break;
+         
             
    }
    return salir;

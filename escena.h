@@ -37,6 +37,7 @@ class Escena
    menu modoMenu=NADA;
    // Objetos de la escena
    Ejes ejes;
+   Malla3D *objetos[2];
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
 
