@@ -67,15 +67,6 @@ void Escena::dibujar()
       cubo->draw();
     if (tetraedro->es_visible())
       tetraedro->draw();
-
-    // COMPLETAR
-    //   Dibujar los diferentes elementos de la escena
-    // Habrá que tener en esta primera práctica una variable que indique qué objeto se ha de visualizar
-    // y hacer 
-    // cubo.draw()
-    // o
-    // tetraedro.draw()
-    
 }
 
 //**************************************************************************
@@ -151,7 +142,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break;
 
       case 'A':
-         
+         for (int i = 0; i < 2 && modoMenu==SELVISUALIZACION; i++)
+            objetos[i]->cambiar_ajedrez();
          break;
          
             
