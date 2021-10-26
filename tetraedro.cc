@@ -33,18 +33,5 @@ Tetraedro::Tetraedro()
         f2.push_back(Tupla3i(2, 0, 3));
         f2.push_back(Tupla3i(1, 0, 2));
 
-        colorArray[0] = 1; colorArray[1] = 0; colorArray[2] = 1;
-        colorArray[3] = 1; colorArray[4] = 0; colorArray[5] = 1;
-        colorArray[6] = 1; colorArray[7] = 0; colorArray[8] = 1;
-        colorArray[9] = 1; colorArray[10] = 0; colorArray[11] = 1;
-
-        colorRojo[0] = 1; colorRojo[1] = 0; colorRojo[2] = 0; //rojo
-        colorRojo[3] = 1;  colorRojo[4] = 0; colorRojo[5] = 0; 
-        colorRojo[6] = 1; colorRojo[7] = 0; colorRojo[8] = 0; 
-        colorRojo[9] = 1; colorRojo[10] = 0; colorRojo[11] = 0;
-
-        colorVerde[0] = 0;  colorVerde[1] = 1;  colorVerde[2] = 0; // verde
-        colorVerde[3] = 0;  colorVerde[4] = 1;  colorVerde[5] = 0; 
-        colorVerde[6] = 0;  colorVerde[7] = 1;  colorVerde[8] = 0; 
-        colorVerde[9] = 0;  colorVerde[10] = 1; colorVerde[11] = 0;
+        generarColores();
 }

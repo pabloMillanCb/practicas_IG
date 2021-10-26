@@ -5,6 +5,10 @@
 #include "malla.h"
 #include "cubo.h"
 #include "tetraedro.h"
+#include "objply.h"
+#include "objrevolucion.h"
+#include "cilindro.h"
+#include "cono.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
 class Escena
@@ -37,10 +41,12 @@ class Escena
    menu modoMenu=NADA;
    // Objetos de la escena
    Ejes ejes;
-   Malla3D *objetos[2];
+   std::vector<Malla3D*> objetos;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
-
+   ObjRevolucion * peon = nullptr;
+   Cilindro * cil = nullptr;
+   Cono * con = nullptr;
    
    public:
 

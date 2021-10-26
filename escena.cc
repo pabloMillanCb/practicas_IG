@@ -24,8 +24,18 @@ Escena::Escena()
     // .....
     cubo = new Cubo(60);
     tetraedro = new Tetraedro();
-    objetos[0] = cubo;
-    objetos[1] = tetraedro;
+    objetos.push_back(cubo);
+    objetos.push_back(tetraedro);
+    peon = new ObjRevolucion("./plys/peon.ply", 4, true, true);
+    objetos.push_back(peon);
+    //cil = new Cilindro(1.0, 1.5, 3);
+    //objetos.push_back(cil);
+    cil = new Cilindro(1.0, 1.5, 4);
+    objetos.push_back(cil);
+    //peon->cambiar_solido();
+    //peon->cambiar_puntos();
+    con = new Cono(1.0, 1.5, 4);
+    objetos.push_back(con);
 
 }
 
@@ -68,6 +78,11 @@ void Escena::dibujar()
       cubo->draw();
     if (tetraedro->es_visible())
       tetraedro->draw();
+
+   glScalef(50.0, 50.0, 50.0);
+   //peon->draw();
+   //cil->draw();
+   con->draw();
 }
 
 //**************************************************************************
@@ -118,32 +133,32 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break;
       
       case '1':
-         for (int i = 0; i < 2 && modoMenu==SELDIBUJADO; i++)
+         for (int i = 0; i < objetos.size() && modoMenu==SELDIBUJADO; i++)
             objetos[i]->activar_inmediato();
          break;
       
       case '2':
-         for (int i = 0; i < 2 && modoMenu==SELDIBUJADO; i++)
+         for (int i = 0; i < objetos.size() && modoMenu==SELDIBUJADO; i++)
             objetos[i]->activar_diferido();
          break;
 
       case 'P':
-         for (int i = 0; i < 2 && modoMenu==SELVISUALIZACION; i++)
+         for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
             objetos[i]->cambiar_puntos();
          break;
 
       case 'L':
-         for (int i = 0; i < 2 && modoMenu==SELVISUALIZACION; i++)
+         for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
             objetos[i]->cambiar_lineas();
          break;
 
       case 'S':
-         for (int i = 0; i < 2 && modoMenu==SELVISUALIZACION; i++)
+         for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
             objetos[i]->cambiar_solido();
          break;
 
       case 'A':
-         for (int i = 0; i < 2 && modoMenu==SELVISUALIZACION; i++)
+         for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
             objetos[i]->cambiar_ajedrez();
          break;
          

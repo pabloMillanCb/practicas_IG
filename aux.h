@@ -22,6 +22,7 @@
 #include <ostream> // cout y demás .....
 #include <string>   // std::string
 #include <vector>   // std::vector
+#include <algorithm>
 
 #ifdef LINUX
 #  include <GL/glew.h> // en linux: incluye GL.h

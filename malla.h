@@ -51,6 +51,11 @@ class Malla3D
    protected:
 
    void calcular_normales() ; // calcula tabla de normales de vértices (práctica 3)
+   Tupla3f rotarEjeY(Tupla3f punto, float radianes) ;
+   void generarColores();
+   bool compararPuntos(Tupla3f a, Tupla3f b);
+   Tupla3f proyectarPunto(Tupla3f p);
+   bool esPolo(Tupla3f p);
    
 
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
@@ -58,11 +63,8 @@ class Malla3D
    std::vector<Tupla3i> f2 ;
    int id_vbo_tri = 0, id_vbo_tri_1 = 0, id_vbo_tri_2 = 0;
    int id_vbo_ver = 0;
-   float colorArray[24], 
-         colorRojo[24] = {1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,
-                        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0}, 
-         colorVerde[24] = {0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,
-                        0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,};
+   int id_vbo_color, id_vbo_color2, id_vbo_color3;
+   std::vector<float> colorArray, colorRojo, colorVerde;
    float visible = false;
    int modo_dibujado = INMEDIATO;
    bool modo_ajedrez = false;
