@@ -112,9 +112,9 @@ void Malla3D::draw_ModoAjedrez()
 
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
       glColorPointer(3, GL_FLOAT, 0, &colorRojo[0] );
-      glDrawElements( GL_TRIANGLES , f2.size ()*3/2, GL_UNSIGNED_INT , f2.data() );
+      glDrawElements( GL_TRIANGLES , f1.size ()*3, GL_UNSIGNED_INT , f1.data() );
       glColorPointer(3, GL_FLOAT, 0, &colorVerde[0] );
-      glDrawElements( GL_TRIANGLES , f2.size ()*3/2, GL_UNSIGNED_INT , f2.data() + f2.size()/2 );
+      glDrawElements( GL_TRIANGLES , f2.size ()*3, GL_UNSIGNED_INT , f2.data());
    }
 
    else if (modo_dibujado == DIFERIDO)
@@ -124,9 +124,9 @@ void Malla3D::draw_ModoAjedrez()
       if (id_vbo_ver == 0)
          id_vbo_ver = CrearVBO(GL_ARRAY_BUFFER, v.size()*3*sizeof(float), v.data());
       if (id_vbo_tri_1 == 0)
-         id_vbo_tri_1 = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, (f.size()/2)*3*sizeof(int), f2.data());
+         id_vbo_tri_1 = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, f1.size()*3*sizeof(int), f1.data());
       if (id_vbo_tri_2 == 0)
-         id_vbo_tri_2 = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, (f.size()/2)*3*sizeof(int), f2.data() + f2.size()/2);
+         id_vbo_tri_2 = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, f2.size()*3*sizeof(int), f2.data());
       if (id_vbo_color2 == 0)
          id_vbo_color2 = CrearVBO(GL_ARRAY_BUFFER, colorVerde.size()*sizeof(float), colorVerde.data());
       if (id_vbo_color3 == 0)
@@ -143,7 +143,7 @@ void Malla3D::draw_ModoAjedrez()
       glBindBuffer( GL_ARRAY_BUFFER , 0 );
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER , id_vbo_tri_1 );
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-      glDrawElements( GL_TRIANGLES , f2.size ()*3/2, GL_UNSIGNED_INT , 0 ); //f2.size ()*3/2
+      glDrawElements( GL_TRIANGLES , f2.size ()*3, GL_UNSIGNED_INT , 0 ); //f2.size ()*3/2
 
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER , 0 ); //desactivar VBO
 
@@ -153,7 +153,7 @@ void Malla3D::draw_ModoAjedrez()
       glBindBuffer( GL_ARRAY_BUFFER , 0 );
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER , id_vbo_tri_2 );
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-      glDrawElements( GL_TRIANGLES , f2.size ()*3/2, GL_UNSIGNED_INT , 0 );
+      glDrawElements( GL_TRIANGLES , f2.size ()*3, GL_UNSIGNED_INT , 0 );
 
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER , 0 ); //desactivar VBOcolorRojo
    }

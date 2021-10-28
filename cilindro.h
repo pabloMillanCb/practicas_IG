@@ -26,9 +26,7 @@
 class Cilindro : public ObjRevolucion
 {
    public:
-   Cilindro(float r, float h, int num_instancias) ;
-   private:
-   float radio, altura;
+   Cilindro(float radio, float altura, int num_instancias) ;
    
 } ;
 

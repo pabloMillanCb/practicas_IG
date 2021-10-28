@@ -60,7 +60,7 @@ class Malla3D
 
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> f ; // una terna de 3 enteros por cada cara o triángulo
-   std::vector<Tupla3i> f2 ;
+   std::vector<Tupla3i> f1, f2 ;
    int id_vbo_tri = 0, id_vbo_tri_1 = 0, id_vbo_tri_2 = 0;
    int id_vbo_ver = 0;
    int id_vbo_color, id_vbo_color2, id_vbo_color3;
