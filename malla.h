@@ -24,19 +24,10 @@ class Malla3D
 {
    public:
 
-   // dibuja el objeto en modo inmediato
-   void draw_ModoInmediato();
-
-   // dibuja el objeto en modo diferido (usando VBOs)
-   void draw_ModoDiferido();
-
-   // función que redibuja el objeto
-   // está función llama a 'draw_ModoInmediato' (modo inmediato)
-   // o bien a 'draw_ModoDiferido' (modo diferido, VBOs)
-   void draw() ;
-
+   void draw_ModoInmediato(); // dibuja el objeto en modo inmediato
+   void draw_ModoDiferido();  // dibuja el objeto en modo diferido (usando VBOs)
+   void draw() ; // función que redibuja el objeto
    void draw_ModoAjedrez();
-
    void cambiar_visibilidad() ;
    bool es_visible() ;
    void activar_inmediato() ;
@@ -50,25 +41,33 @@ class Malla3D
 
    protected:
 
+   virtual void drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices);
    void calcular_normales() ; // calcula tabla de normales de vértices (práctica 3)
-   Tupla3f rotarEjeY(Tupla3f punto, float radianes) ;
    void generarColores();
+
+   Tupla3f rotarEjeX(Tupla3f punto, float radianes) ; //Rota en el eje X un punto
+   Tupla3f rotarEjeY(Tupla3f punto, float radianes) ; //Rota en el eje Y un punto
+   Tupla3f rotarEjeZ(Tupla3f punto, float radianes) ; //Rota en el eje Z un punto
+   Tupla3f rotarEje(Tupla3f punto, float radianes, int eje) ; //Rota en un eje un punto
+   Tupla3f proyectarPunto(Tupla3f p, int eje); //Proyecta un punto en el eje Y
+
    bool compararPuntos(Tupla3f a, Tupla3f b);
-   Tupla3f proyectarPunto(Tupla3f p);
    bool esPolo(Tupla3f p);
    
 
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> f ; // una terna de 3 enteros por cada cara o triángulo
    std::vector<Tupla3i> f1, f2 ;
-   int id_vbo_tri = 0, id_vbo_tri_1 = 0, id_vbo_tri_2 = 0;
-   int id_vbo_ver = 0;
-   int id_vbo_color, id_vbo_color2, id_vbo_color3;
    std::vector<float> colorArray, colorRojo, colorVerde;
+
+   int draw_size, draw_size_a1, draw_size_a2,
+       id_vbo_tri = 0, id_vbo_tri_1 = 0, id_vbo_tri_2 = 0,
+       id_vbo_ver = 0, id_vbo_color = 0, id_vbo_color2 = 0, id_vbo_color3 = 0,
+       modo_dibujado = INMEDIATO;
+
    float visible = false;
-   int modo_dibujado = INMEDIATO;
-   bool modo_ajedrez = false;
-   bool dibujar[3] = {true, false, false};
+   bool modo_ajedrez = false,
+        dibujar[3] = {true, false, false};
 
    // completar: tabla de colores, tabla de normales de vértices
 } ;

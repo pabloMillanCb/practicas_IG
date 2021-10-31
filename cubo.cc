@@ -21,41 +21,22 @@ Cubo::Cubo(float lado)
    v.push_back(Tupla3f(-lado/2, lado/2, lado/2)); //blanco 6
    v.push_back(Tupla3f(lado/2, lado/2, lado/2)); //negro 7
 
-   
-
    f.push_back(Tupla3i(0, 1, 3));
-   f.push_back(Tupla3i(0, 3, 2));
-
    f.push_back(Tupla3i(2, 3, 7));
-   f.push_back(Tupla3i(2, 7, 6));
-
    f.push_back(Tupla3i(0, 2, 6));
-   f.push_back(Tupla3i(0, 6, 4));
-
    f.push_back(Tupla3i(1, 0, 4));
-   f.push_back(Tupla3i(1, 4, 5));
-
    f.push_back(Tupla3i(3, 1, 5));
-   f.push_back(Tupla3i(3, 5, 7));
-
    f.push_back(Tupla3i(6, 7, 5));
+   f.push_back(Tupla3i(0, 3, 2));
+   f.push_back(Tupla3i(2, 7, 6));
+   f.push_back(Tupla3i(0, 6, 4));
+   f.push_back(Tupla3i(1, 4, 5));
+   f.push_back(Tupla3i(3, 5, 7));
    f.push_back(Tupla3i(6, 5, 4));
 
-
-
-   f1.push_back(Tupla3i(0, 1, 3));
-   f1.push_back(Tupla3i(2, 3, 7));
-   f1.push_back(Tupla3i(0, 2, 6));
-   f1.push_back(Tupla3i(1, 0, 4));
-   f1.push_back(Tupla3i(3, 1, 5));
-   f1.push_back(Tupla3i(6, 7, 5));
-
-   f2.push_back(Tupla3i(0, 3, 2));
-   f2.push_back(Tupla3i(2, 7, 6));
-   f2.push_back(Tupla3i(0, 6, 4));
-   f2.push_back(Tupla3i(1, 4, 5));
-   f2.push_back(Tupla3i(3, 5, 7));
-   f2.push_back(Tupla3i(6, 5, 4));
+   draw_size = f.size();
+   draw_size_a1 = draw_size/2;
+   draw_size_a2 = draw_size/2;
 
    generarColores();
 

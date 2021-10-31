@@ -24,14 +24,13 @@ Tetraedro::Tetraedro()
         v.push_back(d);
 
         f.push_back(Tupla3i(0, 1, 3));
-        f.push_back(Tupla3i(2, 0, 3));
         f.push_back(Tupla3i(1, 2, 3));
+        f.push_back(Tupla3i(2, 0, 3));
         f.push_back(Tupla3i(1, 0, 2));
 
-        f1.push_back(Tupla3i(0, 1, 3));
-        f1.push_back(Tupla3i(1, 2, 3));
-        f2.push_back(Tupla3i(2, 0, 3));
-        f2.push_back(Tupla3i(1, 0, 2));
+        draw_size = f.size();
+        draw_size_a1 = draw_size/2;
+        draw_size_a2 = draw_size/2;
 
         generarColores();
 }
