@@ -46,6 +46,7 @@ class Escena
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
    ObjRevolucion * peon = nullptr;
+   ObjRevolucion * peon_r = nullptr;
    Cilindro * cil = nullptr;
    Cono * con = nullptr;
    Esfera * esf = nullptr;
