@@ -2,7 +2,7 @@
 //
 // Informática Gráfica (Grado Informática)
 //
-// Archivo: Cubo.h
+// Archivo: cono.h
 
 //
 // #############################################################################
@@ -23,7 +23,7 @@
 class Cono : public ObjRevolucion
 {
    public:
-   Cono(float r, float h, int num_instancias) ;
+   Cono(const int num_vert_perfil, const int num_instancias_perf, const float altura, const float radio) ;
    private:
    float radio, altura;
    

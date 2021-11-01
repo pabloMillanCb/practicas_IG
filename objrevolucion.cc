@@ -47,7 +47,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
     }
 
     //Detectar y extraer polo sur del perfil original
-    if (esPolo(perfil_original[0]))
+    if (esPolo(perfil_original[0], eje))
     {
         polo_sur = perfil_original[0];
         perfil_original.erase(perfil_original.begin());
@@ -58,7 +58,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
     }
         
     //Detectar y extraer polo norte del perfil original
-    if (esPolo(perfil_original[perfil_original.size()-1]))
+    if (esPolo(perfil_original[perfil_original.size()-1], eje))
     {
         polo_norte = perfil_original[perfil_original.size()-1];
         perfil_original.erase(perfil_original.end()-1);
@@ -93,7 +93,8 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
         }
     }
 
-    size_tronco = v.size();
+    int size_vertices_tronco = v.size();
+    size_tronco = f.size();
     int cuenta_tapas = 0;
 
     //Crear los triángulos de la tapa superior
@@ -105,7 +106,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
         
         for (int i = 0; i < num_instancias; i++)
         {
-            int v_siguiente = (v_aux+perfil_original.size())%size_tronco;
+            int v_siguiente = (v_aux+perfil_original.size())%size_vertices_tronco;
             f.push_back(Tupla3i(v_aux, v_siguiente, v_polo));
             v_aux = v_siguiente;
             n_tapas[cuenta_tapas%2]++;
@@ -122,7 +123,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
 
         for (int i = 0; i < num_instancias; i++)
         {
-            int v_siguiente = (v_aux+perfil_original.size())%size_tronco;
+            int v_siguiente = (v_aux+perfil_original.size())%size_vertices_tronco;
             f.push_back(Tupla3i(v_polo, v_siguiente, v_aux));
             v_aux = v_siguiente;
             n_tapas[cuenta_tapas%2]++;
@@ -168,11 +169,25 @@ void ObjRevolucion::drawElements(GLenum mode, GLsizei count, GLenum type, const 
     if (!modo_ajedrez && !visibilidad_tapas)
     {
         glDrawElements(mode, size_tronco/2*3, type, indices);
-        glDrawElements(mode, size_tronco/2*3, type, indices+sizeof(int)*3*(size_tronco/2+n_tapas[0]));
+        glDrawElements(mode, size_tronco/2*3, type, indices+sizeof(int)*3*(f.size()/2));
     }
 
     else
     {
         glDrawElements(mode, count, type, indices);
     }
+}
+
+bool ObjRevolucion::esPolo(Tupla3f p, int eje)
+{
+    bool salida = false;
+
+    if (eje == 0)
+        salida = (p(1) == 0.0 && p(2) == 0.0);
+    if (eje == 1)
+        salida = (p(0) == 0.0 && p(2) == 0.0);
+    if (eje == 2)
+        salida = (p(0) == 0.0 && p(1) == 0.0);
+    
+    return salida;
 }

@@ -2,13 +2,13 @@
 //
 // Informática Gráfica (Grado Informática)
 //
-// Archivo: Cubo.h
+// Archivo: esfera.h
 
 //
 // #############################################################################
 
-#ifndef CILINDRO_H_INCLUDED
-#define CILINDRO_H_INCLUDED
+#ifndef ESFERA_H_INCLUDED
+#define ESFERA_H_INCLUDED
 
 #include "aux.h"
 #include "objrevolucion.h"
@@ -19,18 +19,12 @@
 //
 // *****************************************************************************
 
-// *****************************************************************************
-// Cubo con centro en el origen y lado unidad por defecto
-// (tiene 9 vertices y 6 caras)
 
-class Cilindro : public ObjRevolucion
+class Esfera : public ObjRevolucion
 {
-   public:
-   Cilindro(const int num_vert_perfil, const int num_instancias_perf, const float altura, const float radio) ;
-   
-} ;
+    public:
+    Esfera (const int num_vert_perfil, const int num_instancias_perf, const float radio)
+    {
 
-
-
-
-#endif
+    }
+};

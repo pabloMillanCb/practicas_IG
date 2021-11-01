@@ -36,6 +36,7 @@ public:
 protected:
     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, int eje, bool tapa_sup, bool tapa_inf);
     void drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices) override;
+    bool esPolo(Tupla3f p, int eje);
 
     int numero_instancias,
         size_tronco, 

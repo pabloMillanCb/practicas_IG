@@ -284,11 +284,6 @@ Tupla3f Malla3D::proyectarPunto(Tupla3f p, int eje)
    return Tupla3f( p(eje)*(eje==0), p(eje)*(eje==1), p(eje)*(eje==2) );
 }
 
-bool Malla3D::esPolo(Tupla3f p)
-{
-   return (p(0) == 0.0 && p(2) == 0.0);
-}
-
 void Malla3D::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices)
 {
    glDrawElements(mode, count, type, indices);

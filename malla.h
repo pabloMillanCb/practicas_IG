@@ -52,7 +52,6 @@ class Malla3D
    Tupla3f proyectarPunto(Tupla3f p, int eje); //Proyecta un punto en el eje Y
 
    bool compararPuntos(Tupla3f a, Tupla3f b);
-   bool esPolo(Tupla3f p);
    
 
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
