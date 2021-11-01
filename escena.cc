@@ -26,12 +26,15 @@ Escena::Escena()
     tetraedro = new Tetraedro();
     objetos.push_back(cubo);
     objetos.push_back(tetraedro);
-    peon = new ObjRevolucion("./plys/peon.ply", 3, 1, true, true);
+    peon = new ObjRevolucion("./plys/peon.ply", 3, 1, true, false);
     objetos.push_back(peon);
-    /*cil = new Cilindro(6, 6, 1.0, 1.5);
+    cil = new Cilindro(6, 6, 1.0, 1.5);
     objetos.push_back(cil);
-    con = new Cono(6, 6, 1.0, 1.5);
-    objetos.push_back(con);*/
+    con = new Cono(6, 6, 2.5, 1.4);
+    objetos.push_back(con);
+
+    esf = new Esfera(20, 20, 1.5);
+    objetos.push_back(esf);
 
 }
 
@@ -77,9 +80,10 @@ void Escena::dibujar()
 
    glScalef(50.0, 50.0, 50.0);
    glPointSize(7);
-   peon->draw();
+   //peon->draw();
    //cil->draw();
    //con->draw();
+   esf->draw();
 }
 
 //**************************************************************************
@@ -143,8 +147,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          if (modoMenu == SELDIBUJADO)
          {
             peon->cambiarTapas();
-            //cil->cambiarTapas();
-            //con->cambiarTapas();
+            cil->cambiarTapas();
+            con->cambiarTapas();
+            esf->cambiarTapas();
          }
          break;
 

@@ -9,6 +9,7 @@
 #include "objrevolucion.h"
 #include "cilindro.h"
 #include "cono.h"
+#include "esfera.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
 class Escena
@@ -47,6 +48,7 @@ class Escena
    ObjRevolucion * peon = nullptr;
    Cilindro * cil = nullptr;
    Cono * con = nullptr;
+   Esfera * esf = nullptr;
    
    public:
 

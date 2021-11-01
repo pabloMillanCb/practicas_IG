@@ -169,7 +169,7 @@ void ObjRevolucion::drawElements(GLenum mode, GLsizei count, GLenum type, const 
     if (!modo_ajedrez && !visibilidad_tapas)
     {
         glDrawElements(mode, size_tronco/2*3, type, indices);
-        glDrawElements(mode, size_tronco/2*3, type, indices+sizeof(int)*3*(f.size()/2));
+        glDrawElements(mode, size_tronco/2*3, type, indices+sizeof(int)*3*(f.size()/2+f.size()%2));
     }
 
     else
