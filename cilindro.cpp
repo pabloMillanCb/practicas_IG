@@ -11,5 +11,6 @@ Cilindro::Cilindro(const int num_vert_perfil, const int num_instancias_perf, con
 
     int size_perfil = v.size();
     crearMalla(v, num_instancias_perf, 1, true, true);
+    mezclarCaras();
     generarColores();
 }

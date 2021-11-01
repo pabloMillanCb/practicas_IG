@@ -26,15 +26,16 @@ Escena::Escena()
     tetraedro = new Tetraedro();
     objetos.push_back(cubo);
     objetos.push_back(tetraedro);
-    peon = new ObjRevolucion("./plys/peon.ply", 3, 1, true, false);
+    peon = new ObjRevolucion("./plys/peon.ply", 8, 1, true, false);
     objetos.push_back(peon);
-    cil = new Cilindro(6, 6, 1.0, 1.5);
+    cil = new Cilindro(6, 6, 2.3, 0.5);
     objetos.push_back(cil);
-    con = new Cono(6, 6, 2.5, 1.4);
+    con = new Cono(6, 6, 2.3, 0.7);
     objetos.push_back(con);
-
-    esf = new Esfera(20, 20, 1.5);
+    esf = new Esfera(20, 20, 1.4);
     objetos.push_back(esf);
+    ply = new ObjPLY("./plys/ant.ply");
+    objetos.push_back(ply);
 
 }
 
@@ -71,19 +72,41 @@ void Escena::dibujar()
    glEnable(GL_CULL_FACE);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
-    ejes.draw();
+   glScalef(30.0, 30.0, 30.0);
+   glPointSize(7);
+   ejes.draw();
 
-    if (cubo->es_visible())
+   glPushMatrix();
+      glTranslatef(2.5, 0.0, 0.0);
+      peon->draw();
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-2.5, -1.15, 0.0);
+      cil->draw();
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0.0, -1.15, 2.5);
+      con->draw();
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0.0, 0.0, -2.5);
+      esf->draw();
+   glPopMatrix();
+
+   glPushMatrix();
+      glScalef(0.06, 0.06, 0.06);
+      glTranslatef(0.0, 0.0, 0.0);
+      ply->draw();
+   glPopMatrix();
+
+   if (cubo->es_visible())
       cubo->draw();
-    if (tetraedro->es_visible())
+   if (tetraedro->es_visible())
       tetraedro->draw();
 
-   glScalef(50.0, 50.0, 50.0);
-   glPointSize(7);
-   //peon->draw();
-   //cil->draw();
-   //con->draw();
-   esf->draw();
 }
 
 //**************************************************************************

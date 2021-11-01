@@ -13,7 +13,6 @@
 void Malla3D::draw_ModoInmediato()
 {
 
-   std::cout << "modo inmediato\n";
   // visualizar la malla usando drawElements,
   // completar (práctica 1)
   // ...
@@ -29,7 +28,6 @@ void Malla3D::draw_ModoInmediato()
    if (dibujar[0])
    {
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-      std::cout << f.data() << std::endl;
       drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , f.data());
    }
       
@@ -102,7 +100,6 @@ void Malla3D::draw_ModoAjedrez()
 {
    if (modo_dibujado == INMEDIATO)
    {
-      std::cout << "modo inmediato\n";
       glEnableClientState( GL_VERTEX_ARRAY );
       glVertexPointer( 3, GL_FLOAT , 0, v.data() );
 
@@ -287,4 +284,20 @@ Tupla3f Malla3D::proyectarPunto(Tupla3f p, int eje)
 void Malla3D::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices)
 {
    glDrawElements(mode, count, type, indices);
+}
+
+void Malla3D::mezclarCaras()
+{
+   std::vector<Tupla3i> aux ;
+
+   //Reordenar vector de triángulos, colocar caras pares al principio e impares al final
+    for (int i = 0; i < f.size(); i+=2)
+        aux.push_back(f[i]);
+    for (int i = 1; i < f.size(); i+=2)
+        aux.push_back(f[i]);
+
+    f = aux;
+    draw_size = f.size();
+    draw_size_a1 = draw_size/2 + (draw_size%2 == 1);
+    draw_size_a2 = draw_size/2;
 }

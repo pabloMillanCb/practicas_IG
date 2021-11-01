@@ -36,6 +36,7 @@ class Malla3D
    void cambiar_lineas() ;
    void cambiar_solido() ;
    void cambiar_ajedrez() ;
+   void mezclarCaras(); //Prepara el vector de triángulos para el modo ajedrez
 
    GLuint CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram );
 

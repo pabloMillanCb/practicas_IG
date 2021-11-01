@@ -21,7 +21,9 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, in
     this->tapa_sup = tapa_sup; this->tapa_inf = tapa_inf; numero_instancias = num_instancias;
     ply::read_vertices(archivo, this->v);
     crearMalla(v, num_instancias, eje, tapa_sup, tapa_inf);
+    mezclarCaras();
     generarColores();
+    
 }
 
 // *****************************************************************************
@@ -32,13 +34,13 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, i
     this->tapa_sup = tapa_sup; this->tapa_inf = tapa_inf; numero_instancias = num_instancias;
     v = archivo;
     crearMalla(v, num_instancias, eje, tapa_sup, tapa_inf);
+    mezclarCaras();
     generarColores();
 }
 
 void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, int eje, bool tapa_sup, bool tapa_inf)
 {
     Tupla3f polo_norte, polo_sur;
-    std::vector<Tupla3i> aux ;
 
     //Si el perfil está en el orden inverso al estandar, invertirlo
     if (perfil_original[0](eje) - perfil_original[perfil_original.size()-1](eje) > 0)
@@ -131,16 +133,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
         }
     }
 
-    //Reordenar vector de triángulos, colocar caras pares al principio e impares al final
-    for (int i = 0; i < f.size(); i+=2)
-        aux.push_back(f[i]);
-    for (int i = 1; i < f.size(); i+=2)
-        aux.push_back(f[i]);
-
-    f = aux;
-    draw_size = f.size();
-    draw_size_a1 = draw_size/2 + (draw_size%2 == 1);
-    draw_size_a2 = draw_size/2;
+    
 }
 
 void ObjRevolucion::cambiarTapas()

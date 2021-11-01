@@ -49,6 +49,7 @@ class Escena
    Cilindro * cil = nullptr;
    Cono * con = nullptr;
    Esfera * esf = nullptr;
+   ObjPLY * ply = nullptr;
    
    public:
 
