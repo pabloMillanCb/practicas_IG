@@ -23,25 +23,26 @@ void Malla3D::draw_ModoInmediato()
    // visualizar, indicando: tipo de primitiva, número de índices,
    // tipo de los índices, y dirección de la tabla de índices
 
-   glColorPointer(3, GL_FLOAT, 0, &colorArray[0] );
-
    if (dibujar[0])
    {
+      glColorPointer(3, GL_FLOAT, 0, &colorArray[0] );
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
       drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , f.data());
    }
       
    if (dibujar[1])
    {
+      glColorPointer(3, GL_FLOAT, 0, &colorArray[0]+1 );
       glPointSize(7);
-      glPolygonMode(GL_FRONT_AND_BACK,GL_POINTS);
-      drawElements( GL_POINTS , draw_size*3, GL_UNSIGNED_INT , f.data());
+      glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+      drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , f.data());
    }
       
    if (dibujar[2])
    {
+      glColorPointer(3, GL_FLOAT, 0, &colorArray[0]+2 );
       glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-      drawElements( GL_LINE_LOOP , draw_size*3, GL_UNSIGNED_INT , f.data());
+      drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , f.data());
    }
       
    // deshabilitar array de vértices
@@ -214,56 +215,9 @@ void Malla3D::cambiar_ajedrez()
    modo_ajedrez = !modo_ajedrez;
 }
 
-Tupla3f Malla3D::rotarEjeX(Tupla3f p, float radianes)
-{
-   Tupla3f salida;
-
-   salida(0) = p(0);
-   salida(1) = cos(radianes)*p(1) - sin(radianes)*p(2);
-   salida(2) = sin(radianes)*p(1) + cos(radianes)*p(2);
-
-   return salida;
-}
-
-Tupla3f Malla3D::rotarEjeY(Tupla3f p, float radianes)
-{
-   Tupla3f salida;
-
-   salida(0) = cos(radianes)*p(0) + sin(radianes)*p(2);
-   salida(1) = p(1);
-   salida(2) = -sin(radianes)*p(0) + cos(radianes)*p(2);
-
-   return salida;
-}
-
-Tupla3f Malla3D::rotarEjeZ(Tupla3f p, float radianes)
-{
-   Tupla3f salida;
-
-   salida(0) = cos(radianes)*p(0) - sin(radianes)*p(1);
-   salida(1) = sin(radianes)*p(0) + cos(radianes)*p(1);
-   salida(2) = p(2);
-
-   return salida;
-}
-
-Tupla3f Malla3D::rotarEje(Tupla3f punto, float radianes, int eje)
-{
-   Tupla3f salida;
-
-   if (eje == 0)
-      salida = rotarEjeX(punto, radianes);
-   else if (eje == 1)
-      salida = rotarEjeY(punto, radianes);
-   else if (eje == 2)
-      salida = rotarEjeZ(punto, radianes);
-   
-   return salida;
-}
-
 void Malla3D::generarColores()
 {
-   for (int i = 0; i < v.size(); i++)
+   for (int i = 0; i < v.size()+2; i++)
    {
       colorRojo.push_back(1); colorRojo.push_back(0); colorRojo.push_back(0);
       colorVerde.push_back(0); colorVerde.push_back(1); colorVerde.push_back(0);
@@ -300,4 +254,35 @@ void Malla3D::mezclarCaras()
     draw_size = f.size();
     draw_size_a1 = draw_size/2 + (draw_size%2 == 1);
     draw_size_a2 = draw_size/2;
+}
+
+void Malla3D::calcular_normales()
+{
+   Tupla3f normal(0.0, 0.0, 0.0);
+
+   nv.clear();
+   for (int i = 0; i < f.size(); i++) //Se inicializa nv a 0
+   {
+      nv.push_back(Tupla3f(0.0, 0.0, 0.0));
+   }
+
+   for (int i = 0; i < f.size(); i++)
+   {
+      normal = vectorNormal(f[i]);
+
+      nv[ f[i](0) ] = nv[ f[i](0) ] + normal;
+      nv[ f[i](1) ] = nv[ f[i](1) ] + normal;
+      nv[ f[i](2) ] = nv[ f[i](2) ] + normal;
+   }
+
+   for (int i = 0; i < nv.size(); i++)
+   {
+      nv[i] = nv[i].normalized();
+   }
+}
+
+Tupla3f Malla3D::vectorNormal(Tupla3i c)
+{
+   Tupla3f a = v[c(1)] - v[c(0)], b = v[c(2)] - v[c(0)];
+   return a.cross(b);
 }

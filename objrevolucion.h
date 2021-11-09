@@ -38,6 +38,11 @@ protected:
     void drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices) override;
     bool esPolo(Tupla3f p, int eje);
 
+    Tupla3f rotarEjeX(Tupla3f punto, float radianes) ; //Rota en el eje X un punto
+    Tupla3f rotarEjeY(Tupla3f punto, float radianes) ; //Rota en el eje Y un punto
+    Tupla3f rotarEjeZ(Tupla3f punto, float radianes) ; //Rota en el eje Z un punto
+    Tupla3f rotarEje(Tupla3f punto, float radianes, int eje) ; //Rota en un eje un punto
+
     int numero_instancias,
         size_tronco, 
         n_tapas[2] = {0, 0};

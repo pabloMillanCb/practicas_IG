@@ -44,20 +44,15 @@ class Malla3D
 
    virtual void drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices);
    void calcular_normales() ; // calcula tabla de normales de vértices (práctica 3)
+   Tupla3f vectorNormal(Tupla3i c);
    void generarColores();
 
-   Tupla3f rotarEjeX(Tupla3f punto, float radianes) ; //Rota en el eje X un punto
-   Tupla3f rotarEjeY(Tupla3f punto, float radianes) ; //Rota en el eje Y un punto
-   Tupla3f rotarEjeZ(Tupla3f punto, float radianes) ; //Rota en el eje Z un punto
-   Tupla3f rotarEje(Tupla3f punto, float radianes, int eje) ; //Rota en un eje un punto
    Tupla3f proyectarPunto(Tupla3f p, int eje); //Proyecta un punto en el eje Y
-
    bool compararPuntos(Tupla3f a, Tupla3f b);
-   
 
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> f ; // una terna de 3 enteros por cada cara o triángulo
-   std::vector<Tupla3i> f1, f2 ;
+   std::vector<Tupla3f> nv;
    std::vector<float> colorArray, colorRojo, colorVerde;
 
    int draw_size, draw_size_a1, draw_size_a2,

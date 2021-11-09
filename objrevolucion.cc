@@ -1,9 +1,6 @@
 #include "aux.h"
 #include "objrevolucion.h"
 
-
-
-
 // *****************************************************************************
 //
 // Clase ObjRevolucion (práctica 2)
@@ -132,8 +129,6 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
             cuenta_tapas++;
         }
     }
-
-    
 }
 
 void ObjRevolucion::cambiarTapas()
@@ -176,11 +171,58 @@ bool ObjRevolucion::esPolo(Tupla3f p, int eje)
     bool salida = false;
 
     if (eje == 0)
-        salida = (p(1) == 0.0 && p(2) == 0.0);
+        salida = (abs(p(1)) < UMBRAL_0 && abs(p(2)) < UMBRAL_0);
     if (eje == 1)
-        salida = (p(0) == 0.0 && p(2) == 0.0);
+        salida = (abs(p(0)) < UMBRAL_0 && abs(p(2)) < UMBRAL_0);
     if (eje == 2)
-        salida = (p(0) == 0.0 && p(1) == 0.0);
+        salida = (abs(p(0)) < UMBRAL_0 && abs(p(1)) < UMBRAL_0);
     
     return salida;
+}
+
+Tupla3f ObjRevolucion::rotarEjeX(Tupla3f p, float radianes)
+{
+   Tupla3f salida;
+
+   salida(0) = p(0);
+   salida(1) = cos(radianes)*p(1) - sin(radianes)*p(2);
+   salida(2) = sin(radianes)*p(1) + cos(radianes)*p(2);
+
+   return salida;
+}
+
+Tupla3f ObjRevolucion::rotarEjeY(Tupla3f p, float radianes)
+{
+   Tupla3f salida;
+
+   salida(0) = cos(radianes)*p(0) + sin(radianes)*p(2);
+   salida(1) = p(1);
+   salida(2) = -sin(radianes)*p(0) + cos(radianes)*p(2);
+
+   return salida;
+}
+
+Tupla3f ObjRevolucion::rotarEjeZ(Tupla3f p, float radianes)
+{
+   Tupla3f salida;
+
+   salida(0) = cos(radianes)*p(0) - sin(radianes)*p(1);
+   salida(1) = sin(radianes)*p(0) + cos(radianes)*p(1);
+   salida(2) = p(2);
+
+   return salida;
+}
+
+Tupla3f ObjRevolucion::rotarEje(Tupla3f punto, float radianes, int eje)
+{
+   Tupla3f salida;
+
+   if (eje == 0)
+      salida = rotarEjeX(punto, radianes);
+   else if (eje == 1)
+      salida = rotarEjeY(punto, radianes);
+   else if (eje == 2)
+      salida = rotarEjeZ(punto, radianes);
+   
+   return salida;
 }

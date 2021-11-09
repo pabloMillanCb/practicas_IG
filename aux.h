@@ -13,6 +13,8 @@
 #ifndef AUX_H_INCLUDED
 #define AUX_H_INCLUDED
 
+#define UMBRAL_0 0.00000001
+
 #ifdef _WIN32
 #  include <windows.h>
 #endif

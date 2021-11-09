@@ -76,6 +76,9 @@ void Escena::dibujar()
 	change_observer();
    glScalef(30.0, 30.0, 30.0);
    glPointSize(7);
+   glPolygonOffset(2.0, 5.0);
+   //Usar aquí GL_NORMALIZE
+
    ejes.draw();
 
    glPushMatrix();
