@@ -10,6 +10,9 @@
 #include "cilindro.h"
 #include "cono.h"
 #include "esfera.h"
+#include "luz.h"
+#include "luzdireccional.h"
+#include "luzposicional.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
 class Escena
@@ -18,8 +21,6 @@ class Escena
    private:
 
    bool figuras[2] = {false, false};
-
-   
 
  // ** PARÁMETROS DE LA CÁMARA (PROVISIONAL)
        
@@ -43,6 +44,7 @@ class Escena
    // Objetos de la escena
    Ejes ejes;
    std::vector<Malla3D*> objetos;
+   std::vector<Luz> luces;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
    ObjRevolucion * peon = nullptr;

@@ -19,6 +19,7 @@ ObjPLY::ObjPLY( const std::string & nombre_archivo )
 
    generarColores();
    mezclarCaras();
+   calcular_normales();
 }
 
 

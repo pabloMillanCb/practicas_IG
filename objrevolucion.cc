@@ -20,6 +20,7 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, in
     crearMalla(v, num_instancias, eje, tapa_sup, tapa_inf);
     mezclarCaras();
     generarColores();
+    calcular_normales();
     
 }
 
@@ -33,6 +34,7 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, i
     crearMalla(v, num_instancias, eje, tapa_sup, tapa_inf);
     mezclarCaras();
     generarColores();
+    calcular_normales();
 }
 
 void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, int eje, bool tapa_sup, bool tapa_inf)

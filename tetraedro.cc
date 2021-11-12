@@ -33,4 +33,5 @@ Tetraedro::Tetraedro()
         draw_size_a2 = draw_size/2;
 
         generarColores();
+        calcular_normales();
 }

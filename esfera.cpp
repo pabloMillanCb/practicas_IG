@@ -16,4 +16,5 @@ Esfera::Esfera (const int num_vert_perfil, const int num_instancias_perf, const 
     crearMalla(v, num_instancias_perf, 1, true, true);
     mezclarCaras();
     generarColores();
+    calcular_normales();
 }

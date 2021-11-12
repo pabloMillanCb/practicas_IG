@@ -39,6 +39,8 @@ Escena::Escena()
     ply = new ObjPLY("./plys/ant.ply");
     objetos.push_back(ply);
 
+    luces.push_back(LuzDireccional(Tupla2f(0.2, 0.5)));
+
 }
 
 //**************************************************************************
@@ -107,8 +109,8 @@ void Escena::dibujar()
    glPopMatrix();
 
    glPushMatrix();
-      glScalef(0.06, 0.06, 0.06);
       glTranslatef(0.0, 0.0, 0.0);
+      glScalef(0.06, 0.06, 0.06);
       ply->draw();
    glPopMatrix();
 
@@ -169,6 +171,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
       case '1':
          for (int i = 0; i < objetos.size() && modoMenu==SELDIBUJADO; i++)
             objetos[i]->activar_inmediato();
+         
+         for (int i = 0; i < luces.size() && modoMenu==SELDIBUJADO; i++)
+            luces[i].activar();
          break;
       
       case '2':
@@ -213,6 +218,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
       case 'I':
          glEnable(GL_LIGHTING);
+         for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
+            objetos[i]->activar_luz();
          break;
          
             

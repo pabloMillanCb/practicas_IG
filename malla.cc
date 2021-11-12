@@ -160,6 +160,7 @@ void Malla3D::draw_ModoLuz()
    glNormalPointer(GL_FLOAT, 0, nv.data());
    glEnableClientState( GL_VERTEX_ARRAY );
    glEnableClientState( GL_NORMAL_ARRAY );
+   std::cout << "nv = " << nv.size() << "\n";
 
    glDrawElements( GL_TRIANGLES, 3*f.size(), GL_UNSIGNED_INT, f.data());
    glDisableClientState( GL_VERTEX_ARRAY );
@@ -211,6 +212,11 @@ void Malla3D::activar_inmediato()
 void Malla3D::activar_diferido()
 {
    modo_dibujado = DIFERIDO;
+}
+
+void Malla3D::activar_luz()
+{
+   modo_dibujado = LUZ;
 }
 
 void Malla3D::cambiar_solido()
@@ -291,6 +297,9 @@ void Malla3D::calcular_normales()
    {
       normal = vectorNormal(f[i]);
 
+      if (normal(0) == 0 && normal(1) == 0 && normal(2) == 0)
+         std::cout << "WAAAAAAAAAAAAAAAA\n";
+
       nv[ f[i](0) ] = nv[ f[i](0) ] + normal;
       nv[ f[i](1) ] = nv[ f[i](1) ] + normal;
       nv[ f[i](2) ] = nv[ f[i](2) ] + normal;
@@ -298,7 +307,8 @@ void Malla3D::calcular_normales()
 
    for (int i = 0; i < nv.size(); i++)
    {
-      nv[i] = nv[i].normalized();
+      Tupla3f aux = normalizar(nv[i]);
+      //nv[i] = nv[i].normalized();
    }
 }
 
@@ -306,4 +316,10 @@ Tupla3f Malla3D::vectorNormal(Tupla3i c)
 {
    Tupla3f a = v[c(1)] - v[c(0)], b = v[c(2)] - v[c(0)];
    return a.cross(b);
+}
+
+Tupla3f Malla3D::normalizar(Tupla3f t)
+{
+   float modulo = sqrt(pow(t(0),2) + pow(t(1),2) + pow(t(2),2));
+   return t*(1/modulo);
 }

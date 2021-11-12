@@ -39,6 +39,7 @@ class Malla3D
    void cambiar_lineas() ;
    void cambiar_solido() ;
    void cambiar_ajedrez() ;
+   void activar_luz();
    void mezclarCaras(); //Prepara el vector de triángulos para el modo ajedrez
    void setMaterial(Material mat);
 
@@ -49,6 +50,7 @@ class Malla3D
    virtual void drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices);
    void calcular_normales() ; // calcula tabla de normales de vértices (práctica 3)
    Tupla3f vectorNormal(Tupla3i c);
+   Tupla3f normalizar(Tupla3f t);
    void generarColores();
 
    Tupla3f proyectarPunto(Tupla3f p, int eje); //Proyecta un punto en el eje Y
