@@ -140,7 +140,6 @@ void ObjRevolucion::cambiarTapas()
         draw_size_a2 -= n_tapas[1];
 
         visibilidad_tapas = false;
-
     }
     else
     {

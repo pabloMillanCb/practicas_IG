@@ -11,6 +11,7 @@
 #define MALLA3D_H_INCLUDED
 
 #include "aux.h"
+#include "material.h"
 
 // *****************************************************************************
 //
@@ -18,7 +19,7 @@
 //
 // *****************************************************************************
 
-enum modos {INMEDIATO, DIFERIDO};
+enum modos {INMEDIATO, DIFERIDO, LUZ};
 
 class Malla3D
 {
@@ -26,6 +27,8 @@ class Malla3D
 
    void draw_ModoInmediato(); // dibuja el objeto en modo inmediato
    void draw_ModoDiferido();  // dibuja el objeto en modo diferido (usando VBOs)
+   void draw_ModoLuz();
+
    void draw() ; // función que redibuja el objeto
    void draw_ModoAjedrez();
    void cambiar_visibilidad() ;
@@ -37,6 +40,7 @@ class Malla3D
    void cambiar_solido() ;
    void cambiar_ajedrez() ;
    void mezclarCaras(); //Prepara el vector de triángulos para el modo ajedrez
+   void setMaterial(Material mat);
 
    GLuint CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram );
 
@@ -54,6 +58,7 @@ class Malla3D
    std::vector<Tupla3i> f ; // una terna de 3 enteros por cada cara o triángulo
    std::vector<Tupla3f> nv;
    std::vector<float> colorArray, colorRojo, colorVerde;
+   Material m;
 
    int draw_size, draw_size_a1, draw_size_a2,
        id_vbo_tri = 0, id_vbo_tri_1 = 0, id_vbo_tri_2 = 0,

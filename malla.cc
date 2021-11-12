@@ -152,6 +152,20 @@ void Malla3D::draw_ModoAjedrez()
    }
 }
 
+void Malla3D::draw_ModoLuz()
+{
+   m.aplicar();
+
+   glVertexPointer(3, GL_FLOAT, 0, v.data());
+   glNormalPointer(GL_FLOAT, 0, nv.data());
+   glEnableClientState( GL_VERTEX_ARRAY );
+   glEnableClientState( GL_NORMAL_ARRAY );
+
+   glDrawElements( GL_TRIANGLES, 3*f.size(), GL_UNSIGNED_INT, f.data());
+   glDisableClientState( GL_VERTEX_ARRAY );
+   glDisableClientState( GL_NORMAL_ARRAY);
+}
+
 // -----------------------------------------------------------------------------
 // Función de visualización de la malla,
 // puede llamar a  draw_ModoInmediato o bien a draw_ModoDiferido
@@ -164,6 +178,8 @@ void Malla3D::draw()
       draw_ModoInmediato();
    else if (modo_dibujado == DIFERIDO)
       draw_ModoDiferido();
+   else if (modo_dibujado == LUZ)
+      draw_ModoLuz();
 }
 
 GLuint Malla3D::CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram )
@@ -213,6 +229,11 @@ void Malla3D::cambiar_lineas()
 void Malla3D::cambiar_ajedrez()
 {
    modo_ajedrez = !modo_ajedrez;
+}
+
+void Malla3D::setMaterial(Material mat)
+{
+   m = mat;
 }
 
 void Malla3D::generarColores()
@@ -266,7 +287,7 @@ void Malla3D::calcular_normales()
       nv.push_back(Tupla3f(0.0, 0.0, 0.0));
    }
 
-   for (int i = 0; i < f.size(); i++)
+   for (int i = 0; i < f.size(); i++) //Se recorre el vector de caras, se calcula
    {
       normal = vectorNormal(f[i]);
 

@@ -72,12 +72,12 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 void Escena::dibujar()
 {
    glEnable(GL_CULL_FACE);
+   glEnable(GL_NORMALIZE);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
    glScalef(30.0, 30.0, 30.0);
    glPointSize(7);
    glPolygonOffset(2.0, 5.0);
-   //Usar aquí GL_NORMALIZE
 
    ejes.draw();
 
@@ -190,21 +190,29 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
       case 'P':
          for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
             objetos[i]->cambiar_puntos();
+         glDisable(GL_LIGHTING);
          break;
 
       case 'L':
          for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
             objetos[i]->cambiar_lineas();
+         glDisable(GL_LIGHTING);
          break;
 
       case 'S':
          for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
             objetos[i]->cambiar_solido();
+         glDisable(GL_LIGHTING);
          break;
 
       case 'A':
          for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
             objetos[i]->cambiar_ajedrez();
+         glDisable(GL_LIGHTING);
+         break;
+
+      case 'I':
+         glEnable(GL_LIGHTING);
          break;
          
             
