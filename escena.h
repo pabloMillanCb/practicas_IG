@@ -13,6 +13,7 @@
 #include "luz.h"
 #include "luzdireccional.h"
 #include "luzposicional.h"
+#include "material.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
 class Escena
@@ -44,10 +45,11 @@ class Escena
    // Objetos de la escena
    Ejes ejes;
    std::vector<Malla3D*> objetos;
-   std::vector<Luz> luces;
+   std::vector<LuzPosicional> luces;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
    ObjRevolucion * peon = nullptr;
+   ObjRevolucion * peon2 = nullptr;
    ObjRevolucion * peon_r = nullptr;
    Cilindro * cil = nullptr;
    Cono * con = nullptr;
@@ -59,6 +61,32 @@ class Escena
     Escena();
 	void inicializar( int UI_window_width, int UI_window_height );
 	void redimensionar( int newWidth, int newHeight ) ;
+  /* glPushMatrix();
+      glTranslatef(-2.5, -1.15, 0.0);
+      glScalef(30.06, 30.06, 30.06);
+      cil->draw();
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0.0, -1.15, 2.5);
+      con->draw();
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0.0, 0.0, -2.5);
+      esf->draw();
+   glPopMatrix();
+
+   /*glPushMatrix();
+      glTranslatef(2.5, 2.5, 2.5);
+      peon_r->draw();
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0.0, 0.0, 0.0);
+      glScalef(0.06, 0.06, 0.06);
+      ply->draw();
+   glPopMatrix();*/
 
 	// Dibujar
 	void dibujar() ;

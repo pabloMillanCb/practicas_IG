@@ -11,8 +11,11 @@ protected:
     Tupla4f colorAmbiente;
     Tupla4f colorDifuso;
     bool activada = false;
+
+    Tupla4f blanco = {1.0, 1.0, 1.0, 1.0};
 public:
     void activar();
+    void set_id(GLenum id_);
 };
 
 #endif

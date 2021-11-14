@@ -7,7 +7,10 @@
 class LuzPosicional : public Luz
 {
     public:
-        LuzPosicional(const Tupla3f & posicion) ;
+        LuzPosicional(const Tupla3f & posicion, Tupla4f ambiente, Tupla4f difuso) ;
+        void Colocar(const Tupla3f & orientacion);
+
+        int get(int i);
 };
 
 #endif
