@@ -28,7 +28,7 @@ Escena::Escena()
     objetos.push_back(tetraedro);
     peon = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
     objetos.push_back(peon);
-    peon_r = new ObjRevolucion("./plys/peon-r.ply", 8, 2, true, true);
+    peon_r = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
     objetos.push_back(peon_r);
     cil = new Cilindro(6, 6, 2.3, 0.5);
     objetos.push_back(cil);
@@ -41,18 +41,18 @@ Escena::Escena()
 
     
     Material m(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
-    Material blanco(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), 100.0);
-    Material negro(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.9, 0.9, 0.9, 0.9), Tupla4f(0.5, 0.5, 0.5, 1.0), 100.0);
+    Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
+    Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.05, 0.05, 0.05, 1.0), 200.0);
 
-    //luces.push_back(LuzDireccional(Tupla2f(0.0, 100.0), {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}));
-    //luces.push_back(LuzPosicional(Tupla3f(0.0, 0.0, 0.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
-    luces.push_back(LuzPosicional(Tupla3f(0.0, 0.0, 0.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
+    luces.push_back(LuzDireccional(Tupla2f(0.0, 100.0), {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}));
+    luces.push_back(LuzPosicional(Tupla3f(0.0, 100.0, 50.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
+    //luces.push_back(LuzPosicional(Tupla3f(0.0, 20.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
 
-      peon->setMaterial(negro);
-      peon_r->setMaterial(blanco);
+      peon->setMaterial(blanco);
+      peon_r->setMaterial(negro);
     
     luces[0].set_id(GL_LIGHT0);
-    //luces[1].set_id(GL_LIGHT1);
+    luces[1].set_id(GL_LIGHT1);
 }
 
 //**************************************************************************
@@ -93,20 +93,21 @@ void Escena::dibujar()
    glPointSize(7);
    glPolygonOffset(2.0, 5.0);
 
-   //luces[0].Colocar(Tupla3f(0.0, 0.0, 0.0));
-
    ejes.draw();
 
+      luces[0].activar();
+      luces[1].activar();
+
       glPushMatrix();
-      glTranslatef(30.0, 0.0, -30.0);
+      glTranslatef(30.0, 0.0, 0.0);
       glScalef(30.0, 30.0, 30.0);
       peon->draw();
       glPopMatrix();
 
       glPushMatrix();
-      glTranslatef(-30.0, 0.0, -30.0);
+      glTranslatef(-30.0, 0.0, 0.0);
       glScalef(30.0, 30.0, 30.0);
-      peon->draw();
+      peon_r->draw();
       glPopMatrix();
 
    if (cubo->es_visible())
@@ -216,7 +217,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
             objetos[i]->activar_luz();
          break;
-      case 'Z':
+      /*case 'Z':
          luces[0].Colocar({luces[0].get(0)+5, luces[0].get(1), luces[0].get(2)});
          break;
       case 'X':
@@ -233,7 +234,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break;
       case 'M':
          luces[0].Colocar({luces[0].get(0), luces[0].get(1), luces[0].get(2)-5});
-         break;
+         break;*/
          
             
    }

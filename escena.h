@@ -45,7 +45,7 @@ class Escena
    // Objetos de la escena
    Ejes ejes;
    std::vector<Malla3D*> objetos;
-   std::vector<LuzPosicional> luces;
+   std::vector<Luz> luces;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
    ObjRevolucion * peon = nullptr;
