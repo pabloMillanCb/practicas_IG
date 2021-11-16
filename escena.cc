@@ -44,7 +44,7 @@ Escena::Escena()
     Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
     Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.05, 0.05, 0.05, 1.0), 200.0);
 
-    luces.push_back(LuzDireccional(Tupla2f(0.0, 100.0), {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}));
+    //luces.push_back(LuzDireccional(Tupla2f(0.0, 0.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
     luces.push_back(LuzPosicional(Tupla3f(0.0, 100.0, 50.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
     //luces.push_back(LuzPosicional(Tupla3f(0.0, 20.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
 
@@ -52,7 +52,7 @@ Escena::Escena()
       peon_r->setMaterial(negro);
     
     luces[0].set_id(GL_LIGHT0);
-    luces[1].set_id(GL_LIGHT1);
+    //luces[1].set_id(GL_LIGHT1);
 }
 
 //**************************************************************************
@@ -169,7 +169,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             objetos[i]->activar_inmediato();
          
          for (int i = 0; i < luces.size() && modoMenu==SELDIBUJADO; i++)
-            luces[i].activar();
+            luces[i].encender();
+
+         std::cout << "sensiende\n";
          break;
       
       case '2':

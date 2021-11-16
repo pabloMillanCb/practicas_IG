@@ -3,8 +3,6 @@
 
 void Luz::activar()
 {
-    glEnable(id);
-
     glLightfv( id, GL_SPECULAR, blanco ) ;
     glLightfv( id, GL_DIFFUSE, colorDifuso ) ;
     glLightfv( id, GL_AMBIENT, colorAmbiente ) ;
@@ -13,6 +11,14 @@ void Luz::activar()
     //glLoadIdentity();
     glLightfv( id, GL_POSITION, posicion);
     //glPopMatrix();
+}
+
+void Luz::encender()
+{
+    if (glIsEnabled(id))
+        glDisable(id);
+    else
+        glEnable(id);
 }
 
 void Luz::set_id(GLenum id_)
