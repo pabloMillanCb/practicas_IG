@@ -19,7 +19,6 @@ void Luz::encender()
         glDisable(id);
 }
 
-
 void Luz::set_id(GLenum id_)
 {
     id = id_;

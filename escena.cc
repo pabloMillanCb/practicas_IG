@@ -45,8 +45,6 @@ Escena::Escena()
     Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.05, 0.05, 0.05, 1.0), 200.0);
 
     luces.push_back(LuzDireccional(Tupla2f(0.0, 100.0), {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}));
-    //luces.push_back(LuzPosicional(Tupla3f(0.0, 10.0, 50.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
-
     luces.push_back(LuzPosicional(Tupla3f(0.0, 100.0, 50.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
     //luces.push_back(LuzPosicional(Tupla3f(0.0, 20.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
 
@@ -171,7 +169,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             objetos[i]->activar_inmediato();
          
          for (int i = 0; i < luces.size() && modoMenu==SELDIBUJADO; i++)
-            luces[i].encender();
+            luces[i].activar();
          break;
       
       case '2':
