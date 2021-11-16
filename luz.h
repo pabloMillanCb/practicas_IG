@@ -15,6 +15,7 @@ protected:
     Tupla4f blanco = {1.0, 1.0, 1.0, 1.0};
 public:
     void activar();
+    void encender();
     void set_id(GLenum id_);
 };
 
