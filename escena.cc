@@ -46,13 +46,15 @@ Escena::Escena()
 
     luces.push_back(LuzDireccional(Tupla2f(0.0, 100.0), {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}));
     //luces.push_back(LuzPosicional(Tupla3f(0.0, 10.0, 50.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
+
+    luces.push_back(LuzPosicional(Tupla3f(0.0, 100.0, 50.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
     //luces.push_back(LuzPosicional(Tupla3f(0.0, 20.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
 
       peon->setMaterial(blanco);
       peon_r->setMaterial(negro);
     
     luces[0].set_id(GL_LIGHT0);
-    //luces[1].set_id(GL_LIGHT1);
+    luces[1].set_id(GL_LIGHT1);
 }
 
 //**************************************************************************

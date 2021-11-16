@@ -3,6 +3,8 @@
 
 void Luz::activar()
 {
+    glEnable(id);
+
     glLightfv( id, GL_SPECULAR, blanco ) ;
     glLightfv( id, GL_DIFFUSE, colorDifuso ) ;
     glLightfv( id, GL_AMBIENT, colorAmbiente ) ;   
@@ -16,6 +18,7 @@ void Luz::encender()
     else
         glDisable(id);
 }
+
 
 void Luz::set_id(GLenum id_)
 {
