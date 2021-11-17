@@ -28,7 +28,7 @@ Escena::Escena()
     objetos.push_back(tetraedro);
     peon = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
     objetos.push_back(peon);
-    peon_r = new ObjRevolucion("./plys/peon-r.ply", 8, 2, true, true);
+    peon_r = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
     objetos.push_back(peon_r);
     cil = new Cilindro(6, 6, 2.3, 0.5);
     objetos.push_back(cil);
@@ -44,13 +44,16 @@ Escena::Escena()
     Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
 
     lucesdir.push_back(LuzDireccional(Tupla2f(0.0, 100.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.4, 0.4, 0.4, 1.0)));
-    lucespos.push_back(LuzPosicional(Tupla3f(0.0, 100.0, 50.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
+    lucespos.push_back(LuzPosicional(Tupla3f(-70.0, 100.0, 70.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
 
     peon->setMaterial(blanco);
     peon_r->setMaterial(negro);
+    esf->setMaterial(bronce);
     
     lucesdir[0].set_id(GL_LIGHT0);
     lucespos[0].set_id(GL_LIGHT1);
+
+    glShadeModel(GL_SMOOTH);
 }
 
 //**************************************************************************
@@ -111,20 +114,22 @@ void Escena::dibujar()
       for (int i = 0; i < lucespos.size(); i++)
          lucespos[i].activar();
 
-      //negro.aplicar();
-
       glPushMatrix();
-      glTranslatef(30.0, 0.0, 0.0);
+      glTranslatef(50.0, 0.0, 0.0);
       glScalef(30.0, 30.0, 30.0);
       peon->draw();
       glPopMatrix();
 
-      //bronce.aplicar();
-
       glPushMatrix();
-      glTranslatef(-30.0, 0.0, 0.0);
+      glTranslatef(-50.0, 0.0, 0.0);
       glScalef(30.0, 30.0, 30.0);
       peon_r->draw();
+      glPopMatrix();
+
+      glPushMatrix();
+      glTranslatef(0.0, 0.0, -70.0);
+      glScalef(30.0, 30.0, 30.0);
+      esf->draw();
       glPopMatrix();
 
    if (cubo->es_visible())
