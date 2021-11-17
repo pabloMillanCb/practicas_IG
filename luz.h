@@ -12,7 +12,7 @@ protected:
     Tupla4f colorDifuso;
     bool activada = false;
 
-    Tupla4f blanco = {1.0, 1.0, 1.0, 1.0};
+    Tupla4f blanco = Tupla4f(1.0, 1.0, 1.0, 1.0);
 public:
     void activar();
     void set_id(GLenum id_);

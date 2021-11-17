@@ -15,7 +15,7 @@
 #include "luzposicional.h"
 #include "material.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO, MODOALFA, MODOBETA} menu;
 class Escena
 {
 
@@ -45,7 +45,8 @@ class Escena
    // Objetos de la escena
    Ejes ejes;
    std::vector<Malla3D*> objetos;
-   std::vector<Luz> luces;
+   std::vector<LuzDireccional> lucesdir;
+   std::vector<LuzPosicional> lucespos;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
    ObjRevolucion * peon = nullptr;

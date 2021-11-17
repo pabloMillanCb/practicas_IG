@@ -1,4 +1,5 @@
 #include "material.h"
+#include <iostream>
 
 Material::Material()
 {
@@ -18,8 +19,18 @@ Material::Material(Tupla4f mdifuso, Tupla4f mespecular, Tupla4f mambiente, float
 
 void Material::aplicar()
 {
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,difuso);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, especular);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambiente);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &brillo);
+    std::cout << "aplicando material con valor " << difuso(0) << std::endl;
+
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, difuso);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, especular);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, ambiente);
+    glMaterialfv(GL_FRONT, GL_SHININESS, &brillo);
+}
+
+void Material::operator=(Material &m)
+{
+    difuso = m.difuso;
+    especular = m.especular;
+    ambiente = m.ambiente;
+    brillo = m.brillo;
 }

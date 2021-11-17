@@ -41,7 +41,7 @@ class Malla3D
    void cambiar_ajedrez() ;
    void activar_luz();
    void mezclarCaras(); //Prepara el vector de triángulos para el modo ajedrez
-   void setMaterial(Material mat);
+   void setMaterial(Material &mat);
 
    GLuint CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram );
 
@@ -65,7 +65,7 @@ class Malla3D
    int draw_size, draw_size_a1, draw_size_a2,
        id_vbo_tri = 0, id_vbo_tri_1 = 0, id_vbo_tri_2 = 0,
        id_vbo_ver = 0, id_vbo_color = 0, id_vbo_color2 = 0, id_vbo_color3 = 0,
-       modo_dibujado = INMEDIATO;
+       id_vbo_nor = 0, modo_dibujado = INMEDIATO;
 
    float visible = false;
    bool modo_ajedrez = false,

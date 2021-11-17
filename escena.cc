@@ -28,7 +28,7 @@ Escena::Escena()
     objetos.push_back(tetraedro);
     peon = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
     objetos.push_back(peon);
-    peon_r = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
+    peon_r = new ObjRevolucion("./plys/peon-r.ply", 8, 2, true, true);
     objetos.push_back(peon_r);
     cil = new Cilindro(6, 6, 2.3, 0.5);
     objetos.push_back(cil);
@@ -39,20 +39,18 @@ Escena::Escena()
     ply = new ObjPLY("./plys/ant.ply");
     objetos.push_back(ply);
 
-    
-    Material m(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
-    Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
-    Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.05, 0.05, 0.05, 1.0), 200.0);
+    Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
+    Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 100.0);
+    Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
 
-    luces.push_back(LuzDireccional(Tupla2f(0.0, 100.0), {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}));
-    luces.push_back(LuzPosicional(Tupla3f(0.0, 100.0, 50.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
-    //luces.push_back(LuzPosicional(Tupla3f(0.0, 20.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
+    lucesdir.push_back(LuzDireccional(Tupla2f(0.0, 100.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.4, 0.4, 0.4, 1.0)));
+    lucespos.push_back(LuzPosicional(Tupla3f(0.0, 100.0, 50.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
 
-      peon->setMaterial(blanco);
-      peon_r->setMaterial(negro);
+    peon->setMaterial(blanco);
+    peon_r->setMaterial(negro);
     
-    luces[0].set_id(GL_LIGHT0);
-    luces[1].set_id(GL_LIGHT1);
+    lucesdir[0].set_id(GL_LIGHT0);
+    lucespos[0].set_id(GL_LIGHT1);
 }
 
 //**************************************************************************
@@ -85,6 +83,11 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 
 void Escena::dibujar()
 {
+   Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
+    Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
+    Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.2, 0.2, 0.2, 1.0), Tupla4f(0.05, 0.05, 0.05, 1.0), 200.0);
+
+
    glEnable(GL_CULL_FACE);
    glEnable(GL_NORMALIZE);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
@@ -93,16 +96,30 @@ void Escena::dibujar()
    glPointSize(7);
    glPolygonOffset(2.0, 5.0);
 
-   ejes.draw();
+   if (glIsEnabled(GL_LIGHTING))
+   {
+      glDisable(GL_LIGHTING);
+      ejes.draw();
+      glEnable(GL_LIGHTING);
+   }
+   else
+      ejes.draw();
 
-      luces[0].activar();
-      luces[1].activar();
+      for (int i = 0; i < lucesdir.size(); i++)
+         lucesdir[i].activar();
+      
+      for (int i = 0; i < lucespos.size(); i++)
+         lucespos[i].activar();
+
+      //negro.aplicar();
 
       glPushMatrix();
       glTranslatef(30.0, 0.0, 0.0);
       glScalef(30.0, 30.0, 30.0);
       peon->draw();
       glPopMatrix();
+
+      //bronce.aplicar();
 
       glPushMatrix();
       glTranslatef(-30.0, 0.0, 0.0);
@@ -114,6 +131,8 @@ void Escena::dibujar()
       cubo->draw();
    if (tetraedro->es_visible())
       tetraedro->draw();
+
+   std::cout << "----------------------------------\n";
 
 }
 
@@ -168,13 +187,12 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          for (int i = 0; i < objetos.size() && modoMenu==SELDIBUJADO; i++)
             objetos[i]->activar_inmediato();
          
-         for (int i = 0; i < luces.size() && modoMenu==SELDIBUJADO; i++)
-            luces[i].activar();
          break;
       
       case '2':
          for (int i = 0; i < objetos.size() && modoMenu==SELDIBUJADO; i++)
             objetos[i]->activar_diferido();
+
          break;
       
       case '3':
@@ -186,6 +204,22 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             con->cambiarTapas();
             esf->cambiarTapas();
          }
+         break;
+
+      case '7':
+
+         if (glIsEnabled(GL_LIGHT0))
+            glDisable(GL_LIGHT0);
+         else
+            glEnable(GL_LIGHT0);
+         break;
+      
+      case '8':
+
+         if (glIsEnabled(GL_LIGHT1))
+            glDisable(GL_LIGHT1);
+         else
+            glEnable(GL_LIGHT1);
          break;
 
       case 'P':
@@ -209,32 +243,40 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
       case 'A':
          for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
             objetos[i]->cambiar_ajedrez();
-         glDisable(GL_LIGHTING);
+         
+         if (modoMenu==SELVISUALIZACION)
+            glDisable(GL_LIGHTING);
+         
+         else
+         {
+            modoMenu = MODOALFA;
+            std::cout << "Variar angulo alfa\n";
+         }
+
          break;
 
       case 'I':
          glEnable(GL_LIGHTING);
-         for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
-            objetos[i]->activar_luz();
+         //for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
+         //   objetos[i]->activar_luz();
          break;
-      /*case 'Z':
-         luces[0].Colocar({luces[0].get(0)+5, luces[0].get(1), luces[0].get(2)});
-         break;
-      case 'X':
-         luces[0].Colocar({luces[0].get(0), luces[0].get(1)+5, luces[0].get(2)});
-         break;
-      case 'c':
-         luces[0].Colocar({luces[0].get(0), luces[0].get(1), luces[0].get(2)+5});
-         break;
+
       case 'B':
-         luces[0].Colocar({luces[0].get(0)-5, luces[0].get(1), luces[0].get(2)});
+         modoMenu = MODOBETA;
+         std::cout << "Variar angulo alfa\n";
          break;
-      case 'N':
-         luces[0].Colocar({luces[0].get(0), luces[0].get(1)-5, luces[0].get(2)});
+      case '>':
+         if (modoMenu == MODOALFA)
+            lucesdir[0].variarAnguloAlpha(0.1);
+         if (modoMenu == MODOBETA)
+            lucesdir[0].variarAnguloBeta(0.1);
          break;
-      case 'M':
-         luces[0].Colocar({luces[0].get(0), luces[0].get(1), luces[0].get(2)-5});
-         break;*/
+      case '<':
+         if (modoMenu == MODOALFA)
+            lucesdir[0].variarAnguloAlpha(-0.1);
+         if (modoMenu == MODOBETA)
+            lucesdir[0].variarAnguloBeta(-0.1);
+         break;
          
             
    }
