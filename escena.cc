@@ -212,7 +212,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             ovn->activar_inmediato();
          }
          
-         if (modoMenu == GRADOSLIBERTAD)
+         if (modoMenu == GRADOSLIBERTAD || modoMenu == SELVELOCIDAD)
             id_grado = 0;
 
          if (modoMenu == NADA && glIsEnabled(GL_LIGHTING))
@@ -234,7 +234,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             ovn->activar_diferido();
          }
 
-         if (modoMenu == GRADOSLIBERTAD)
+         if (modoMenu == GRADOSLIBERTAD || modoMenu == SELVELOCIDAD)
             id_grado = 1;
 
          if (modoMenu == NADA && glIsEnabled(GL_LIGHTING))
@@ -256,13 +256,13 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             esf->cambiarTapas();
          }
 
-         if (modoMenu == GRADOSLIBERTAD)
+         if (modoMenu == GRADOSLIBERTAD || modoMenu == SELVELOCIDAD)
             id_grado = 2;
          break;
 
       case '4':
    
-         if (modoMenu == GRADOSLIBERTAD)
+         if (modoMenu == GRADOSLIBERTAD || modoMenu == SELVELOCIDAD)
             id_grado = 3;
          break;
 
@@ -300,9 +300,13 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             objetos[i]->cambiar_solido();
 
             ovn->cambiar_solido();
-         }
 
-         glDisable(GL_LIGHTING);
+            glDisable(GL_LIGHTING);
+         }
+         else
+         {
+            modoMenu = SELVELOCIDAD;
+         }
          break;
 
       case 'A':
@@ -354,6 +358,35 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             }
          }
 
+         if (modoMenu == SELVELOCIDAD)
+         {
+            switch(id_grado)
+            {
+               case -1:
+                  v1++;
+                  v2++;
+                  v3++;
+                  v4++;
+                  break;
+
+               case 0:
+                  v1++;
+                  break;
+
+               case 2:
+                  v2++;
+                  break;
+
+               case 3:
+                  v3++;
+                  break;
+
+               case 4:
+                  v4++;
+                  break;
+            }
+         }
+
          break;
 
       case '-':
@@ -368,6 +401,36 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                ovn->gradosLibertad(id_grado, -2.0);
             }
          }
+
+         if (modoMenu == SELVELOCIDAD)
+         {
+            switch(id_grado)
+            {
+               case -1:
+                  v1--;
+                  v2--;
+                  v3--;
+                  v4--;
+                  break;
+
+               case 0:
+                  v1--;
+                  break;
+
+               case 2:
+                  v2--;
+                  break;
+
+               case 3:
+                  v3--;
+                  break;
+
+               case 4:
+                  v4--;
+                  break;
+            }
+         }
+
 
          break;
 
@@ -465,8 +528,8 @@ void Escena::animarModeloJerarquico()
 {
    if (animacion_activa)
    {
-      ovn->aumentar_r_luces(velocidad*1.5);
-      ovn->aumentar_foco_y(-velocidad*0.5);
+      ovn->aumentar_r_luces(v1*1.5);
+      ovn->aumentar_foco_y(-v2*0.5);
 
       if (contador1 >= 65)
       {
@@ -480,10 +543,10 @@ void Escena::animarModeloJerarquico()
          contador2 = 0;
       }
 
-      ovn->aumentar_h_gancho(velocidad*sentido1*0.3);
-      ovn->aumentar_foco_x(velocidad*sentido2*0.5);
+      ovn->aumentar_h_gancho(v3*sentido1*0.3);
+      ovn->aumentar_foco_x(v4*sentido2*0.5);
 
-      contador1 += velocidad*0.3;
-      contador2 += velocidad*0.5;
+      contador1 += v3*0.3;
+      contador2 += v4*0.5;
    }
 }

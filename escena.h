@@ -16,7 +16,7 @@
 #include "material.h"
 #include "ovni.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO, MODOALFA, MODOBETA, GRADOSLIBERTAD} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO, MODOALFA, MODOBETA, GRADOSLIBERTAD, SELVELOCIDAD} menu;
 class Escena
 {
 
@@ -61,7 +61,7 @@ class Escena
 
    //Control de animaciones
 
-   float velocidad = 2;
+   float v1 = 1, v2 = 1, v3 = 1, v4 = 0;
    float contador1 = 0;
    float contador2 = 0;
 
