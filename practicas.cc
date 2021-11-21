@@ -87,6 +87,15 @@ void special_keys( int tecla, int x, int y )
 	glutPostRedisplay();
 }
 
+//Funcion de animacion
+
+void funcion_idle()
+{
+   if (escena != 0)
+         escena->animarModeloJerarquico();
+      glutPostRedisplay();
+}
+
 //***************************************************************************
 // Programa principal
 //
@@ -105,6 +114,8 @@ int main( int argc, char **argv )
 
    // se llama a la inicialización de glut
    glutInit( &argc, argv );
+
+   glutIdleFunc(funcion_idle);
 
    // se indica las caracteristicas que se desean para la visualización con OpenGL
    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);

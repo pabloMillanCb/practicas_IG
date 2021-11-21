@@ -14,8 +14,9 @@
 #include "luzdireccional.h"
 #include "luzposicional.h"
 #include "material.h"
+#include "ovni.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO, MODOALFA, MODOBETA} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO, MODOALFA, MODOBETA, GRADOSLIBERTAD} menu;
 class Escena
 {
 
@@ -56,38 +57,25 @@ class Escena
    Cono * con = nullptr;
    Esfera * esf = nullptr;
    ObjPLY * ply = nullptr;
+   Ovni * ovn = nullptr;
+
+   //Control de animaciones
+
+   float velocidad = 2;
+   float contador1 = 0;
+   float contador2 = 0;
+
+   float sentido1 = 1;
+   float sentido2 = 1;
+
+   bool animacion_activa = false;
+   int id_grado = -1;
    
    public:
 
     Escena();
 	void inicializar( int UI_window_width, int UI_window_height );
 	void redimensionar( int newWidth, int newHeight ) ;
-  /* glPushMatrix();
-      glTranslatef(-2.5, -1.15, 0.0);
-      glScalef(30.06, 30.06, 30.06);
-      cil->draw();
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(0.0, -1.15, 2.5);
-      con->draw();
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(0.0, 0.0, -2.5);
-      esf->draw();
-   glPopMatrix();
-
-   /*glPushMatrix();
-      glTranslatef(2.5, 2.5, 2.5);
-      peon_r->draw();
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(0.0, 0.0, 0.0);
-      glScalef(0.06, 0.06, 0.06);
-      ply->draw();
-   glPopMatrix();*/
 
 	// Dibujar
 	void dibujar() ;
@@ -95,6 +83,9 @@ class Escena
 	// Interacción con la escena
 	bool teclaPulsada( unsigned char Tecla1, int x, int y ) ;
 	void teclaEspecial( int Tecla1, int x, int y );
+
+   //void funcion_idle();
+   void animarModeloJerarquico();
 
 };
 #endif

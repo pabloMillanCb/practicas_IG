@@ -19,8 +19,6 @@ Material::Material(Tupla4f mdifuso, Tupla4f mespecular, Tupla4f mambiente, float
 
 void Material::aplicar()
 {
-    std::cout << "aplicando material con valor " << difuso(0) << std::endl;
-
     glMaterialfv(GL_FRONT, GL_DIFFUSE, difuso);
     glMaterialfv(GL_FRONT, GL_SPECULAR, especular);
     glMaterialfv(GL_FRONT, GL_AMBIENT, ambiente);

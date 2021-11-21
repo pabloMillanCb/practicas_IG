@@ -30,14 +30,13 @@ Escena::Escena()
     objetos.push_back(peon);
     peon_r = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
     objetos.push_back(peon_r);
-    cil = new Cilindro(6, 6, 2.3, 0.5);
+    cil = new Cilindro(6, 6, 40, 20);
     objetos.push_back(cil);
     con = new Cono(6, 6, 2.3, 0.7);
     objetos.push_back(con);
     esf = new Esfera(20, 20, 1.4);
     objetos.push_back(esf);
-    ply = new ObjPLY("./plys/ant.ply");
-    objetos.push_back(ply);
+    ovn = new Ovni();
 
     Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
     Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 100.0);
@@ -114,7 +113,21 @@ void Escena::dibujar()
       for (int i = 0; i < lucespos.size(); i++)
          lucespos[i].activar();
 
+      
+
       glPushMatrix();
+      //glTranslatef(50.0, 0.0, 50.0);
+      
+      /*glTranslatef(0.0, -40.0, 0.0);
+      glRotatef(50, 0, 1, 0);
+      glRotatef(90, 1, 0, 0);
+      glTranslatef(0.0, -20.0, 0.0);*/
+      
+      //cil->draw();
+      ovn->draw();
+      glPopMatrix();
+
+      /*glPushMatrix();
       glTranslatef(50.0, 0.0, 0.0);
       glScalef(30.0, 30.0, 30.0);
       peon->draw();
@@ -135,9 +148,7 @@ void Escena::dibujar()
    if (cubo->es_visible())
       cubo->draw();
    if (tetraedro->es_visible())
-      tetraedro->draw();
-
-   std::cout << "----------------------------------\n";
+      tetraedro->draw();ply*/
 
 }
 
@@ -161,6 +172,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             modoMenu=NADA;            
          else {
             salir=true ;
+
+         id_grado = -1;
          }
          break ;
       case 'O' :
@@ -171,6 +184,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
         case 'V' :
          // ESTAMOS EN MODO SELECCION DE MODO DE VISUALIZACION
          modoMenu=SELVISUALIZACION;
+         std::cout << "Modo Selección de visualización\n";
          break ;
        case 'D' :
          // ESTAMOS EN MODO SELECCION DE DIBUJADO
@@ -189,15 +203,47 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break;
       
       case '1':
-         for (int i = 0; i < objetos.size() && modoMenu==SELDIBUJADO; i++)
-            objetos[i]->activar_inmediato();
+
+         if (modoMenu == SELDIBUJADO)
+         {
+            for (int i = 0; i < objetos.size(); i++)
+               objetos[i]->activar_inmediato();
+
+            ovn->activar_inmediato();
+         }
          
+         if (modoMenu == GRADOSLIBERTAD)
+            id_grado = 0;
+
+         if (modoMenu == NADA && glIsEnabled(GL_LIGHTING))
+         {
+            if (glIsEnabled(GL_LIGHT0))
+            glDisable(GL_LIGHT0);
+            else
+               glEnable(GL_LIGHT0);
+         }
          break;
       
       case '2':
-         for (int i = 0; i < objetos.size() && modoMenu==SELDIBUJADO; i++)
-            objetos[i]->activar_diferido();
 
+         if (modoMenu == SELDIBUJADO)
+         {
+            for (int i = 0; i < objetos.size(); i++)
+               objetos[i]->activar_diferido();
+
+            ovn->activar_diferido();
+         }
+
+         if (modoMenu == GRADOSLIBERTAD)
+            id_grado = 1;
+
+         if (modoMenu == NADA && glIsEnabled(GL_LIGHTING))
+         {
+            if (glIsEnabled(GL_LIGHT1))
+            glDisable(GL_LIGHT1);
+            else
+               glEnable(GL_LIGHT1);
+         }
          break;
       
       case '3':
@@ -209,61 +255,120 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             con->cambiarTapas();
             esf->cambiarTapas();
          }
+
+         if (modoMenu == GRADOSLIBERTAD)
+            id_grado = 2;
          break;
 
-      case '7':
-
-         if (glIsEnabled(GL_LIGHT0))
-            glDisable(GL_LIGHT0);
-         else
-            glEnable(GL_LIGHT0);
-         break;
-      
-      case '8':
-
-         if (glIsEnabled(GL_LIGHT1))
-            glDisable(GL_LIGHT1);
-         else
-            glEnable(GL_LIGHT1);
+      case '4':
+   
+         if (modoMenu == GRADOSLIBERTAD)
+            id_grado = 3;
          break;
 
       case 'P':
-         for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
+
+         if (modoMenu == SELVISUALIZACION)
+         {
+            for (int i = 0; i < objetos.size(); i++)
             objetos[i]->cambiar_puntos();
+
+            ovn->cambiar_puntos();
+         }
+
          glDisable(GL_LIGHTING);
          break;
 
       case 'L':
-         for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
+         
+         if (modoMenu == SELVISUALIZACION)
+         {
+            for (int i = 0; i < objetos.size(); i++)
             objetos[i]->cambiar_lineas();
+
+            ovn->cambiar_lineas();
+         }
+
          glDisable(GL_LIGHTING);
          break;
 
       case 'S':
-         for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
+         
+         if (modoMenu == SELVISUALIZACION)
+         {
+            for (int i = 0; i < objetos.size(); i++)
             objetos[i]->cambiar_solido();
+
+            ovn->cambiar_solido();
+         }
+
          glDisable(GL_LIGHTING);
          break;
 
       case 'A':
-         for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
-            objetos[i]->cambiar_ajedrez();
-         
-         if (modoMenu==SELVISUALIZACION)
+
+         if (modoMenu == SELVISUALIZACION)
+         {   
+            for (int i = 0; i < objetos.size(); i++)
+               objetos[i]->cambiar_ajedrez();
+
+            ovn->cambiar_ajedrez();
+            
             glDisable(GL_LIGHTING);
+         }
          
-         else
+         else if (glIsEnabled(GL_LIGHTING))
          {
             modoMenu = MODOALFA;
             std::cout << "Variar angulo alfa\n";
+         }
+
+         else
+         {
+            animacion_activa = !animacion_activa;
          }
 
          break;
 
       case 'I':
          glEnable(GL_LIGHTING);
-         //for (int i = 0; i < objetos.size() && modoMenu==SELVISUALIZACION; i++)
-         //   objetos[i]->activar_luz();
+         modoMenu = NADA;
+         break;
+
+      case 'M':
+         modoMenu = GRADOSLIBERTAD;
+         std::cout << "Modo grados de libertad\n";
+
+         break;
+
+      case '+':
+
+         if (modoMenu == GRADOSLIBERTAD)
+         {
+            if (id_grado == -1)
+               std::cout << "Selecciona un grado: 0-3\n";
+
+            else
+            {
+               ovn->gradosLibertad(id_grado, 2.0);
+            }
+         }
+
+         break;
+
+      case '-':
+
+         if (modoMenu == GRADOSLIBERTAD)
+         {
+            if (id_grado == -1)
+               std::cout << "Selecciona un grado: 0-3\n";
+
+            else
+            {
+               ovn->gradosLibertad(id_grado, -2.0);
+            }
+         }
+
          break;
 
       case 'B':
@@ -354,4 +459,31 @@ void Escena::change_observer()
    glTranslatef( 0.0, 0.0, -Observer_distance );
    glRotatef( Observer_angle_y, 0.0 ,1.0, 0.0 );
    glRotatef( Observer_angle_x, 1.0, 0.0, 0.0 );
+}
+
+void Escena::animarModeloJerarquico()
+{
+   if (animacion_activa)
+   {
+      ovn->aumentar_r_luces(velocidad*1.5);
+      ovn->aumentar_foco_y(-velocidad*0.5);
+
+      if (contador1 >= 65)
+      {
+         sentido1 = -sentido1;
+         contador1 = 0;
+      }
+         
+      if (contador2 >= 40)
+      {
+         sentido2 = -sentido2;
+         contador2 = 0;
+      }
+
+      ovn->aumentar_h_gancho(velocidad*sentido1*0.3);
+      ovn->aumentar_foco_x(velocidad*sentido2*0.5);
+
+      contador1 += velocidad*0.3;
+      contador2 += velocidad*0.5;
+   }
 }

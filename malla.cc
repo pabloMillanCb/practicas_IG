@@ -25,8 +25,6 @@ void Malla3D::draw_ModoInmediato()
 
    if (glIsEnabled(GL_LIGHTING))
    {
-      std::cout << "Se dibuja modo luz\n";
-
       dibujar[0] = true;
       dibujar[1] = false;
       dibujar[2] = false;
@@ -311,9 +309,6 @@ void Malla3D::calcular_normales()
    for (int i = 0; i < f.size(); i++) //Se recorre el vector de caras, se calcula
    {
       normal = vectorNormal(f[i]);
-
-      if (normal(0) == 0 && normal(1) == 0 && normal(2) == 0)
-         std::cout << "WAAAAAAAAAAAAAAAA\n";
 
       nv[ f[i](0) ] = nv[ f[i](0) ] + normal;
       nv[ f[i](1) ] = nv[ f[i](1) ] + normal;
