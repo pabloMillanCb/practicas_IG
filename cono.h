@@ -23,7 +23,7 @@
 class Cono : public ObjRevolucion
 {
    public:
-   Cono(const int num_vert_perfil, const int num_instancias_perf, const float altura, const float radio) ;
+   Cono(const int num_vert_perfil, const int num_instancias_perf, const float altura, const float radio, bool tapa_inferior) ;
    private:
    float radio, altura;
    

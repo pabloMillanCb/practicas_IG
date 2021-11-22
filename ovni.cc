@@ -4,13 +4,15 @@
 Ovni::Ovni()
 {
     cabina = new Esfera(30, 30, 30);
-    cuerpo = new Cono(30, 30, 70, 100);
+    cuerpo = new Cono(30, 30, 70, 100, true);
+    abductor = new Cono(10, 10, 30, 20, false);
 
-    Material cab({0.4, 0.5, 0.4, 1.0}, {0.7, 0.04, 0.04, 1.0}, {0.0, 0.05, 0.0, 1.0}, 100);
-    Material cue({0.2775, 0.2775, 0.2775, 1.0}, {0.773911, 0.773911, 0.773911, 1.0}, {0.23125, 0.23125, 0.23125, 1.0}, 100);
+    Material gris({0.4, 0.5, 0.4, 1.0}, {1.0, 1.0, 1.0, 1.0}, {0.0, 0.05, 0.0, 1.0}, 100);
+    Material negro({0.2775, 0.2775, 0.2775, 1.0}, {0.773911, 0.773911, 0.773911, 1.0}, {0.23125, 0.23125, 0.23125, 1.0}, 100);
 
-    cabina->setMaterial( cab );
-    cuerpo->setMaterial( cue );
+    cabina->setMaterial( gris );
+    cuerpo->setMaterial( negro );
+    abductor->setMaterial( negro );
 
 }
 
@@ -27,14 +29,30 @@ void Ovni::draw()
     glPopMatrix();
 
     glPushMatrix();
+        glTranslatef(0, -10, 0);
+        abductor->draw();
+    glPopMatrix();
+
+    glPushMatrix();
         glRotatef(r_luces, 0, 1, 0);
         luces.draw();
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(0, -h_gancho, 0);
+        glTranslatef(0, h_gancho+80, 0);
+        glRotatef(180, 1, 0, 0);
         inferior.draw();
     glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(0.0, -h_ballena_max*ctr_ballena/ctr_ballena_max, 0.0);
+        glScalef(escalado_max*ctr_ballena/ctr_ballena_max, escalado_max*ctr_ballena/ctr_ballena_max, escalado_max*ctr_ballena/ctr_ballena_max);
+        glRotatef(y_ballena, 0, 1, 0);
+        glRotatef(x_ballena, 0, 0, 1);
+        glRotatef(-10, 1, 0, 0);
+        laboon.draw();
+    glPopMatrix();
+
 }
 
 void Ovni::aumentar_r_luces(float aumento)
@@ -63,6 +81,31 @@ void Ovni::aumentar_h_gancho(float aumento)
 
 }
 
+void Ovni::aumentar_ballena(float aumento)
+{
+    ctr_ballena += aumento;
+
+    if (ctr_ballena > ctr_ballena_max)
+        ctr_ballena = ctr_ballena_max;
+    else if (ctr_ballena < 0)
+        ctr_ballena = 0;
+}
+
+void Ovni::aumentar_ballena_x(float aumento)
+{
+    x_ballena += aumento;
+
+    if (x_ballena > x_ballena_max)
+        x_ballena = x_ballena_max;
+    else if (x_ballena < -x_ballena_max)
+        x_ballena = -x_ballena_max;
+}
+
+void Ovni::aumentar_ballena_y(float aumento)
+{
+    y_ballena += aumento;
+}
+
 void Ovni::gradosLibertad(int i, float aumento)
 {
     switch(i){
@@ -80,6 +123,18 @@ void Ovni::gradosLibertad(int i, float aumento)
 
         case 3:
             aumentar_foco_x(aumento);
+        break;
+
+        case 4:
+            aumentar_ballena(aumento);
+        break;
+
+        case 5:
+            aumentar_ballena_x(aumento);
+        break;
+
+        case 6:
+            aumentar_ballena_y(aumento);
         break;
     }
 }

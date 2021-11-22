@@ -4,6 +4,7 @@
 #include "escena.h"
 #include "malla.h" // objetos: Cubo y otros....
 #include <iostream>
+#include "laboon.h"
 
 //**************************************************************************
 // constructor de la escena (no puede usar ordenes de OpenGL)
@@ -32,11 +33,13 @@ Escena::Escena()
     objetos.push_back(peon_r);
     cil = new Cilindro(6, 6, 40, 20);
     objetos.push_back(cil);
-    con = new Cono(6, 6, 2.3, 0.7);
+    con = new Cono(6, 6, 2.3, 0.7, true);
     objetos.push_back(con);
     esf = new Esfera(20, 20, 1.4);
     objetos.push_back(esf);
     ovn = new Ovni();
+    ply = new ObjPLY("./plys/laboon.ply");
+    objetos.push_back(ply);
 
     Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
     Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 100.0);
@@ -90,7 +93,7 @@ void Escena::dibujar()
     Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.2, 0.2, 0.2, 1.0), Tupla4f(0.05, 0.05, 0.05, 1.0), 200.0);
 
 
-   glEnable(GL_CULL_FACE);
+   //glEnable(GL_CULL_FACE);
    glEnable(GL_NORMALIZE);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
@@ -124,16 +127,20 @@ void Escena::dibujar()
       glTranslatef(0.0, -20.0, 0.0);*/
       
       //cil->draw();
-      ovn->draw();
-      glPopMatrix();
+                ovn->draw();
 
-      /*glPushMatrix();
-      glTranslatef(50.0, 0.0, 0.0);
-      glScalef(30.0, 30.0, 30.0);
-      peon->draw();
+      //Laboon a;
+      //a.draw();
+
       glPopMatrix();
 
       glPushMatrix();
+      glTranslatef(50.0, 0.0, 0.0);
+      //glScalef(30.0, 30.0, 30.0);
+      //ply->draw();
+      glPopMatrix();
+
+      /*glPushMatrix();
       glTranslatef(-50.0, 0.0, 0.0);
       glScalef(30.0, 30.0, 30.0);
       peon_r->draw();
@@ -266,6 +273,24 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             id_grado = 3;
          break;
 
+      case '5':
+   
+         if (modoMenu == GRADOSLIBERTAD || modoMenu == SELVELOCIDAD)
+            id_grado = 4;
+         break;
+
+      case '6':
+   
+         if (modoMenu == GRADOSLIBERTAD || modoMenu == SELVELOCIDAD)
+            id_grado = 5;
+         break;
+
+      case '7':
+   
+         if (modoMenu == GRADOSLIBERTAD || modoMenu == SELVELOCIDAD)
+            id_grado = 6;
+         break;
+
       case 'P':
 
          if (modoMenu == SELVISUALIZACION)
@@ -363,26 +388,35 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             switch(id_grado)
             {
                case -1:
-                  v1++;
-                  v2++;
-                  v3++;
-                  v4++;
+                  v[0]++;v[1]++;v[2]++;v[3]++;v[4]++;v[5]++;v[6]++;
                   break;
 
-               case 0:
-                  v1++;
+               case 1:
+                  v[0]++;
                   break;
 
                case 2:
-                  v2++;
+                  v[1]++;
                   break;
 
                case 3:
-                  v3++;
+                  v[2]++;
                   break;
 
                case 4:
-                  v4++;
+                  v[3]++;
+                  break;
+               
+               case 5:
+                  v[4]++;
+                  break;
+
+               case 6:
+                  v[5]++;
+                  break;
+
+               case 7:
+                  v[6]++;
                   break;
             }
          }
@@ -407,30 +441,38 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             switch(id_grado)
             {
                case -1:
-                  v1--;
-                  v2--;
-                  v3--;
-                  v4--;
+                  v[0]--;v[1]--;v[2]--;v[3]--;v[4]--;v[5]--;v[6]--;
                   break;
 
-               case 0:
-                  v1--;
+               case 1:
+                  v[0]--;
                   break;
 
                case 2:
-                  v2--;
+                  v[1]--;
                   break;
 
                case 3:
-                  v3--;
+                  v[2]--;
                   break;
 
                case 4:
-                  v4--;
+                  v[3]--;
+                  break;
+               
+               case 5:
+                  v[4]--;
+                  break;
+
+               case 6:
+                  v[5]--;
+                  break;
+
+               case 7:
+                  v[6]--;
                   break;
             }
          }
-
 
          break;
 
@@ -528,25 +570,55 @@ void Escena::animarModeloJerarquico()
 {
    if (animacion_activa)
    {
-      ovn->aumentar_r_luces(v1*1.5);
-      ovn->aumentar_foco_y(-v2*0.5);
+      ovn->aumentar_r_luces(v[0]*1.5);
+      ovn->aumentar_foco_y(-v[1]*0.5);
 
-      if (contador1 >= 65)
+      if (contador[0] >= 90)
       {
-         sentido1 = -sentido1;
-         contador1 = 0;
+         sentido[0] = -sentido[0];
+         contador[0] = 0;
       }
          
-      if (contador2 >= 40)
+      if (contador[1] >= 40)
       {
-         sentido2 = -sentido2;
-         contador2 = 0;
+         sentido[1] = -sentido[1];
+         contador[1] = 0;
       }
 
-      ovn->aumentar_h_gancho(v3*sentido1*0.3);
-      ovn->aumentar_foco_x(v4*sentido2*0.5);
+      ovn->aumentar_h_gancho(v[2]*sentido[0]*0.3);
+      ovn->aumentar_foco_x(v[3]*sentido[1]*0.5);
 
-      contador1 += v3*0.3;
-      contador2 += v4*0.5;
+      contador[0] += v[2]*0.3;
+      contador[0] += v[3]*0.5;
+
+      ovn->aumentar_ballena(sentido[2]*v[4]*0.2);
+      ovn->aumentar_ballena_x(sentido[3]*v[5]*0.5);
+
+      if (contador[4] <= 90)
+         ovn->aumentar_ballena_y(sentido[4]*(sentido[4]<=90)*v[6]*0.2);
+
+      contador[2] += 1;
+
+      if (contador[2] >= 500)
+      {
+         contador[2] = 0;
+         sentido[2] = -sentido[2];
+      }
+
+      contador[3] += v[5]*0.5;
+
+      if (contador[3] >= 90)
+      {
+         contador[3] = 0;
+         sentido[3] = -sentido[3];
+      }
+
+      contador[4] += v[5]*0.2;
+
+      if (contador[4] >= 100)
+      {
+         contador[4] = 0;
+         sentido[4] = -sentido[4];
+      }
    }
 }

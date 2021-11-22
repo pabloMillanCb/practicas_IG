@@ -3,17 +3,24 @@
 
 #include "aux.h"
 #include "cilindro.h"
+#include "cono.h"
+#include "esfera.h"
 
 class Gancho
 {
     private:
         Cilindro* foco;
         Cilindro* cable;
+        Cilindro* lentes;
+
+        Cono* antenaCono;
+        Cilindro* antenaCilindro;
+        Esfera* antenaEsfera;
 
     protected:
-        const float r_max = 130;
-        const float r_min = 90;
-        float r_x = 90;
+        const float r_max = 90;
+        const float r_min = 0;
+        float r_x = 45;
         float r_y = 0;
         
     public:

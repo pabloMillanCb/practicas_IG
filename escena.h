@@ -61,12 +61,11 @@ class Escena
 
    //Control de animaciones
 
-   float v1 = 1, v2 = 1, v3 = 1, v4 = 0;
-   float contador1 = 0;
-   float contador2 = 0;
+   float v[7] = {1, 1, 1, 1, 1, 1, 1};
+   float contador[5] = {0, 0, 0, 0, 45};
+   float sentido[5] = {1, 1, 1, 1, 1};
 
-   float sentido1 = 1;
-   float sentido2 = 1;
+   int contador_ballena1 = 0, contador_ballena2 = 0;
 
    bool animacion_activa = false;
    int id_grado = -1;

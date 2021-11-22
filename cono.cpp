@@ -2,7 +2,7 @@
 #include "malla.h"
 #include "cono.h"
 
-Cono::Cono(const int num_vert_perfil, const int num_instancias_perf, const float altura, const float radio)
+Cono::Cono(const int num_vert_perfil, const int num_instancias_perf, const float altura, const float radio, bool tapa_inferior)
 {
 
     float r = radio -radio/num_vert_perfil , h = altura/num_vert_perfil;
@@ -20,7 +20,7 @@ Cono::Cono(const int num_vert_perfil, const int num_instancias_perf, const float
     v.push_back(Tupla3f(0, altura, 0));
 
     int size_perfil = v.size();
-    crearMalla(v, num_instancias_perf, 1, true, true);
+    crearMalla(v, num_instancias_perf, 1, true, tapa_inferior);
     mezclarCaras();
     generarColores();
     calcular_normales();
