@@ -13,6 +13,14 @@ class Laboon
     public:
         Laboon();
         void draw();
+
+        void cambiar_solido();
+        void cambiar_lineas();
+        void cambiar_puntos();
+        void cambiar_ajedrez();
+
+        void activar_inmediato();
+        void activar_diferido();
 } ;
 
 

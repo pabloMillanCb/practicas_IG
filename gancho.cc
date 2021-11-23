@@ -3,7 +3,6 @@
 
 Gancho::Gancho()
 {
-    foco = new Cilindro(10, 10, 25, 10);
     lentes = new Cilindro(10, 10, 25, 8);
     cable = new Cilindro(10, 10, 80, 2);
 
@@ -16,7 +15,6 @@ Gancho::Gancho()
     Material azul({0.4, 0.5, 0.4, 1.0}, {1.0, 1.0, 1.0, 1.0}, {0.0, 0.05, 0.0, 1.0}, 100);
     Material dorado({0.780392, 0.568627, 0.113725, 1.0}, {0.992157, 0.941176, 0.807843, 1.0}, {0.329412, 0.223529, 0.027451, 1.0}, 100);
 
-    foco->setMaterial(gris);
     cable->setMaterial(negro);
     lentes->setMaterial(azul);
 
@@ -55,38 +53,6 @@ void Gancho::draw()
         glTranslatef(0.0, -18, 0.0);
         antenaEsfera->draw();
     glPopMatrix();
-
-    /*glPushMatrix();
-        //glTranslatef(0.0, -0.0, 0.0);
-        glRotatef(r_y, 0, 1, 0);
-        glRotatef(r_x, 1, 0, 0);
-        glTranslatef(10.0, -12.5, 0.0);
-        foco->draw();
-    glPopMatrix();
-
-    glPushMatrix();
-        //glTranslatef(0.0, -0.0, 0.0);
-        glRotatef(r_y, 0, 1, 0);
-        glRotatef(r_x, 1, 0, 0);
-        glTranslatef(-10.0, -12.5, 0.0);
-        foco->draw();
-    glPopMatrix();
-
-    glPushMatrix();
-        //glTranslatef(0.0, -0.0, 0.0);
-        glRotatef(r_y, 0, 1, 0);
-        glRotatef(r_x, 1, 0, 0);
-        glTranslatef(10.0, -11.5, 0.0);
-        lentes->draw();
-    glPopMatrix();
-
-    glPushMatrix();
-        //glTranslatef(0.0, -0.0, 0.0);
-        glRotatef(r_y, 0, 1, 0);
-        glRotatef(r_x, 1, 0, 0);
-        glTranslatef(-10.0, -11.5, 0.0);
-        lentes->draw();
-    glPopMatrix();*/
 }
 void Gancho::aumentar_foco_x(float aumento)
 {
@@ -104,33 +70,45 @@ void Gancho::aumentar_foco_y(float aumento)
 
 void Gancho::cambiar_solido()
 {
-    foco->cambiar_solido();
     cable->cambiar_solido();
+    antenaCono->cambiar_solido();
+    antenaCilindro->cambiar_solido();
+    antenaEsfera->cambiar_solido();
 }
 void Gancho::cambiar_lineas()
 {
-    foco->cambiar_lineas();
     cable->cambiar_lineas();
+    antenaCono->cambiar_lineas();
+    antenaCilindro->cambiar_lineas();
+    antenaEsfera->cambiar_lineas();
 }
 void Gancho::cambiar_puntos()
 {
-    foco->cambiar_puntos();
     cable->cambiar_puntos();
+    antenaCono->cambiar_puntos();
+    antenaCilindro->cambiar_puntos();
+    antenaEsfera->cambiar_puntos();
 }
 void Gancho::cambiar_ajedrez()
 {
-    foco->cambiar_ajedrez();
     cable->cambiar_ajedrez();
+    antenaCono->cambiar_ajedrez();
+    antenaCilindro->cambiar_ajedrez();
+    antenaEsfera->cambiar_ajedrez();
 }
 
 void Gancho::activar_inmediato()
 {
-    foco->activar_inmediato();
     cable->activar_inmediato();
+    antenaCono->activar_inmediato();
+    antenaCilindro->activar_inmediato();
+    antenaEsfera->activar_inmediato();
 }
 
 void Gancho::activar_diferido()
 {
-    foco->activar_diferido();
     cable->activar_diferido();
+    antenaCono->activar_diferido();
+    antenaCilindro->activar_diferido();
+    antenaEsfera->activar_diferido();
 }

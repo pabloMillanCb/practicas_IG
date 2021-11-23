@@ -116,46 +116,16 @@ void Escena::dibujar()
       for (int i = 0; i < lucespos.size(); i++)
          lucespos[i].activar();
 
-      
-
+   
       glPushMatrix();
-      //glTranslatef(50.0, 0.0, 50.0);
-      
-      /*glTranslatef(0.0, -40.0, 0.0);
-      glRotatef(50, 0, 1, 0);
-      glRotatef(90, 1, 0, 0);
-      glTranslatef(0.0, -20.0, 0.0);*/
-      
-      //cil->draw();
-                ovn->draw();
+      ovn->draw();
 
-      //Laboon a;
-      //a.draw();
-
-      glPopMatrix();
-
-      glPushMatrix();
-      glTranslatef(50.0, 0.0, 0.0);
-      //glScalef(30.0, 30.0, 30.0);
-      //ply->draw();
-      glPopMatrix();
-
-      /*glPushMatrix();
-      glTranslatef(-50.0, 0.0, 0.0);
-      glScalef(30.0, 30.0, 30.0);
-      peon_r->draw();
-      glPopMatrix();
-
-      glPushMatrix();
-      glTranslatef(0.0, 0.0, -70.0);
-      glScalef(30.0, 30.0, 30.0);
-      esf->draw();
       glPopMatrix();
 
    if (cubo->es_visible())
       cubo->draw();
    if (tetraedro->es_visible())
-      tetraedro->draw();ply*/
+      tetraedro->draw();ply
 
 }
 
@@ -388,6 +358,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             switch(id_grado)
             {
                case -1:
+               std::cout << "Aumentando velocidad general\n";
                   v[0]++;v[1]++;v[2]++;v[3]++;v[4]++;v[5]++;v[6]++;
                   break;
 
@@ -589,7 +560,7 @@ void Escena::animarModeloJerarquico()
       ovn->aumentar_foco_x(v[3]*sentido[1]*0.5);
 
       contador[0] += v[2]*0.3;
-      contador[0] += v[3]*0.5;
+      contador[1] += v[3]*0.5;
 
       ovn->aumentar_ballena(sentido[2]*v[4]*0.2);
       ovn->aumentar_ballena_x(sentido[3]*v[5]*0.5);
@@ -597,7 +568,7 @@ void Escena::animarModeloJerarquico()
       if (contador[4] <= 90)
          ovn->aumentar_ballena_y(sentido[4]*(sentido[4]<=90)*v[6]*0.2);
 
-      contador[2] += 1;
+      contador[2] += 1*v[4];
 
       if (contador[2] >= 500)
       {

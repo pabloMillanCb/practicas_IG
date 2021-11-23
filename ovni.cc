@@ -18,10 +18,7 @@ Ovni::Ovni()
 
 void Ovni::draw()
 {
-
     cuerpo->draw();
-    Esfera hola(39, 30, 30);
-    //hola.draw();
 
     glPushMatrix();
         glTranslatef(0, 50, 0);
@@ -145,6 +142,8 @@ void Ovni::cambiar_solido()
     cuerpo->cambiar_solido();
     luces.cambiar_solido();
     inferior.cambiar_solido();
+    laboon.cambiar_solido();
+    abductor->cambiar_solido();
 }
 void Ovni::cambiar_lineas()
 {
@@ -152,6 +151,8 @@ void Ovni::cambiar_lineas()
     cuerpo->cambiar_lineas();
     luces.cambiar_lineas();
     inferior.cambiar_lineas();
+    laboon.cambiar_lineas();
+    abductor->cambiar_lineas();
 }
 void Ovni::cambiar_puntos()
 {
@@ -159,6 +160,8 @@ void Ovni::cambiar_puntos()
     cuerpo->cambiar_puntos();
     luces.cambiar_puntos();
     inferior.cambiar_puntos();
+    laboon.cambiar_puntos();
+    abductor->cambiar_puntos();
 }
 void Ovni::cambiar_ajedrez()
 {
@@ -166,6 +169,8 @@ void Ovni::cambiar_ajedrez()
     cuerpo->cambiar_ajedrez();
     luces.cambiar_ajedrez();
     inferior.cambiar_ajedrez();
+    laboon.cambiar_ajedrez();
+    abductor->cambiar_ajedrez();
 }
 
 void Ovni::activar_inmediato()
@@ -174,6 +179,8 @@ void Ovni::activar_inmediato()
     cuerpo->activar_inmediato();
     luces.activar_inmediato();
     inferior.activar_inmediato();
+    laboon.activar_inmediato();
+    abductor->activar_inmediato();
 }
 void Ovni::activar_diferido()
 {
@@ -181,4 +188,6 @@ void Ovni::activar_diferido()
     cuerpo->activar_diferido();
     luces.activar_diferido();
     inferior.activar_diferido();
+    laboon.activar_diferido();
+    abductor->activar_diferido();
 }

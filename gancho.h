@@ -9,7 +9,6 @@
 class Gancho
 {
     private:
-        Cilindro* foco;
         Cilindro* cable;
         Cilindro* lentes;
 

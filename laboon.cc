@@ -27,3 +27,36 @@ void Laboon::draw()
         sombrero->draw();
     glPopMatrix();
 }
+
+void Laboon::cambiar_solido()
+{
+    ballena->cambiar_solido();
+    sombrero->cambiar_solido();
+}
+void Laboon::cambiar_lineas()
+{
+    ballena->cambiar_lineas();
+    sombrero->cambiar_lineas();
+}
+void Laboon::cambiar_puntos()
+{
+    ballena->cambiar_puntos();
+    sombrero->cambiar_puntos();
+}
+void Laboon::cambiar_ajedrez()
+{
+    ballena->cambiar_ajedrez();
+    sombrero->cambiar_ajedrez();
+}
+
+void Laboon::activar_inmediato()
+{
+    ballena->activar_inmediato();
+    sombrero->activar_inmediato();
+}
+
+void Laboon::activar_diferido()
+{
+    ballena->activar_diferido();
+    sombrero->activar_diferido();
+}
