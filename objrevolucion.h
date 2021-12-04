@@ -37,6 +37,8 @@ protected:
     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, int eje, bool tapa_sup, bool tapa_inf);
     void drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices) override;
     bool esPolo(Tupla3f p, int eje);
+    void calcular_texturas();
+    float distancia(Tupla3f p1, Tupla3f p2);
 
     Tupla3f rotarEjeX(Tupla3f punto, float radianes) ; //Rota en el eje X un punto
     Tupla3f rotarEjeY(Tupla3f punto, float radianes) ; //Rota en el eje Y un punto
@@ -44,15 +46,15 @@ protected:
     Tupla3f rotarEje(Tupla3f punto, float radianes, int eje) ; //Rota en un eje un punto
 
     int numero_instancias,
-        size_tronco, 
+        numero_puntos_perfil,
+        size_tronco,
         n_tapas[2] = {0, 0};
 
     bool tapa_sup, 
          tapa_inf, 
          visibilidad_tapas = true;
+
+    std::vector<float> dp; ///distancia al perfil de cada elemento del perfil
 } ;
-
-
-
 
 #endif

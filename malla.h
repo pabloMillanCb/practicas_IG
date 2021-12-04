@@ -12,6 +12,7 @@
 
 #include "aux.h"
 #include "material.h"
+#include "textura.h"
 
 // *****************************************************************************
 //
@@ -41,7 +42,9 @@ class Malla3D
    void cambiar_ajedrez() ;
    void activar_luz();
    void mezclarCaras(); //Prepara el vector de triángulos para el modo ajedrez
+   void invertir_caras();
    void setMaterial(Material &mat);
+   void setTextura(Textura &txt);
 
    GLuint CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram );
 
@@ -59,8 +62,11 @@ class Malla3D
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> f ; // una terna de 3 enteros por cada cara o triángulo
    std::vector<Tupla3f> nv;
+   std::vector<Tupla2f> ct;
+
    std::vector<float> colorArray, colorRojo, colorVerde;
    Material m;
+   Textura *textura = nullptr;
 
    int draw_size, draw_size_a1, draw_size_a2,
        id_vbo_tri = 0, id_vbo_tri_1 = 0, id_vbo_tri_2 = 0,

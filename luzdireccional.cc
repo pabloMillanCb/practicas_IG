@@ -5,7 +5,6 @@ LuzDireccional::LuzDireccional(const Tupla2f & orientacion, Tupla4f ambiente, Tu
 {
     alpha = orientacion(0);
     beta = orientacion(1);
-    posicion = Tupla4f(5.0, 5.0, 5.0, 0.0);
     aplicarRotaciones();
     colorAmbiente = ambiente;
     colorDifuso = difuso;

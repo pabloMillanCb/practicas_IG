@@ -1,7 +1,7 @@
 ply
 format ascii 1.0
 comment --------------------------------------------------
-comment Prácticas IG (16-17)
+comment Prácticas IG (13-14)
 comment perfil del cuerpo de la lata
 comment --------------------------------------------------
 element vertex 20

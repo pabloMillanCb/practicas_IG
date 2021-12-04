@@ -15,6 +15,7 @@ class Ovni
         Esfera* cabina;
         Cono* cuerpo;
         Cono* abductor;
+        Cono* abductorR;
         LucesOvni luces;
         Gancho inferior;
         Laboon laboon;

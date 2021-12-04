@@ -14,6 +14,7 @@
 #include "luzdireccional.h"
 #include "luzposicional.h"
 #include "material.h"
+#include "textura.h"
 #include "ovni.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO, MODOALFA, MODOBETA, GRADOSLIBERTAD, SELVELOCIDAD} menu;
@@ -58,6 +59,8 @@ class Escena
    Esfera * esf = nullptr;
    ObjPLY * ply = nullptr;
    Ovni * ovn = nullptr;
+
+   Textura *txt = nullptr;
 
    //Control de animaciones
 

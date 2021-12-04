@@ -13,6 +13,7 @@ class Gancho
         Cilindro* lentes;
 
         Cono* antenaCono;
+        Cono* antenaConoR;
         Cilindro* antenaCilindro;
         Esfera* antenaEsfera;
 

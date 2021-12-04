@@ -55,6 +55,10 @@ Escena::Escena()
     lucesdir[0].set_id(GL_LIGHT0);
     lucespos[0].set_id(GL_LIGHT1);
 
+    txt = new Textura("./txt/text-madera.jpg");
+
+    esf->setTextura(*txt);
+
     glShadeModel(GL_SMOOTH);
 }
 
@@ -93,8 +97,9 @@ void Escena::dibujar()
     Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.2, 0.2, 0.2, 1.0), Tupla4f(0.05, 0.05, 0.05, 1.0), 200.0);
 
 
-   //glEnable(GL_CULL_FACE);
+   glEnable(GL_CULL_FACE);
    glEnable(GL_NORMALIZE);
+   glEnable(GL_TEXTURE_2D);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
    //glScalef(30.0, 30.0, 30.0);
@@ -118,15 +123,15 @@ void Escena::dibujar()
 
    
       glPushMatrix();
-      ovn->draw();
-
+      //ovn->draw();
+      glScalef(60, 60, 60);
+      esf->draw();
       glPopMatrix();
 
    if (cubo->es_visible())
       cubo->draw();
    if (tetraedro->es_visible())
-      tetraedro->draw();ply
-
+      tetraedro->draw();
 }
 
 //**************************************************************************
@@ -541,8 +546,8 @@ void Escena::animarModeloJerarquico()
 {
    if (animacion_activa)
    {
-      ovn->aumentar_r_luces(v[0]*1.5);
-      ovn->aumentar_foco_y(-v[1]*0.5);
+      ovn->aumentar_r_luces(v[0]*1.5 *(v[0]>0));
+      ovn->aumentar_foco_y(-v[1]*0.5 *(v[1]>0));
 
       if (contador[0] >= 90)
       {
@@ -556,17 +561,17 @@ void Escena::animarModeloJerarquico()
          contador[1] = 0;
       }
 
-      ovn->aumentar_h_gancho(v[2]*sentido[0]*0.3);
-      ovn->aumentar_foco_x(v[3]*sentido[1]*0.5);
+      ovn->aumentar_h_gancho(v[2]*sentido[0]*0.3 *(v[2]>0));
+      ovn->aumentar_foco_x(v[3]*sentido[1]*0.5 *(v[3]>0));
 
       contador[0] += v[2]*0.3;
       contador[1] += v[3]*0.5;
 
-      ovn->aumentar_ballena(sentido[2]*v[4]*0.2);
-      ovn->aumentar_ballena_x(sentido[3]*v[5]*0.5);
+      ovn->aumentar_ballena(sentido[2]*v[4]*0.2 *(v[4]>0));
+      ovn->aumentar_ballena_x(sentido[3]*v[5]*0.5 *(v[5]>0));
 
       if (contador[4] <= 90)
-         ovn->aumentar_ballena_y(sentido[4]*(sentido[4]<=90)*v[6]*0.2);
+         ovn->aumentar_ballena_y(sentido[4]*(sentido[4]<=90)*v[6]*0.2 *(v[6]>0));
 
       contador[2] += 1*v[4];
 

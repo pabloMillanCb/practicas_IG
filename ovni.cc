@@ -6,6 +6,9 @@ Ovni::Ovni()
     cabina = new Esfera(30, 30, 30);
     cuerpo = new Cono(30, 30, 70, 100, true);
     abductor = new Cono(10, 10, 30, 20, false);
+    abductorR = new Cono(10, 10, 30, 20, false);
+
+    abductorR->invertir_caras();
 
     Material gris({0.4, 0.5, 0.4, 1.0}, {1.0, 1.0, 1.0, 1.0}, {0.0, 0.05, 0.0, 1.0}, 100);
     Material negro({0.2775, 0.2775, 0.2775, 1.0}, {0.773911, 0.773911, 0.773911, 1.0}, {0.23125, 0.23125, 0.23125, 1.0}, 100);
@@ -13,6 +16,7 @@ Ovni::Ovni()
     cabina->setMaterial( gris );
     cuerpo->setMaterial( negro );
     abductor->setMaterial( negro );
+    abductorR->setMaterial( negro );
 
 }
 
@@ -28,6 +32,7 @@ void Ovni::draw()
     glPushMatrix();
         glTranslatef(0, -10, 0);
         abductor->draw();
+        abductorR->draw();
     glPopMatrix();
 
     glPushMatrix();
@@ -144,6 +149,7 @@ void Ovni::cambiar_solido()
     inferior.cambiar_solido();
     laboon.cambiar_solido();
     abductor->cambiar_solido();
+    abductorR->cambiar_solido();
 }
 void Ovni::cambiar_lineas()
 {
@@ -153,6 +159,7 @@ void Ovni::cambiar_lineas()
     inferior.cambiar_lineas();
     laboon.cambiar_lineas();
     abductor->cambiar_lineas();
+    abductorR->cambiar_lineas();
 }
 void Ovni::cambiar_puntos()
 {
@@ -162,6 +169,7 @@ void Ovni::cambiar_puntos()
     inferior.cambiar_puntos();
     laboon.cambiar_puntos();
     abductor->cambiar_puntos();
+    abductorR->cambiar_puntos();
 }
 void Ovni::cambiar_ajedrez()
 {
@@ -171,6 +179,7 @@ void Ovni::cambiar_ajedrez()
     inferior.cambiar_ajedrez();
     laboon.cambiar_ajedrez();
     abductor->cambiar_ajedrez();
+    abductorR->cambiar_ajedrez();
 }
 
 void Ovni::activar_inmediato()
@@ -181,6 +190,7 @@ void Ovni::activar_inmediato()
     inferior.activar_inmediato();
     laboon.activar_inmediato();
     abductor->activar_inmediato();
+    abductorR->activar_inmediato();
 }
 void Ovni::activar_diferido()
 {
@@ -190,4 +200,5 @@ void Ovni::activar_diferido()
     inferior.activar_diferido();
     laboon.activar_diferido();
     abductor->activar_diferido();
+    abductorR->activar_diferido();
 }

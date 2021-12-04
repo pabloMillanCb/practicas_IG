@@ -33,6 +33,13 @@ void Malla3D::draw_ModoInmediato()
       glNormalPointer(GL_FLOAT, 0, nv.data());
    }
 
+   if (textura != nullptr)
+   {
+      glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+      glTexCoordPointer( 2, GL_FLOAT , 0, ct.data());
+      textura -> activar();
+   }
+
    if (dibujar[0])
    {
       glColorPointer(3, GL_FLOAT, 0, &colorArray[0] );
@@ -61,6 +68,8 @@ void Malla3D::draw_ModoInmediato()
    //Deshabilitar array de normales
    if (glIsEnabled(GL_LIGHTING))
       glDisableClientState( GL_NORMAL_ARRAY);
+
+   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 }
 // -----------------------------------------------------------------------------
@@ -296,12 +305,24 @@ void Malla3D::mezclarCaras()
     draw_size_a2 = draw_size/2;
 }
 
+void Malla3D::invertir_caras()
+{
+   for (int i = 0; i < f.size(); i++)
+   {
+      float aux = f[i](0);
+      f[i](0) = f[i](1);
+      f[i](1) = aux;
+   }
+
+   this->calcular_normales();
+}
+
 void Malla3D::calcular_normales()
 {
    Tupla3f normal(0.0, 0.0, 0.0);
 
    nv.clear();
-   for (int i = 0; i < f.size(); i++) //Se inicializa nv a 0
+   for (int i = 0; i < v.size(); i++) //Se inicializa nv a 0 SI EMPIEZA A FALLAR ALGO MIRAR AQUÍ
    {
       nv.push_back(Tupla3f(0.0, 0.0, 0.0));
    }
@@ -332,4 +353,9 @@ Tupla3f Malla3D::normalizar(Tupla3f t)
 {
    float modulo = sqrt(pow(t(0),2) + pow(t(1),2) + pow(t(2),2));
    return t*(1/modulo);
+}
+
+void Malla3D::setTextura(Textura &txt)
+{
+   textura = &txt;
 }

@@ -21,7 +21,7 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, in
     mezclarCaras();
     generarColores();
     calcular_normales();
-    
+    calcular_texturas();
 }
 
 // *****************************************************************************
@@ -35,11 +35,20 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, i
     mezclarCaras();
     generarColores();
     calcular_normales();
+    calcular_texturas();
 }
 
 void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, int eje, bool tapa_sup, bool tapa_inf)
 {
     Tupla3f polo_norte, polo_sur;
+
+    numero_puntos_perfil = perfil_original.size();
+
+    for (int i = 0; i < perfil_original.size(); i++) //Calcular dp usado en la funcion de calcular_textura()
+    {
+        dp.push_back(distancia(perfil_original[0], perfil_original[i]));
+    }
+
 
     //Si el perfil está en el orden inverso al estandar, invertirlo
     if (perfil_original[0](eje) - perfil_original[perfil_original.size()-1](eje) > 0)
@@ -72,7 +81,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
     v = perfil_original;
 
     //Rotacion del perfil y generación de vertices
-    for (int k = 0; k < num_instancias-1; k++)
+    for (int k = 0; k < num_instancias -1; k++) //Se cambia num_instancias-1 por num_instancias para pa Practica 5
     {
         for (int i = 0; i < perfil_original.size(); i++)
         {
@@ -94,7 +103,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
         }
     }
 
-    int size_vertices_tronco = v.size();
+    int size_vertices_tronco = v.size() - perfil_original.size();
     size_tronco = f.size();
     int cuenta_tapas = 0;
 
@@ -103,7 +112,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
     {
         int v_aux = perfil_original.size()-1, v_polo;
         v.push_back(polo_norte);
-        v_polo = v.size()-1;
+        v_polo = v.size() - 1 ;
         
         for (int i = 0; i < num_instancias; i++)
         {
@@ -226,4 +235,27 @@ Tupla3f ObjRevolucion::rotarEje(Tupla3f punto, float radianes, int eje)
       salida = rotarEjeZ(punto, radianes);
    
    return salida;
+}
+
+float ObjRevolucion::distancia(Tupla3f p1, Tupla3f p2)
+{
+    return sqrt( (p1(0)-p2(0))*(p1(0)-p2(0)) + (p1(1)-p2(1))*(p1(1)-p2(1)) + (p1(2)-p2(2))*(p1(2)-p2(2)) );
+}
+
+void ObjRevolucion::calcular_texturas()
+{
+   for (int i = 0.0; i <= numero_instancias; i++)
+    {
+        float si = float(i)/numero_instancias;
+
+        for (int j = 0; j < numero_puntos_perfil; j++)
+        {
+            ct.push_back(Tupla2f(si, dp[j]/dp[dp.size()-1] )); //ct.push_back(Tupla2f(si, d[j]/d[d.size()-1]));
+        }
+    }
+
+    ct[ct.size()-1] = {0.5, 0.5};
+    ct[ct.size()-2] = {0.5, 0.5};
+
+    std::cout << "ct = " << ct.size() << std::endl;
 }
