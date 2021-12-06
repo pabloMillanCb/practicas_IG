@@ -35,29 +35,37 @@ Escena::Escena()
     objetos.push_back(cil);
     con = new Cono(6, 6, 2.3, 0.7, true);
     objetos.push_back(con);
-    esf = new Esfera(20, 20, 1.4);
+    std::cout << "Creando ESFERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<< std::endl;
+    esf = new Esfera(50, 50, 1000);
+    skybox = new Esfera(100, 100, 1700);
     objetos.push_back(esf);
     ovn = new Ovni();
     ply = new ObjPLY("./plys/laboon.ply");
     objetos.push_back(ply);
 
     Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
-    Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 100.0);
+    Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.5, 0.5, 0.5, 1.0), Tupla4f(0.3, 0.3, 0.3, 1.0), 50.0);
+    Material tierra(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.1, 0.1, 0.1, 1.0), 100.0);
     Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
 
-    lucesdir.push_back(LuzDireccional(Tupla2f(0.0, 100.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.4, 0.4, 0.4, 1.0)));
-    lucespos.push_back(LuzPosicional(Tupla3f(-70.0, 100.0, 70.0), Tupla4f(0.8, 0.8, 0.8, 1.0), Tupla4f(0.8, 0.8, 0.8, 1.0)));
+    lucesdir.push_back(LuzDireccional(Tupla2f(0.0, 100.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
+    lucespos.push_back(LuzPosicional(Tupla3f(0.0, 159.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
 
     peon->setMaterial(blanco);
     peon_r->setMaterial(negro);
-    esf->setMaterial(bronce);
+    skybox->setMaterial(blanco);
+    esf->setMaterial(tierra);
     
     lucesdir[0].set_id(GL_LIGHT0);
     lucespos[0].set_id(GL_LIGHT1);
 
-    txt = new Textura("./txt/text-madera.jpg");
+    txt = new Textura("./txt/text-tierra.jpg"); ///txt/text-lata-1.jpg"
+    txt_skybox = new Textura("./txt/cielo.jpg"); ///txt/text-lata-1.jpg"
 
+    //esf->invertir_caras();
     esf->setTextura(*txt);
+    skybox->setTextura(*txt_skybox);
+    skybox->invertir_caras();
 
     glShadeModel(GL_SMOOTH);
 }
@@ -92,11 +100,6 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 
 void Escena::dibujar()
 {
-   Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
-    Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
-    Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.2, 0.2, 0.2, 1.0), Tupla4f(0.05, 0.05, 0.05, 1.0), 200.0);
-
-
    glEnable(GL_CULL_FACE);
    glEnable(GL_NORMALIZE);
    glEnable(GL_TEXTURE_2D);
@@ -115,17 +118,31 @@ void Escena::dibujar()
    else
       ejes.draw();
 
-      for (int i = 0; i < lucesdir.size(); i++)
-         lucesdir[i].activar();
+      glPushMatrix();
+         glRotatef(animacion_luz, 0, 1, 0);
+         glTranslatef(0, 0, 0);
+         lucesdir[0].activar();
+      glPopMatrix();
       
-      for (int i = 0; i < lucespos.size(); i++)
-         lucespos[i].activar();
+      //for (int i = 0; i < lucespos.size(); i++)
+         //lucespos[i].activar();
 
+
+      glPushMatrix();
+         skybox->draw();
+      glPopMatrix();
    
       glPushMatrix();
-      //ovn->draw();
-      glScalef(60, 60, 60);
-      esf->draw();
+         glTranslatef(0, 0, -1500);
+         glRotatef(20, 0, 0, 1);
+         glRotatef(animacion_tierra, 0, 1, 0);
+         esf->draw();
+      glPopMatrix();
+
+      glPushMatrix();
+         glTranslatef(0, 15, 0);
+         glScalef(0.6, 0.6, 0.6);
+         ovn->draw();
       glPopMatrix();
 
    if (cubo->es_visible())
@@ -364,7 +381,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             {
                case -1:
                std::cout << "Aumentando velocidad general\n";
-                  v[0]++;v[1]++;v[2]++;v[3]++;v[4]++;v[5]++;v[6]++;
+                  for (int i = 0; i < v.size(); i++)
+                     v[i]++;
                   break;
 
                case 1:
@@ -394,6 +412,14 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                case 7:
                   v[6]++;
                   break;
+               
+               case 8:
+                  v[7]++;
+                  break;
+
+               case 9:
+                  v[8]++;
+                  break;
             }
          }
 
@@ -417,7 +443,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             switch(id_grado)
             {
                case -1:
-                  v[0]--;v[1]--;v[2]--;v[3]--;v[4]--;v[5]--;v[6]--;
+                  for (int i = 0; i < v.size(); i++)
+                     v[i]--;
                   break;
 
                case 1:
@@ -446,6 +473,14 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
                case 7:
                   v[6]--;
+                  break;
+
+               case 8:
+                  v[7]--;
+                  break;
+
+               case 9:
+                  v[8]--;
                   break;
             }
          }
@@ -596,5 +631,8 @@ void Escena::animarModeloJerarquico()
          contador[4] = 0;
          sentido[4] = -sentido[4];
       }
+
+      animacion_luz += v[7]*0.3;
+      animacion_tierra += v[8]*0.1;
    }
 }

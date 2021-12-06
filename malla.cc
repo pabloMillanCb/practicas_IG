@@ -314,7 +314,7 @@ void Malla3D::invertir_caras()
       f[i](1) = aux;
    }
 
-   this->calcular_normales();
+   calcular_normales();
 }
 
 void Malla3D::calcular_normales()
