@@ -69,7 +69,7 @@ class Malla3D
    Textura *textura = nullptr;
 
    int draw_size, draw_size_a1, draw_size_a2,
-       id_vbo_tri = 0, id_vbo_tri_1 = 0, id_vbo_tri_2 = 0,
+       id_vbo_tri = 0, id_vbo_tri_1 = 0, id_vbo_tri_2 = 0, id_vbo_text = 0,
        id_vbo_ver = 0, id_vbo_color = 0, id_vbo_color2 = 0, id_vbo_color3 = 0,
        id_vbo_nor = 0, modo_dibujado = INMEDIATO;
 

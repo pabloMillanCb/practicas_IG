@@ -33,7 +33,7 @@ void Malla3D::draw_ModoInmediato()
       glNormalPointer(GL_FLOAT, 0, nv.data());
    }
 
-   if (textura != nullptr)
+   if (textura != nullptr && !ct.empty())
    {
       glEnableClientState( GL_TEXTURE_COORD_ARRAY );
       glTexCoordPointer( 2, GL_FLOAT , 0, ct.data());
@@ -69,7 +69,11 @@ void Malla3D::draw_ModoInmediato()
    if (glIsEnabled(GL_LIGHTING))
       glDisableClientState( GL_NORMAL_ARRAY);
 
-   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+   if (textura != nullptr && !ct.empty())
+   {
+      glDisable(GL_TEXTURE_2D);
+      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+   }
 
 }
 // -----------------------------------------------------------------------------
@@ -93,6 +97,22 @@ void Malla3D::draw_ModoDiferido()
       glNormalPointer(GL_FLOAT,0, 0 );
       glBindBuffer(GL_ARRAY_BUFFER, 0);
    }
+
+   if (textura != nullptr && !ct.empty())
+   {
+      glEnable(GL_TEXTURE_2D);
+      glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+      glTexCoordPointer( 2, GL_FLOAT , 0, ct.data());
+      textura -> activar();
+   }
+
+   /*if (glIsEnabled(GL_TEXTURE_2D) && !ct.empty())
+   {
+      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+      glBindBuffer( GL_ARRAY_BUFFER , id_vbo_text );
+      glTexCoordPointer(2, GL_FLOAT, 0, 0);
+      textura->activar();
+   }*/
 
    glBindBuffer( GL_ARRAY_BUFFER , id_vbo_ver ); // activar VBO de vérti-ces
    glVertexPointer( 3, GL_FLOAT , 0, 0 ); // especifica formato y off-set (=0)
@@ -128,6 +148,17 @@ void Malla3D::draw_ModoDiferido()
    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER , 0 ); // desactivar VBOde triángulos
    // desactivar uso de array de vértices
    glDisableClientState( GL_VERTEX_ARRAY );
+
+   if (glIsEnabled(GL_LIGHTING))
+   {
+      glDisableClientState(GL_NORMAL_ARRAY);
+   }
+
+   if (textura != nullptr && !ct.empty())
+   {
+      glDisable(GL_TEXTURE_2D);
+      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+   }
 }
 
 void Malla3D::draw_ModoAjedrez()

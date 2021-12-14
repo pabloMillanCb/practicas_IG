@@ -37,37 +37,38 @@ Escena::Escena()
     objetos.push_back(con);
     std::cout << "Creando ESFERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<< std::endl;
     esf = new Esfera(50, 50, 1000);
+    luna = new Esfera(50, 50, 60);
     skybox = new Esfera(100, 100, 1700);
     objetos.push_back(esf);
+    objetos.push_back(luna);
+    objetos.push_back(skybox);
     ovn = new Ovni();
     ply = new ObjPLY("./plys/laboon.ply");
     objetos.push_back(ply);
 
     Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
-    Material blanco(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.5, 0.5, 0.5, 1.0), Tupla4f(0.3, 0.3, 0.3, 1.0), 50.0);
+    Material espacio(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.3, 0.3, 0.3, 1.0), 50.0);
     Material tierra(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.1, 0.1, 0.1, 1.0), 100.0);
     Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
 
-    lucesdir.push_back(LuzDireccional(Tupla2f(0.0, 100.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
-    lucespos.push_back(LuzPosicional(Tupla3f(0.0, 159.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
+    lucesdir.push_back(LuzDireccional(Tupla2f(0.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
+    lucespos.push_back(LuzPosicional(Tupla3f(0.0, 0.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 0.3), Tupla4f(1.0, 1.0, 1.0, 0.3)));
 
-    peon->setMaterial(blanco);
-    peon_r->setMaterial(negro);
-    skybox->setMaterial(blanco);
+    skybox->setMaterial(espacio);
     esf->setMaterial(tierra);
+    luna->setMaterial(tierra);
     
     lucesdir[0].set_id(GL_LIGHT0);
     lucespos[0].set_id(GL_LIGHT1);
 
     txt = new Textura("./txt/text-tierra.jpg"); ///txt/text-lata-1.jpg"
+    txt_luna = new Textura("./txt/luna.jpg"); ///txt/text-lata-1.jpg"
     txt_skybox = new Textura("./txt/cielo.jpg"); ///txt/text-lata-1.jpg"
 
-    //esf->invertir_caras();
     esf->setTextura(*txt);
+    luna->setTextura(*txt_luna);
     skybox->setTextura(*txt_skybox);
     skybox->invertir_caras();
-
-    glShadeModel(GL_SMOOTH);
 }
 
 //**************************************************************************
@@ -100,9 +101,9 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 
 void Escena::dibujar()
 {
-   glEnable(GL_CULL_FACE);
-   glEnable(GL_NORMALIZE);
-   glEnable(GL_TEXTURE_2D);
+   glShadeModel(GL_SMOOTH);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_NORMALIZE);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
    //glScalef(30.0, 30.0, 30.0);
@@ -112,16 +113,19 @@ void Escena::dibujar()
    if (glIsEnabled(GL_LIGHTING))
    {
       glDisable(GL_LIGHTING);
-      ejes.draw();
+      //ejes.draw();
       glEnable(GL_LIGHTING);
    }
    else
       ejes.draw();
 
+      lucesdir[0].activar();
+
       glPushMatrix();
-         glRotatef(animacion_luz, 0, 1, 0);
-         glTranslatef(0, 0, 0);
-         lucesdir[0].activar();
+      glTranslatef(0, 50, 0);
+         glRotatef(animacion_luz_2, 0, 1, 0);
+         glTranslatef(60, 0, 0);
+         lucespos[0].activar();
       glPopMatrix();
       
       //for (int i = 0; i < lucespos.size(); i++)
@@ -137,6 +141,14 @@ void Escena::dibujar()
          glRotatef(20, 0, 0, 1);
          glRotatef(animacion_tierra, 0, 1, 0);
          esf->draw();
+      glPopMatrix();
+
+      glPushMatrix();
+         glTranslatef(0, 0, -1300);
+         glRotatef(35, 0, 0, 1);
+         glRotatef(animacion_luna, 0, 1, 0);
+         glTranslatef(0, 0, 1050);
+         luna->draw();
       glPopMatrix();
 
       glPushMatrix();
@@ -291,9 +303,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             objetos[i]->cambiar_puntos();
 
             ovn->cambiar_puntos();
+            //glDisable(GL_LIGHTING);
          }
 
-         glDisable(GL_LIGHTING);
+         if (glIsEnabled(GL_LIGHTING))
+            animacion_puntal = !animacion_puntal;
          break;
 
       case 'L':
@@ -420,6 +434,10 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                case 9:
                   v[8]++;
                   break;
+
+               case 0:
+                  v[9]++;
+                  break;
             }
          }
 
@@ -444,43 +462,60 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             {
                case -1:
                   for (int i = 0; i < v.size(); i++)
-                     v[i]--;
+                  {
+                     if (v[i] > 0)
+                        v[i]--;
+                  }
                   break;
 
                case 1:
-                  v[0]--;
+                  if (v[0] > 0)
+                     v[0]--;
                   break;
 
                case 2:
-                  v[1]--;
+                  if (v[1] > 0)
+                     v[1]--;
                   break;
 
                case 3:
-                  v[2]--;
+                  if (v[2] > 0)
+                     v[2]--;
                   break;
 
                case 4:
-                  v[3]--;
+                  if (v[3] > 0)
+                     v[3]--;
                   break;
                
                case 5:
-                  v[4]--;
+                  if (v[4] > 0)
+                     v[4]--;
                   break;
 
                case 6:
-                  v[5]--;
+                  if (v[5] > 0)
+                     v[5]--;
                   break;
 
                case 7:
-                  v[6]--;
+                  if (v[6] > 0)
+                     v[6]--;
                   break;
 
                case 8:
-                  v[7]--;
+                  if (v[7] > 0)
+                     v[7]--;
                   break;
 
                case 9:
-                  v[8]--;
+                  if (v[8] > 0)
+                     v[8]--;
+                  break;
+
+               case 0:
+                  if (v[9] > 0)
+                     v[9]--;
                   break;
             }
          }
@@ -533,8 +568,6 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
          Observer_distance /= 1.2 ;
          break;
 	}
-
-	//std::cout << Observer_distance << std::endl;
 }
 
 //**************************************************************************
@@ -632,7 +665,10 @@ void Escena::animarModeloJerarquico()
          sentido[4] = -sentido[4];
       }
 
-      animacion_luz += v[7]*0.3;
+      //animacion_luz = v[7]*0.5;
+      lucesdir[0].variarAnguloAlpha(0.01*v[7]);
+      animacion_luz_2 += v[7]*animacion_puntal;
       animacion_tierra += v[8]*0.1;
+      animacion_luna += v[9]*0.2;
    }
 }

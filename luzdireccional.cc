@@ -24,11 +24,8 @@ void LuzDireccional::variarAnguloBeta( float incremento)
 
 void LuzDireccional::aplicarRotaciones()
 {
-    posicion = {0, 0, 1, 0};
-
-    posicion(1) = cos(alpha)*posicion(1) - sin(alpha)*posicion(2);
-    posicion(2) = sin(alpha)*posicion(1) + cos(alpha)*posicion(2);
-
-    posicion(0) = cos(beta)*posicion(0) + sin(beta)*posicion(2);
-    posicion(2) = -sin(beta)*posicion(0) + cos(beta)*posicion(2);
+    posicion(0) = sin(alpha)*cos(beta);
+    posicion(1) = sin(alpha)*sin(beta);
+    posicion(2) = cos(alpha);
+    posicion(3) = 0;
 } 

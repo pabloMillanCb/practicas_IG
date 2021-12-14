@@ -57,26 +57,31 @@ class Escena
    Cilindro * cil = nullptr;
    Cono * con = nullptr;
    Esfera * esf = nullptr;
+   Esfera * luna = nullptr;
    Esfera * skybox = nullptr;
    ObjPLY * ply = nullptr;
    Ovni * ovn = nullptr;
 
    Textura *txt = nullptr;
+   Textura *txt_luna = nullptr;
    Textura *txt_skybox = nullptr;
 
    //Control de animaciones
 
-   std::vector<float> v = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+   std::vector<float> v = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
    float contador[5] = {0, 0, 0, 0, 45};
    float sentido[5] = {1, 1, 1, 1, 1};
 
    int contador_ballena1 = 0, contador_ballena2 = 0;
 
    bool animacion_activa = false;
+   bool animacion_puntal = false;
    int id_grado = -1;
 
    float animacion_luz = 0;
+   float animacion_luz_2 = 0;
    float animacion_tierra = 0;
+   float animacion_luna = 0;
    
    public:
 
