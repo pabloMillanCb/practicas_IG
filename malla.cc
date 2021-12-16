@@ -299,8 +299,8 @@ void Malla3D::generarColores()
 {
    for (int i = 0; i < v.size()+2; i++)
    {
-      colorRojo.push_back(1); colorRojo.push_back(0); colorRojo.push_back(0);
-      colorVerde.push_back(0); colorVerde.push_back(1); colorVerde.push_back(0);
+      //colorRojo.push_back(1); colorRojo.push_back(0); colorRojo.push_back(0);
+      //colorVerde.push_back(0); colorVerde.push_back(1); colorVerde.push_back(0);
       colorArray.push_back(1); colorArray.push_back(0); colorArray.push_back(1);
    }
 }

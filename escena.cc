@@ -13,7 +13,7 @@
 Escena::Escena()
 {
     Front_plane       = 50.0;
-    Back_plane        = 2000.0;
+    Back_plane        = 4000.0;
     Observer_distance = 4*Front_plane;
     Observer_angle_x  = 0.0 ;
     Observer_angle_y  = 0.0 ;
@@ -23,7 +23,7 @@ Escena::Escena()
     // crear los objetos de la escena....
     // .......completar: ...
     // .....
-    cubo = new Cubo(60);
+    cubo = new Cubo(30);
     tetraedro = new Tetraedro();
     objetos.push_back(cubo);
     objetos.push_back(tetraedro);
@@ -35,16 +35,17 @@ Escena::Escena()
     objetos.push_back(cil);
     con = new Cono(6, 6, 2.3, 0.7, true);
     objetos.push_back(con);
-    std::cout << "Creando ESFERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<< std::endl;
     esf = new Esfera(50, 50, 1000);
     luna = new Esfera(50, 50, 60);
-    skybox = new Esfera(100, 100, 1700);
+    skybox = new Esfera(100, 100, 3000);
     objetos.push_back(esf);
     objetos.push_back(luna);
     objetos.push_back(skybox);
     ovn = new Ovni();
     ply = new ObjPLY("./plys/laboon.ply");
     objetos.push_back(ply);
+
+    camara = new Camara();
 
     Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
     Material espacio(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.3, 0.3, 0.3, 1.0), 50.0);
@@ -57,6 +58,8 @@ Escena::Escena()
     skybox->setMaterial(espacio);
     esf->setMaterial(tierra);
     luna->setMaterial(tierra);
+    cubo->setMaterial(bronce);
+    tetraedro->setMaterial(bronce);
     
     lucesdir[0].set_id(GL_LIGHT0);
     lucespos[0].set_id(GL_LIGHT1);
@@ -113,7 +116,7 @@ void Escena::dibujar()
    if (glIsEnabled(GL_LIGHTING))
    {
       glDisable(GL_LIGHTING);
-      //ejes.draw();
+      ejes.draw();
       glEnable(GL_LIGHTING);
    }
    else
@@ -152,15 +155,27 @@ void Escena::dibujar()
       glPopMatrix();
 
       glPushMatrix();
+         glTranslatef(-200, 50, -100);
+         glRotatef(animacion_luna, 0, 0, 1);
+         glRotatef(30, 0, 1, 0);
+         if (cubo->es_visible())
+            cubo->draw();
+      glPopMatrix();
+
+      glPushMatrix();
+         glTranslatef(200, -50, -100);
+         glRotatef(animacion_luna, 0, 0, 1);
+         glRotatef(30, 0, 1, 0);
+         if (tetraedro->es_visible())
+            tetraedro->draw();
+      glPopMatrix();
+
+      glPushMatrix();
          glTranslatef(0, 15, 0);
          glScalef(0.6, 0.6, 0.6);
          ovn->draw();
       glPopMatrix();
 
-   if (cubo->es_visible())
-      cubo->draw();
-   if (tetraedro->es_visible())
-      tetraedro->draw();
 }
 
 //**************************************************************************
@@ -538,6 +553,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          if (modoMenu == MODOBETA)
             lucesdir[0].variarAnguloBeta(-0.1);
          break;
+
+      case 'X':
+         std::cout << "mover camara\n";
+         camara->mover(0, 200, 0);
+         break;
          
             
    }
@@ -550,16 +570,16 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
    switch ( Tecla1 )
    {
 	   case GLUT_KEY_LEFT:
-         Observer_angle_y-- ;
+         camara -> rotarYFirstPerson(0.1);
          break;
 	   case GLUT_KEY_RIGHT:
-         Observer_angle_y++ ;
+         camara -> rotarYFirstPerson(-0.1);
          break;
 	   case GLUT_KEY_UP:
-         Observer_angle_x-- ;
+         camara -> rotarXFirstPerson(-0.1);
          break;
 	   case GLUT_KEY_DOWN:
-         Observer_angle_x++ ;
+         camara -> rotarXFirstPerson(0.1);
          break;
 	   case GLUT_KEY_PAGE_UP:
          Observer_distance *=1.2 ;
@@ -582,7 +602,8 @@ void Escena::change_projection( const float ratio_xy )
    glMatrixMode( GL_PROJECTION );
    glLoadIdentity();
    const float wx = float(Height)*ratio_xy ;
-   glFrustum( -wx, wx, -Height, Height, Front_plane, Back_plane );
+   camara -> actualizarRatio(-Width/2, Width/2, -Height/2, Height/2, Front_plane, Back_plane);
+   camara -> setProyeccion();
 }
 //**************************************************************************
 // Funcion que se invoca cuando cambia el tamaño de la ventana
@@ -590,9 +611,9 @@ void Escena::change_projection( const float ratio_xy )
 
 void Escena::redimensionar( int newWidth, int newHeight )
 {
-   Width  = newWidth/10;
-   Height = newHeight/10;
-   change_projection( float(newHeight)/float(newWidth) );
+   Width  = newWidth/10; ///10;
+   Height = newHeight/10; ///10;
+   change_projection( float(newHeight)/float(newWidth) );;
    glViewport( 0, 0, newWidth, newHeight );
 }
 
@@ -605,9 +626,10 @@ void Escena::change_observer()
    // posicion del observador
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   glTranslatef( 0.0, 0.0, -Observer_distance );
-   glRotatef( Observer_angle_y, 0.0 ,1.0, 0.0 );
-   glRotatef( Observer_angle_x, 1.0, 0.0, 0.0 );
+   camara -> setObserver();
+   //glTranslatef( 0.0, 0.0, -Observer_distance );
+   //glRotatef( Observer_angle_y, 0.0 ,1.0, 0.0 );
+   //glRotatef( Observer_angle_x, 1.0, 0.0, 0.0 );
 }
 
 void Escena::animarModeloJerarquico()

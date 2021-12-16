@@ -16,6 +16,7 @@
 #include "material.h"
 #include "textura.h"
 #include "ovni.h"
+#include "camara.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO, MODOALFA, MODOBETA, GRADOSLIBERTAD, SELVELOCIDAD} menu;
 class Escena
@@ -46,6 +47,9 @@ class Escena
    menu modoMenu=NADA;
    // Objetos de la escena
    Ejes ejes;
+
+   Camara *camara;
+
    std::vector<Malla3D*> objetos;
    std::vector<LuzDireccional> lucesdir;
    std::vector<LuzPosicional> lucespos;
