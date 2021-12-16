@@ -50,6 +50,8 @@ class Escena
 
    Camara *camara;
 
+   Tupla3f posicion = {0, 0, 250};
+
    std::vector<Malla3D*> objetos;
    std::vector<LuzDireccional> lucesdir;
    std::vector<LuzPosicional> lucespos;

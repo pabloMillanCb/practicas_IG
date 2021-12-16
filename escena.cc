@@ -13,7 +13,7 @@
 Escena::Escena()
 {
     Front_plane       = 50.0;
-    Back_plane        = 4000.0;
+    Back_plane        = 10000.0;
     Observer_distance = 4*Front_plane;
     Observer_angle_x  = 0.0 ;
     Observer_angle_y  = 0.0 ;
@@ -554,10 +554,30 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             lucesdir[0].variarAnguloBeta(-0.1);
          break;
 
-      case 'X':
-         std::cout << "mover camara\n";
-         camara->mover(0, 200, 0);
+      case 'W':
+            posicion = posicion + camara->devolverDireccion();
+            camara->mover(posicion(0), posicion(1), posicion(2));
          break;
+
+      case 'E':
+            posicion = posicion - camara->devolverDireccion();
+            camara->mover(posicion(0), posicion(1), posicion(2));
+         break;
+
+      /*case 'J':
+            posicion(2) = posicion(2)-10;
+            camara->mover(posicion(0), posicion(1), posicion(2));
+         break;
+
+      case 'H':
+            posicion(1) = posicion(1)+10;
+            camara->mover(posicion(0), posicion(1), posicion(2));
+         break;
+
+      case 'K':
+            posicion(1) = posicion(1)-10;
+            camara->mover(posicion(0), posicion(1), posicion(2));
+         break;Tupla3f devolverDireccion();*/
          
             
    }

@@ -4,7 +4,7 @@
     Camara::Camara()
     {
         up = {0, 1, 0};
-        at = {0, 0, -1};
+        at = {0.01, 0, -1};
         eye = {0, 0, 250};
 
         near = 50.0;
@@ -36,7 +36,12 @@
 
     void Camara::rotarXExaminar(float angle)
     {
-        eye = at + rotarEjeX(eye-at, angle);
+        Tupla3f p = eye-at;
+        p = alinearEjes(p);
+        p = rotarEjeX(p, angle);
+        p = desalinearEjes(p);
+        //if ( at(0)*p(0) >= 0 )
+        eye = at + p;
     }
 
     void Camara::rotarYExaminar(float angle)
@@ -46,7 +51,12 @@
 
     void Camara::rotarZExaminar(float angle)
     {
-        eye = at + rotarEjeZ(eye-at, angle);
+        Tupla3f p = eye-at;
+        p = alinearEjes(p);
+        p = rotarEjeZ(p, angle);
+        p = desalinearEjes(p);
+        if ( at(0)*p(0) >= 0 )
+            eye = at + p;
     }
 
     void Camara::rotarXFirstPerson(float angle)
@@ -77,11 +87,11 @@
 
     void Camara::mover(float x, float y, float z)
     {
+        std::cout << "{" << at(0) << ", " << at(1) << ", " << at(2) << "}\n";
+        std::cout << "mover}\n";
         Tupla3f vector = at - eye;
         eye = {x, y, z};
         at = eye + vector;
-
-        std::cout << "Camara movida\n";
     }
 
     void Camara::zoom(float factor)
@@ -94,12 +104,10 @@
         gluLookAt(eye(0), eye(1), eye(2),
                  at(0), at(1), at(2),
                  up(0), up(1), up(2));
-        //std::cout << "observer setted\n";
     }
 
     void Camara::setProyeccion()
     {
-        
         if (tipo == PERSPECTIVA)
         {
             glFrustum(left, right, bottom, top, near, far);
@@ -110,7 +118,7 @@
         }
     }
 
-    Tupla3f Camara::rotarEjeX(Tupla3f p, double radianes)
+    Tupla3f Camara::rotarEjeX(Tupla3f p, float radianes)
     {
         Tupla3f salida;
 
@@ -121,7 +129,7 @@
         return salida;
     }
 
-    Tupla3f Camara::rotarEjeY(Tupla3f p, double radianes)
+    Tupla3f Camara::rotarEjeY(Tupla3f p, float radianes)
     {
         Tupla3f salida;
 
@@ -132,7 +140,7 @@
         return salida;
     }
 
-    Tupla3f Camara::rotarEjeZ(Tupla3f p, double radianes)
+    Tupla3f Camara::rotarEjeZ(Tupla3f p, float radianes)
     {
         Tupla3f salida;
 
@@ -143,26 +151,11 @@
         return salida;
     }
 
-    Tupla3f Camara::rotarEje(Tupla3f punto, double radianes, int eje)
-    {
-        Tupla3f salida;
-
-        if (eje == 0)
-            salida = rotarEjeX(punto, radianes);
-        else if (eje == 1)
-            salida = rotarEjeY(punto, radianes);
-        else if (eje == 2)
-            salida = rotarEjeZ(punto, radianes);
-
-        return salida;
-    }
-
     Tupla3f Camara::alinearEjes(Tupla3f p)
     {
 
         Tupla3f z = {0, 0, 1};
-
-            buff = acosf((p(0)*z(0) + p(2)*z(2)) / ( sqrt(p(0)*p(0)+p(2)*p(2)) * sqrt(z(0)*z(0)+z(2)*z(2)) ));
+        buff = acosf((p(0)*z(0) + p(2)*z(2)) / ( sqrt(p(0)*p(0)+p(2)*p(2)) * sqrt(z(0)*z(0)+z(2)*z(2)) ));
         
         if (p(0) < 0)
         {
@@ -170,9 +163,7 @@
             buff = -buff;
         }
         else
-        {
             p = rotarEjeY(p, -buff);
-        }
 
         return p;
     }
@@ -182,4 +173,15 @@
         p = rotarEjeY(p, buff);
 
         return p;
+    }
+
+    Tupla3f Camara::normalizar(Tupla3f t)
+    {
+        float modulo = sqrt(pow(t(0),2) + pow(t(1),2) + pow(t(2),2));
+        return t*(1/modulo);
+    }
+
+    Tupla3f Camara::devolverDireccion()
+    {
+        return 10.0f*normalizar(at - eye);
     }

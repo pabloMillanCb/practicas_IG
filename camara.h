@@ -18,12 +18,13 @@ private:
     int tipo; //ORTOGONAL o Perspectiva
     float left, right, bottom, top, near, far; //o bien aspect, fov, near, far
 
-    Tupla3f rotarEjeX(Tupla3f punto, double radianes) ; //Rota en el eje X un punto
-    Tupla3f rotarEjeY(Tupla3f punto, double radianes) ; //Rota en el eje Y un punto
-    Tupla3f rotarEjeZ(Tupla3f punto, double radianes) ; //Rota en el eje Z un punto
-    Tupla3f rotarEje(Tupla3f punto, double radianes, int eje) ; //Rota en un eje un punto
+    Tupla3f rotarEjeX(Tupla3f punto, float radianes) ; //Rota en el eje X un punto
+    Tupla3f rotarEjeY(Tupla3f punto, float radianes) ; //Rota en el eje Y un punto
+    Tupla3f rotarEjeZ(Tupla3f punto, float radianes) ; //Rota en el eje Z un punto
+    Tupla3f rotarEje(Tupla3f punto, float radianes, int eje) ; //Rota en un eje un punto
     Tupla3f alinearEjes(Tupla3f p);
     Tupla3f desalinearEjes(Tupla3f p);
+    Tupla3f normalizar(Tupla3f t);
 
 public:
 
@@ -39,6 +40,8 @@ public:
     void rotarXFirstPerson(float angle);
     void rotarYFirstPerson(float angle);
     void rotarZFirstPerson(float angle);
+
+    Tupla3f devolverDireccion();
 } ;
 
 #endif
