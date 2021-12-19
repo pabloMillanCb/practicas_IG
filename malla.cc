@@ -10,6 +10,18 @@
 
 // Visualización en modo inmediato con 'drawElements'
 
+void Malla3D::drawSeleccion()
+{
+   glEnableClientState( GL_VERTEX_ARRAY );
+   glVertexPointer( 3, GL_FLOAT , 0, v.data() ) ;
+
+   glColorPointer(3, GL_FLOAT, 0, &colorSeleccion[0] );
+   //glColor3ub (0.0 ,1.0 ,0.0);
+
+   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+   drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , f.data());
+}
+
 void Malla3D::draw_ModoInmediato()
 {
 
@@ -158,6 +170,7 @@ void Malla3D::draw_ModoDiferido()
    {
       glDisable(GL_TEXTURE_2D);
       glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+      //std::cout << "deshabilita textura\n";
    }
 }
 
@@ -222,18 +235,26 @@ void Malla3D::draw_ModoAjedrez()
 
 void Malla3D::draw()
 {
-   if (glIsEnabled(GL_LIGHTING))
+   if (seleccion)
    {
-      m.aplicar();
-      modo_ajedrez = false;
+      drawSeleccion();
    }
 
-   if (modo_ajedrez)
-      draw_ModoAjedrez();
-   else if (modo_dibujado == INMEDIATO)
-      draw_ModoInmediato();
-   else if (modo_dibujado == DIFERIDO)
-      draw_ModoDiferido();
+   else
+   {
+      if (glIsEnabled(GL_LIGHTING))
+      {
+         m.aplicar();
+         modo_ajedrez = false;
+      }
+
+      if (modo_ajedrez)
+         draw_ModoAjedrez();
+      else if (modo_dibujado == INMEDIATO)
+         draw_ModoInmediato();
+      else if (modo_dibujado == DIFERIDO)
+         draw_ModoDiferido();
+   }
 }
 
 GLuint Malla3D::CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram )
@@ -302,6 +323,16 @@ void Malla3D::generarColores()
       //colorRojo.push_back(1); colorRojo.push_back(0); colorRojo.push_back(0);
       //colorVerde.push_back(0); colorVerde.push_back(1); colorVerde.push_back(0);
       colorArray.push_back(1); colorArray.push_back(0); colorArray.push_back(1);
+   }
+}
+
+void Malla3D::setColorSeleccion(Tupla3f c)
+{
+   for (int i = 0; i < v.size()+2; i++)
+   {
+      colorSeleccion.push_back(c(0));
+      colorSeleccion.push_back(c(1));
+      colorSeleccion.push_back(c(2));
    }
 }
 
@@ -389,4 +420,14 @@ Tupla3f Malla3D::normalizar(Tupla3f t)
 void Malla3D::setTextura(Textura &txt)
 {
    textura = &txt;
+}
+
+void Malla3D::activar_seleccion()
+{
+   seleccion = true;
+}
+
+void Malla3D::desactivar_seleccion()
+{
+   seleccion = false;
 }

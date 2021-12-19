@@ -1,7 +1,7 @@
 #include "camara.h"
 #include <iostream>
 
-    Camara::Camara()
+    Camara::Camara(int tipo_)
     {
         up = {0, 1, 0};
         at = {0.01, 0, -1};
@@ -10,7 +10,7 @@
         near = 50.0;
         far = 2000.0;
 
-        tipo = PERSPECTIVA;
+        tipo = tipo_;
     }
 
     void Camara::actualizarRatio(float left_, float right_, float bottom_, float top_, float near_, float far_)
@@ -46,7 +46,9 @@
 
     void Camara::rotarYExaminar(float angle)
     {
+        std:: cout << "at 1 " << at << std::endl;
         eye = at + rotarEjeY(eye-at, angle);
+        std:: cout << "at 2 " << at << std::endl;
     }
 
     void Camara::rotarZExaminar(float angle)
@@ -55,7 +57,7 @@
         p = alinearEjes(p);
         p = rotarEjeZ(p, angle);
         p = desalinearEjes(p);
-        if ( at(0)*p(0) >= 0 )
+        //if ( at(0)*p(0) >= 0 )
             eye = at + p;
     }
 
@@ -67,7 +69,7 @@
         p = alinearEjes(p);
         p = rotarEjeX(p, angle);
         p = desalinearEjes(p);
-        if ( at(0)*p(0) >= 0 )
+        //if ( at(0)*p(0) >= 0 )
             at = eye + p;
     }
 
@@ -91,12 +93,16 @@
         std::cout << "mover}\n";
         Tupla3f vector = at - eye;
         eye = {x, y, z};
-        at = eye + vector;
+        if (!locked)
+            at = eye + vector;
     }
 
     void Camara::zoom(float factor)
     {
-        
+        factor_zoom *= factor;
+
+        if (factor_zoom > 1.2)
+            factor_zoom = 1.2;
     }
 
     void Camara::setObserver()
@@ -110,11 +116,13 @@
     {
         if (tipo == PERSPECTIVA)
         {
-            glFrustum(left, right, bottom, top, near, far);
+            std:: cout << "persectiva\n";
+            glFrustum(left*factor_zoom, right*factor_zoom, bottom*factor_zoom, top*factor_zoom, near, far);
         }
         else if (tipo == ORTOGONAL)
         {
-            glOrtho(left, right, bottom, top, near, far);
+            std:: cout << "ortogonal\n";
+            glOrtho(left*factor_zoom, right*factor_zoom, bottom*factor_zoom, top*factor_zoom, near, far);
         }
     }
 
@@ -151,6 +159,23 @@
         return salida;
     }
 
+    void Camara::girar(float x, float y)
+    {
+        if (locked)
+        {
+            std::cout << "locked\n";
+            rotarYExaminar(-x);
+            rotarXExaminar(-y);
+        }
+
+        else
+        {
+            std::cout << "unlocked\n";
+            rotarYFirstPerson(-x);
+            rotarXFirstPerson(y);
+        }
+    }
+
     Tupla3f Camara::alinearEjes(Tupla3f p)
     {
 
@@ -184,4 +209,43 @@
     Tupla3f Camara::devolverDireccion()
     {
         return 10.0f*normalizar(at - eye);
+    }
+
+    void Camara::setPoint(int id)
+    {
+        id_obj_point = id;
+    }
+
+    int Camara::getPoint()
+    {
+        return id_obj_point;
+    }
+
+    void Camara::lock(Tupla3f point)
+    {
+        locked = true;
+        at = point;
+    }
+
+    void Camara::unlock()
+    {
+        locked = false;
+    }
+
+    bool Camara::isLocked()
+    {
+        return locked;
+    }
+
+    void Camara::status()
+    {
+        std::cout << "tipo = " << tipo << std::endl;
+
+        std::cout << "up = " << up << std::endl;
+        std::cout << "at = " << at << std::endl;
+        std::cout << "eye = " << eye << std::endl;
+        std::cout << "near = " << near << std::endl;
+        std::cout << "far = " << far << std::endl;
+        std::cout << "zoom = " << factor_zoom << std::endl;
+        std::cout << "------------------------------------" << std::endl;
     }

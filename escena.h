@@ -18,13 +18,14 @@
 #include "ovni.h"
 #include "camara.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO, MODOALFA, MODOBETA, GRADOSLIBERTAD, SELVELOCIDAD} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO, MODOALFA, MODOBETA, GRADOSLIBERTAD, SELVELOCIDAD, SELCAMARA} menu;
 class Escena
 {
 
    private:
 
    bool figuras[2] = {false, false};
+   bool estadoRaton = false;
 
  // ** PARÁMETROS DE LA CÁMARA (PROVISIONAL)
        
@@ -48,11 +49,17 @@ class Escena
    // Objetos de la escena
    Ejes ejes;
 
-   Camara *camara;
+   std::vector<Camara*> camara;
+   int id_cam = 0;
 
    Tupla3f posicion = {0, 0, 250};
 
    std::vector<Malla3D*> objetos;
+   std::vector<Malla3D*> objetos_sel;
+   std::vector<Tupla3f> pos_objetos;
+   std::vector<Tupla3f> col_objetos;
+   int sel_obj = -1;
+
    std::vector<LuzDireccional> lucesdir;
    std::vector<LuzPosicional> lucespos;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
@@ -88,6 +95,8 @@ class Escena
    float animacion_luz_2 = 0;
    float animacion_tierra = 0;
    float animacion_luna = 0;
+
+   float xant = 0, yant = 0;
    
    public:
 
@@ -97,6 +106,8 @@ class Escena
 
 	// Dibujar
 	void dibujar() ;
+   void dibuja_objetos();
+   void dibuja_seleccion();
 
 	// Interacción con la escena
 	bool teclaPulsada( unsigned char Tecla1, int x, int y ) ;
@@ -104,6 +115,15 @@ class Escena
 
    //void funcion_idle();
    void animarModeloJerarquico();
+
+   //Obtener coordenadas de un objeto recien dibujado y almacenarlo asignado a un id
+   void obtenerCoordenadas(int id);
+
+   //Obtiene las posiciones del raton y ve si se ha movido
+   void ratonMovido ( int x, int y );
+   void clickRaton( int boton, int estado, int x, int y);
+
+   int getColorObjeto(Tupla3f color);
 
 };
 #endif

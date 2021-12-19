@@ -96,6 +96,16 @@ void funcion_idle()
       glutPostRedisplay();
 }
 
+void click_raton( int boton, int estado, int x, int y)
+{
+   escena->clickRaton(boton, estado, x, y);
+}
+
+void raton_movido(int x, int y)
+{
+   escena->ratonMovido(x, y);
+}
+
 //***************************************************************************
 // Programa principal
 //
@@ -163,7 +173,8 @@ int main( int argc, char **argv )
    // funcion de inicialización de la escena (necesita que esté la ventana creada)
    escena->inicializar( UI_window_width, UI_window_height );
 
-
+   glutMouseFunc( click_raton );
+   glutMotionFunc( raton_movido );
 
    // ejecutar del bucle de eventos
    glutMainLoop();

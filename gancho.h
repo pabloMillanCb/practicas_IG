@@ -11,7 +11,6 @@ class Gancho
     private:
         Cilindro* cable;
         Cilindro* lentes;
-
         Cono* antenaCono;
         Cono* antenaConoR;
         Cilindro* antenaCilindro;
@@ -24,18 +23,10 @@ class Gancho
         float r_y = 0;
         
     public:
-        Gancho();
+        Gancho(Cilindro *len, Cilindro *cab, Cono *ant, Cono *antR, Cilindro *antCil, Esfera *antEsf);
         void draw();
         void aumentar_foco_x(float aumento);
         void aumentar_foco_y(float aumento);
-
-        void cambiar_solido();
-        void cambiar_lineas();
-        void cambiar_puntos();
-        void cambiar_ajedrez();
-
-        void activar_inmediato();
-        void activar_diferido();
 } ;
 
 

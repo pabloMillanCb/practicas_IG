@@ -12,13 +12,33 @@
 class Ovni
 {
     private:
+
+        std::vector<Malla3D*> objetos;
+
+        //Ovni
         Esfera* cabina;
         Cono* cuerpo;
         Cono* abductor;
         Cono* abductorR;
-        LucesOvni luces;
-        Gancho inferior;
-        Laboon laboon;
+        
+        LucesOvni* luces;
+        Gancho* inferior;
+        Laboon* laboon;
+
+        //LucesOvni
+        Esfera * bola;
+
+        //Laboon
+        ObjPLY* ballena;
+        ObjPLY* sombrero;
+
+        //Gancho
+        Cilindro* cable;
+        Cilindro* lentes;
+        Cono* antenaCono;
+        Cono* antenaConoR;
+        Cilindro* antenaCilindro;
+        Esfera* antenaEsfera;
 
     protected:
         float h_gancho = 10;
@@ -35,8 +55,6 @@ class Ovni
         const float h_ballena_max = 70;
         const float ctr_ballena_max = 30;
         const float x_ballena_max = 30;
-
-
         
     public:
         Ovni();
@@ -54,9 +72,12 @@ class Ovni
         void cambiar_lineas();
         void cambiar_puntos();
         void cambiar_ajedrez();
-
         void activar_inmediato();
         void activar_diferido();
+        void activar_seleccion();
+        void desactivar_seleccion();
+        void setColorSeleccion(Tupla3f c);
+
 } ;
 
 

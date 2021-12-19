@@ -28,7 +28,7 @@ class Malla3D
 
    void draw_ModoInmediato(); // dibuja el objeto en modo inmediato
    void draw_ModoDiferido();  // dibuja el objeto en modo diferido (usando VBOs)
-   void draw_ModoLuz();
+   void drawSeleccion();
 
    void draw() ; // función que redibuja el objeto
    void draw_ModoAjedrez();
@@ -45,6 +45,10 @@ class Malla3D
    void invertir_caras();
    void setMaterial(Material &mat);
    void setTextura(Textura &txt);
+   void setColorSeleccion(Tupla3f c);
+
+    void activar_seleccion();
+    void desactivar_seleccion();
 
    GLuint CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram );
 
@@ -64,7 +68,7 @@ class Malla3D
    std::vector<Tupla3f> nv;
    std::vector<Tupla2f> ct;
 
-   std::vector<float> colorArray, colorRojo, colorVerde;
+   std::vector<float> colorArray, colorRojo, colorVerde, colorSeleccion;
    Material m;
    Textura *textura = nullptr;
 
@@ -73,9 +77,10 @@ class Malla3D
        id_vbo_ver = 0, id_vbo_color = 0, id_vbo_color2 = 0, id_vbo_color3 = 0,
        id_vbo_nor = 0, modo_dibujado = INMEDIATO;
 
-   float visible = false;
-   bool modo_ajedrez = false,
-        dibujar[3] = {true, false, false};
+   float visible = true;
+   bool modo_ajedrez = false;
+   bool seleccion = false;
+   bool dibujar[3] = {true, false, false};
 
    // completar: tabla de colores, tabla de normales de vértices
 } ;

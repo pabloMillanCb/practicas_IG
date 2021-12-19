@@ -12,66 +12,98 @@
 
 Escena::Escena()
 {
-    Front_plane       = 50.0;
-    Back_plane        = 10000.0;
-    Observer_distance = 4*Front_plane;
-    Observer_angle_x  = 0.0 ;
-    Observer_angle_y  = 0.0 ;
+   Front_plane       = 50.0;
+   Back_plane        = 10000.0;
+   Observer_distance = 4*Front_plane;
+   Observer_angle_x  = 0.0 ;
+   Observer_angle_y  = 0.0 ;
 
-    ejes.changeAxisSize( 5000 );
+   ejes.changeAxisSize( 5000 );
 
-    // crear los objetos de la escena....
-    // .......completar: ...
-    // .....
-    cubo = new Cubo(30);
-    tetraedro = new Tetraedro();
-    objetos.push_back(cubo);
-    objetos.push_back(tetraedro);
-    peon = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
-    objetos.push_back(peon);
-    peon_r = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
-    objetos.push_back(peon_r);
-    cil = new Cilindro(6, 6, 40, 20);
-    objetos.push_back(cil);
-    con = new Cono(6, 6, 2.3, 0.7, true);
-    objetos.push_back(con);
-    esf = new Esfera(50, 50, 1000);
-    luna = new Esfera(50, 50, 60);
-    skybox = new Esfera(100, 100, 3000);
-    objetos.push_back(esf);
-    objetos.push_back(luna);
-    objetos.push_back(skybox);
-    ovn = new Ovni();
-    ply = new ObjPLY("./plys/laboon.ply");
-    objetos.push_back(ply);
+   // crear los objetos de la escena....
+   // .......completar: ...
+   // .....
+   cubo = new Cubo(30);
+   tetraedro = new Tetraedro();
+   peon = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
+   peon_r = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
+   cil = new Cilindro(6, 6, 40, 20);
 
-    camara = new Camara();
+   con = new Cono(6, 6, 2.3, 0.7, true);
+   esf = new Esfera(50, 50, 1000);
+   luna = new Esfera(50, 50, 60);
+   skybox = new Esfera(100, 100, 3000);
+   ovn = new Ovni();
+   ply = new ObjPLY("./plys/laboon.ply");
 
-    Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
-    Material espacio(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.3, 0.3, 0.3, 1.0), 50.0);
-    Material tierra(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.1, 0.1, 0.1, 1.0), 100.0);
-    Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
+   objetos.push_back(cubo);
+   objetos.push_back(tetraedro);
+   objetos.push_back(peon);
+   objetos.push_back(peon_r);
+   objetos.push_back(cil);
+   objetos.push_back(con);
+   objetos.push_back(esf);
+   objetos.push_back(luna);
+   objetos.push_back(ply);
+   objetos.push_back(skybox);
 
-    lucesdir.push_back(LuzDireccional(Tupla2f(0.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
-    lucespos.push_back(LuzPosicional(Tupla3f(0.0, 0.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 0.3), Tupla4f(1.0, 1.0, 1.0, 0.3)));
+   camara.push_back(new Camara(PERSPECTIVA));
+   camara.push_back(new Camara(PERSPECTIVA));
+   camara.push_back(new Camara(ORTOGONAL));
 
-    skybox->setMaterial(espacio);
-    esf->setMaterial(tierra);
-    luna->setMaterial(tierra);
-    cubo->setMaterial(bronce);
-    tetraedro->setMaterial(bronce);
-    
-    lucesdir[0].set_id(GL_LIGHT0);
-    lucespos[0].set_id(GL_LIGHT1);
+   Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
+   Material espacio(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.3, 0.3, 0.3, 1.0), 50.0);
+   Material tierra(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.1, 0.1, 0.1, 1.0), 100.0);
+   Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
 
-    txt = new Textura("./txt/text-tierra.jpg"); ///txt/text-lata-1.jpg"
-    txt_luna = new Textura("./txt/luna.jpg"); ///txt/text-lata-1.jpg"
-    txt_skybox = new Textura("./txt/cielo.jpg"); ///txt/text-lata-1.jpg"
+   lucesdir.push_back(LuzDireccional(Tupla2f(0.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
+   lucespos.push_back(LuzPosicional(Tupla3f(0.0, 0.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 0.3), Tupla4f(1.0, 1.0, 1.0, 0.3)));
 
-    esf->setTextura(*txt);
-    luna->setTextura(*txt_luna);
-    skybox->setTextura(*txt_skybox);
-    skybox->invertir_caras();
+   skybox->setMaterial(espacio);
+   esf->setMaterial(tierra);
+   luna->setMaterial(tierra);
+   cubo->setMaterial(bronce);
+   tetraedro->setMaterial(bronce);
+
+   lucesdir[0].set_id(GL_LIGHT0);
+   lucespos[0].set_id(GL_LIGHT1);
+
+   txt = new Textura("./txt/text-tierra.jpg"); ///txt/text-lata-1.jpg"
+   txt_luna = new Textura("./txt/luna.jpg"); ///txt/text-lata-1.jpg"
+   txt_skybox = new Textura("./txt/cielo.jpg"); ///txt/text-lata-1.jpg"
+
+   esf->setTextura(*txt);
+   luna->setTextura(*txt_luna);
+   skybox->setTextura(*txt_skybox);
+   skybox->invertir_caras();
+
+   objetos_sel.push_back(esf);
+   objetos_sel.push_back(luna);
+   objetos_sel.push_back(cubo);
+   objetos_sel.push_back(tetraedro);
+   //Ovni, con id == 4
+
+   for (int i = 0; i < objetos_sel.size(); i++)
+   {
+      pos_objetos.push_back(Tupla3f(0.0, 0.0, 0.0));
+   }
+
+   pos_objetos.push_back({0.0, 0.0, 0.0});
+
+   objetos_sel[0]->setColorSeleccion(Tupla3f(0.0, 1.0, 0.0));
+   col_objetos.push_back(Tupla3f(0.0, 1.0, 0.0));
+
+   objetos_sel[1]->setColorSeleccion(Tupla3f(0.0, 1.0, 1.0));
+   col_objetos.push_back(Tupla3f(0.0, 1.0, 1.0));
+
+   objetos_sel[2]->setColorSeleccion(Tupla3f(1.0, 0.0, 0.0));
+   col_objetos.push_back(Tupla3f(1.0, 0.0, 0.0));
+
+   objetos_sel[3]->setColorSeleccion(Tupla3f(1.0, 0.0, 1.0));
+   col_objetos.push_back(Tupla3f(1.0, 0.0, 1.0));
+
+   ovn->setColorSeleccion(Tupla3f(0.0, 0.0, 1.0));
+   col_objetos.push_back(Tupla3f(0.0, 0.0, 1.0));
 }
 
 //**************************************************************************
@@ -105,8 +137,8 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 void Escena::dibujar()
 {
    glShadeModel(GL_SMOOTH);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_NORMALIZE);
+   glEnable(GL_CULL_FACE);
+   glEnable(GL_NORMALIZE);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
    //glScalef(30.0, 30.0, 30.0);
@@ -120,62 +152,91 @@ void Escena::dibujar()
       glEnable(GL_LIGHTING);
    }
    else
+   {
       ejes.draw();
 
-      lucesdir[0].activar();
+   }
 
-      glPushMatrix();
+   glPushMatrix();
+      skybox->draw();
+   glPopMatrix();
+
+   lucesdir[0].activar();
+
+   glPushMatrix();
       glTranslatef(0, 50, 0);
-         glRotatef(animacion_luz_2, 0, 1, 0);
-         glTranslatef(60, 0, 0);
-         lucespos[0].activar();
-      glPopMatrix();
-      
-      //for (int i = 0; i < lucespos.size(); i++)
-         //lucespos[i].activar();
+      glRotatef(animacion_luz_2, 0, 1, 0);
+      glTranslatef(60, 0, 0);
+      lucespos[0].activar();
+   glPopMatrix();
 
+   dibuja_objetos();
+}
 
-      glPushMatrix();
-         skybox->draw();
-      glPopMatrix();
-   
-      glPushMatrix();
-         glTranslatef(0, 0, -1500);
-         glRotatef(20, 0, 0, 1);
+void Escena::dibuja_objetos()
+{
+   glPushMatrix();
+         glTranslatef(0.0, 0.0, -1500.0);
+         glRotatef(20.0, 0, 0, 1);
          glRotatef(animacion_tierra, 0, 1, 0);
          esf->draw();
+         glPushMatrix();
+            obtenerCoordenadas(0);
+         glPopMatrix();
       glPopMatrix();
 
       glPushMatrix();
-         glTranslatef(0, 0, -1300);
-         glRotatef(35, 0, 0, 1);
+         glTranslatef(0.0, 0.0, -1500.0);
+         glRotatef(35.0, 0, 0, 1);
          glRotatef(animacion_luna, 0, 1, 0);
-         glTranslatef(0, 0, 1050);
+         glTranslatef(0.0, 0.0, 1100.0);
          luna->draw();
+         glPushMatrix();
+            obtenerCoordenadas(1);
+         glPopMatrix();
       glPopMatrix();
 
       glPushMatrix();
-         glTranslatef(-200, 50, -100);
+         glTranslatef(-200.0, 50.0, -100.0);
          glRotatef(animacion_luna, 0, 0, 1);
-         glRotatef(30, 0, 1, 0);
+         glRotatef(30.0, 0, 1, 0);
+         glPushMatrix();
+            obtenerCoordenadas(2);
+         glPopMatrix();
          if (cubo->es_visible())
             cubo->draw();
       glPopMatrix();
 
       glPushMatrix();
-         glTranslatef(200, -50, -100);
+         glTranslatef(200.0, -50.0, -100.0);
          glRotatef(animacion_luna, 0, 0, 1);
-         glRotatef(30, 0, 1, 0);
+         glRotatef(30.0, 0, 1, 0);
+         obtenerCoordenadas(3);
          if (tetraedro->es_visible())
             tetraedro->draw();
       glPopMatrix();
 
       glPushMatrix();
-         glTranslatef(0, 15, 0);
+         glTranslatef(0.0, 15.0, 0.0);
          glScalef(0.6, 0.6, 0.6);
          ovn->draw();
+         obtenerCoordenadas(4);
       glPopMatrix();
+}
 
+void Escena::dibuja_seleccion()
+{
+   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
+
+   ovn->activar_seleccion();
+   for (int i = 0; i < objetos_sel.size(); i++)
+      objetos_sel[i]->activar_seleccion();
+
+   dibuja_objetos();
+
+   ovn->desactivar_seleccion();
+   for (int i = 0; i < objetos_sel.size(); i++)
+      objetos_sel[i]->desactivar_seleccion();
 }
 
 //**************************************************************************
@@ -221,6 +282,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
       case 'C':
          if (modoMenu == SELOBJETO)
             cubo->cambiar_visibilidad();
+         else
+         {
+            std::cout << "Menu de seleccion de cámara (1-3)\n";
+            modoMenu = SELCAMARA;
+         }
          break;
       
       case 'T':
@@ -248,6 +314,17 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             else
                glEnable(GL_LIGHT0);
          }
+
+         if (modoMenu == SELCAMARA)
+         {
+            id_cam = 0;
+            camara[id_cam] -> setProyeccion();
+            std::cout << "Camara 1 activada\n";
+
+            change_observer();
+            change_projection(0);
+         }
+
          break;
       
       case '2':
@@ -270,6 +347,16 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             else
                glEnable(GL_LIGHT1);
          }
+
+         if (modoMenu == SELCAMARA)
+         {
+            id_cam = 1;
+            camara[id_cam] -> setProyeccion();
+            std::cout << "Camara 2 activada\n";
+
+            change_observer();
+            change_projection(0);
+         }
          break;
       
       case '3':
@@ -284,6 +371,17 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
          if (modoMenu == GRADOSLIBERTAD || modoMenu == SELVELOCIDAD)
             id_grado = 2;
+         
+         if (modoMenu == SELCAMARA)
+         {
+            id_cam = 2;
+            camara[id_cam] -> setProyeccion();
+            std::cout << "Camara 3 activada\n";
+
+            change_observer();
+            change_projection(0);
+         }
+         
          break;
 
       case '4':
@@ -555,28 +653,39 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break;
 
       case 'W':
-            posicion = posicion + camara->devolverDireccion();
-            camara->mover(posicion(0), posicion(1), posicion(2));
+            posicion = posicion + camara[id_cam]->devolverDireccion();
+            camara[id_cam]->mover(posicion(0), posicion(1), posicion(2));
          break;
 
       case 'E':
-            posicion = posicion - camara->devolverDireccion();
-            camara->mover(posicion(0), posicion(1), posicion(2));
+            posicion = posicion - camara[id_cam]->devolverDireccion();
+            camara[id_cam]->mover(posicion(0), posicion(1), posicion(2));
          break;
 
-      /*case 'J':
-            posicion(2) = posicion(2)-10;
-            camara->mover(posicion(0), posicion(1), posicion(2));
+      case 'X':
+            camara[id_cam]->status();
          break;
 
-      case 'H':
+      case 'J':
+            camara[id_cam]->zoom(1.05);
+            std::cout << "Zoom mas\n";
+            change_projection(0);
+         break;
+
+      case 'K':
+            camara[id_cam]->zoom(0.95);
+            std::cout << "Zoom menos\n";
+            change_projection(0);
+         break;
+
+      /*case 'H':
             posicion(1) = posicion(1)+10;
-            camara->mover(posicion(0), posicion(1), posicion(2));
+            camara[id_cam]->mover(posicion(0), posicion(1), posicion(2));
          break;
 
       case 'K':
             posicion(1) = posicion(1)-10;
-            camara->mover(posicion(0), posicion(1), posicion(2));
+            camara[id_cam]->mover(posicion(0), posicion(1), posicion(2));
          break;Tupla3f devolverDireccion();*/
          
             
@@ -590,16 +699,16 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
    switch ( Tecla1 )
    {
 	   case GLUT_KEY_LEFT:
-         camara -> rotarYFirstPerson(0.1);
+         camara[id_cam] -> girar(0.1, 0.0);//rotarYFirstPerson(0.1);
          break;
 	   case GLUT_KEY_RIGHT:
-         camara -> rotarYFirstPerson(-0.1);
+         camara[id_cam] -> rotarYFirstPerson(-0.1);
          break;
 	   case GLUT_KEY_UP:
-         camara -> rotarXFirstPerson(-0.1);
+         camara[id_cam] -> rotarXFirstPerson(-0.1);
          break;
 	   case GLUT_KEY_DOWN:
-         camara -> rotarXFirstPerson(0.1);
+         camara[id_cam] -> rotarXFirstPerson(0.1);
          break;
 	   case GLUT_KEY_PAGE_UP:
          Observer_distance *=1.2 ;
@@ -621,9 +730,8 @@ void Escena::change_projection( const float ratio_xy )
 {
    glMatrixMode( GL_PROJECTION );
    glLoadIdentity();
-   const float wx = float(Height)*ratio_xy ;
-   camara -> actualizarRatio(-Width/2, Width/2, -Height/2, Height/2, Front_plane, Back_plane);
-   camara -> setProyeccion();
+   //const float wx = float(Height)*ratio_xy ;
+   camara[id_cam] -> setProyeccion();
 }
 //**************************************************************************
 // Funcion que se invoca cuando cambia el tamaño de la ventana
@@ -633,12 +741,14 @@ void Escena::redimensionar( int newWidth, int newHeight )
 {
    Width  = newWidth/10; ///10;
    Height = newHeight/10; ///10;
+   for (int i = 0; i < camara.size(); i++)
+      camara[i] -> actualizarRatio(-Width/2, Width/2, -Height/2, Height/2, Front_plane, Back_plane);
    change_projection( float(newHeight)/float(newWidth) );;
    glViewport( 0, 0, newWidth, newHeight );
 }
 
 //**************************************************************************
-// Funcion para definir la transformación de vista (posicionar la camara)
+// Funcion para definir la transformación de vista (posicionar la camara[id_cam])
 //***************************************************************************
 
 void Escena::change_observer()
@@ -646,10 +756,8 @@ void Escena::change_observer()
    // posicion del observador
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   camara -> setObserver();
-   //glTranslatef( 0.0, 0.0, -Observer_distance );
-   //glRotatef( Observer_angle_y, 0.0 ,1.0, 0.0 );
-   //glRotatef( Observer_angle_x, 1.0, 0.0, 0.0 );
+   camara[id_cam] -> setObserver();
+   //glGetFloatv(GL_MODELVIEW_MATRIX, m_vista);
 }
 
 void Escena::animarModeloJerarquico()
@@ -713,4 +821,90 @@ void Escena::animarModeloJerarquico()
       animacion_tierra += v[8]*0.1;
       animacion_luna += v[9]*0.2;
    }
+}
+
+void Escena::obtenerCoordenadas(int id)
+{
+   GLfloat matrixMV[16];
+   glGetFloatv(GL_MODELVIEW_MATRIX, matrixMV);
+
+   pos_objetos[id] = Tupla3f{matrixMV[12], matrixMV[13], matrixMV[14]};
+
+   //std::cout << "Coordenadas " << xCenterTriangle << ", " << yCenterTriangle << ", " << zCenterTriangle << "\n";
+}
+
+void Escena::ratonMovido ( int x, int y )
+{
+   if ( estadoRaton)
+   {
+      camara[id_cam]->girar((float)(x-xant)/100, (float)(y-yant)/100);
+
+      std::cout << "Muevo " << x-xant << " " << y-yant << std::endl;
+      xant = x;
+      yant = y;
+   }
+}
+
+void Escena::clickRaton( int boton, int estado, int x, int y)
+{
+   if ( boton == GLUT_RIGHT_BUTTON )
+   {
+      xant = x; yant = y;
+
+      if (estado == GLUT_DOWN)
+      {
+         estadoRaton = true;
+      }
+
+      else
+      {
+         estadoRaton = false;
+      }
+   }
+
+   else if ( boton == GLUT_LEFT_BUTTON)
+   {
+      //std::cout << "x = " << x << ", y = " << y << std::endl;
+
+      if (estado != GLUT_DOWN)
+      {
+         dibuja_seleccion();
+
+         GLint viewport[4];
+         GLfloat pixels[3];
+         glGetIntegerv(GL_VIEWPORT, viewport);
+         glReadPixels(x, viewport[3]-y, 1, 1, GL_RGB, GL_FLOAT, (void*)pixels);
+         Tupla3f color(pixels[0], pixels[1], pixels[2]);
+
+         //std::cout << "Color = " << color << std::endl;
+         int id = getColorObjeto(color);
+
+         if (id == -1)
+            camara[id_cam]->unlock();
+         else
+            camara[id_cam]->lock(pos_objetos[id]);
+
+         std::cout << "gotcha " << id << "\n";
+         std::cout << "pos " << pos_objetos[id] << "\n";
+      }
+   }
+}
+
+int Escena::getColorObjeto(Tupla3f color)
+{
+
+   int salida = -1;
+
+   std::cout << "Color es " << color << std::endl;
+
+   for (int i = 0; i < col_objetos.size(); i++)
+   {
+      if (color(0) == col_objetos[i](0) && color(1) == col_objetos[i](1) && color(2) == col_objetos[i](2))
+      {
+         salida = i;
+         i = col_objetos.size();
+      }
+   }
+
+   return salida;
 }

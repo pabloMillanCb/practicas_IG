@@ -3,10 +3,12 @@
 
 Ovni::Ovni()
 {
-    cabina = new Esfera(30, 30, 30);
-    cuerpo = new Cono(30, 30, 70, 100, true);
-    abductor = new Cono(10, 10, 30, 20, false);
-    abductorR = new Cono(10, 10, 30, 20, false);
+    //Ovni
+
+    cabina = new Esfera(30, 30, 30); objetos.push_back(cabina);
+    cuerpo = new Cono(30, 30, 70, 100, true); objetos.push_back(cuerpo);
+    abductor = new Cono(10, 10, 30, 20, false); objetos.push_back(abductor);
+    abductorR = new Cono(10, 10, 30, 20, false); objetos.push_back(abductorR);
 
     abductorR->invertir_caras();
 
@@ -18,6 +20,40 @@ Ovni::Ovni()
     abductor->setMaterial( negro );
     abductorR->setMaterial( negro );
 
+    //LucesOvni
+
+    bola = new Esfera(12, 12, 12); objetos.push_back(bola);
+    Material dorado({0.780392, 0.568627, 0.113725, 1.0}, {0.992157, 0.941176, 0.807843, 1.0}, {0.329412, 0.223529, 0.027451, 1.0}, 100);
+    bola -> setMaterial(dorado);
+
+    //Laboon
+
+    ballena = new ObjPLY("./plys/laboon.ply"); objetos.push_back(ballena);
+    sombrero = new ObjPLY("./plys/sombrero.ply"); objetos.push_back(sombrero);
+    Material azul({0.427451, 0.470588, 0.541176, 1.0}, {0.333333, 0.333333, 0.521569, 1.0}, {0.105882, 0.058824, 0.113725, 1.0}, 100);
+    sombrero->setMaterial(dorado);
+    ballena->setMaterial(azul);
+
+    //Gancho
+
+    lentes = new Cilindro(10, 10, 25, 8); objetos.push_back(lentes);
+    cable = new Cilindro(10, 10, 80, 2); objetos.push_back(cable);
+    antenaCono = new Cono(30, 5, 15, 20, false); objetos.push_back(antenaCono);
+    antenaConoR = new Cono(30, 5, 15, 20, false); objetos.push_back(antenaConoR);
+    antenaCilindro = new Cilindro(5, 5, 10, 1); objetos.push_back(antenaCilindro);
+    antenaEsfera = new Esfera(30, 30, 3); objetos.push_back(antenaEsfera);
+
+    antenaConoR->invertir_caras();
+    cable->setMaterial(negro);
+    lentes->setMaterial(azul);
+    antenaEsfera->setMaterial(dorado);
+    antenaCilindro->setMaterial(gris);
+    antenaCono->setMaterial(gris);
+    antenaConoR->setMaterial(gris);
+
+    luces = new LucesOvni(bola);
+    inferior = new Gancho(lentes, cable, antenaCono, antenaConoR, antenaCilindro, antenaEsfera);
+    laboon = new Laboon(ballena, sombrero);
 }
 
 void Ovni::draw()
@@ -37,13 +73,13 @@ void Ovni::draw()
 
     glPushMatrix();
         glRotatef(r_luces, 0, 1, 0);
-        luces.draw();
+        luces->draw();
     glPopMatrix();
 
     glPushMatrix();
         glTranslatef(0, h_gancho+80, 0);
         glRotatef(180, 1, 0, 0);
-        inferior.draw();
+        inferior->draw();
     glPopMatrix();
 
     glPushMatrix();
@@ -52,9 +88,8 @@ void Ovni::draw()
         glRotatef(y_ballena, 0, 1, 0);
         glRotatef(x_ballena, 0, 0, 1);
         glRotatef(-10, 1, 0, 0);
-        laboon.draw();
+        laboon->draw();
     glPopMatrix();
-
 }
 
 void Ovni::aumentar_r_luces(float aumento)
@@ -64,12 +99,12 @@ void Ovni::aumentar_r_luces(float aumento)
 
 void Ovni::aumentar_foco_x(float aumento)
 {
-    inferior.aumentar_foco_x(aumento);
+    inferior->aumentar_foco_x(aumento);
 }
 
 void Ovni::aumentar_foco_y(float aumento)
 {
-    inferior.aumentar_foco_y(aumento);
+    inferior->aumentar_foco_y(aumento);
 }
 
 void Ovni::aumentar_h_gancho(float aumento)
@@ -80,7 +115,6 @@ void Ovni::aumentar_h_gancho(float aumento)
         h_gancho = max_h_gancho;
     else if (aumento + h_gancho < min_h_gancho)
         h_gancho = min_h_gancho;
-
 }
 
 void Ovni::aumentar_ballena(float aumento)
@@ -143,62 +177,54 @@ void Ovni::gradosLibertad(int i, float aumento)
 
 void Ovni::cambiar_solido()
 {
-    cabina->cambiar_solido();
-    cuerpo->cambiar_solido();
-    luces.cambiar_solido();
-    inferior.cambiar_solido();
-    laboon.cambiar_solido();
-    abductor->cambiar_solido();
-    abductorR->cambiar_solido();
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->cambiar_solido();
 }
+
 void Ovni::cambiar_lineas()
 {
-    cabina->cambiar_lineas();
-    cuerpo->cambiar_lineas();
-    luces.cambiar_lineas();
-    inferior.cambiar_lineas();
-    laboon.cambiar_lineas();
-    abductor->cambiar_lineas();
-    abductorR->cambiar_lineas();
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->cambiar_lineas();
 }
+
 void Ovni::cambiar_puntos()
 {
-    cabina->cambiar_puntos();
-    cuerpo->cambiar_puntos();
-    luces.cambiar_puntos();
-    inferior.cambiar_puntos();
-    laboon.cambiar_puntos();
-    abductor->cambiar_puntos();
-    abductorR->cambiar_puntos();
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->cambiar_puntos();
 }
+
 void Ovni::cambiar_ajedrez()
 {
-    cabina->cambiar_ajedrez();
-    cuerpo->cambiar_ajedrez();
-    luces.cambiar_ajedrez();
-    inferior.cambiar_ajedrez();
-    laboon.cambiar_ajedrez();
-    abductor->cambiar_ajedrez();
-    abductorR->cambiar_ajedrez();
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->cambiar_ajedrez();
 }
 
 void Ovni::activar_inmediato()
 {
-    cabina->activar_inmediato();
-    cuerpo->activar_inmediato();
-    luces.activar_inmediato();
-    inferior.activar_inmediato();
-    laboon.activar_inmediato();
-    abductor->activar_inmediato();
-    abductorR->activar_inmediato();
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->activar_inmediato();
 }
+
 void Ovni::activar_diferido()
 {
-    cabina->activar_diferido();
-    cuerpo->activar_diferido();
-    luces.activar_diferido();
-    inferior.activar_diferido();
-    laboon.activar_diferido();
-    abductor->activar_diferido();
-    abductorR->activar_diferido();
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->activar_diferido();
+}
+
+void Ovni::activar_seleccion()
+{
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->activar_seleccion();
+}
+
+void Ovni::desactivar_seleccion()
+{
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->desactivar_seleccion();
+}
+
+void Ovni::setColorSeleccion(Tupla3f c)
+{
+   for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->setColorSeleccion(c);
 }

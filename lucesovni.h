@@ -13,17 +13,9 @@ class LucesOvni
         float r_bolas;
         
     public:
-        LucesOvni();
+        LucesOvni(Esfera *b);
         void draw();
         void aumentar_r_bolas(float aumento);
-
-        void cambiar_solido();
-        void cambiar_lineas();
-        void cambiar_puntos();
-        void cambiar_ajedrez();
-
-        void activar_inmediato();
-        void activar_diferido();
 } ;
 
 

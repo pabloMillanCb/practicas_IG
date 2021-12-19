@@ -17,6 +17,10 @@ private:
 
     int tipo; //ORTOGONAL o Perspectiva
     float left, right, bottom, top, near, far; //o bien aspect, fov, near, far
+    float leftz, rightz, bottomz, topz; //o bien aspect, fov, near, far
+    float factor_zoom = 1;
+
+    bool locked = true;
 
     Tupla3f rotarEjeX(Tupla3f punto, float radianes) ; //Rota en el eje X un punto
     Tupla3f rotarEjeY(Tupla3f punto, float radianes) ; //Rota en el eje Y un punto
@@ -25,15 +29,20 @@ private:
     Tupla3f alinearEjes(Tupla3f p);
     Tupla3f desalinearEjes(Tupla3f p);
     Tupla3f normalizar(Tupla3f t);
+    void updateZoom();
+
+    int id_obj_point = -1;
 
 public:
 
-    Camara();
+    Camara(int tipo_);
     void mover(float x, float y, float z);
     void zoom(float factor);
     void actualizarRatio(float left_, float right_, float bottom_, float top_, float near_, float far_);
     void setObserver();
     void setProyeccion();
+
+    void girar(float x, float y);
     void rotarXExaminar(float angle);
     void rotarYExaminar(float angle);
     void rotarZExaminar(float angle);
@@ -42,6 +51,15 @@ public:
     void rotarZFirstPerson(float angle);
 
     Tupla3f devolverDireccion();
+    int getTipo();
+    void setPoint(int id);
+    int getPoint();
+
+    void lock(Tupla3f point);
+    void unlock();
+    bool isLocked();
+    
+    void status();
 } ;
 
 #endif

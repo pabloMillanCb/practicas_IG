@@ -11,16 +11,8 @@ class Laboon
         ObjPLY* sombrero;
         
     public:
-        Laboon();
+        Laboon(ObjPLY *ball, ObjPLY* som);
         void draw();
-
-        void cambiar_solido();
-        void cambiar_lineas();
-        void cambiar_puntos();
-        void cambiar_ajedrez();
-
-        void activar_inmediato();
-        void activar_diferido();
 } ;
 
 
