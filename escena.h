@@ -118,6 +118,7 @@ class Escena
 
    //Obtener coordenadas de un objeto recien dibujado y almacenarlo asignado a un id
    void obtenerCoordenadas(int id);
+   void calcularCoordenadas();
 
    //Obtiene las posiciones del raton y ve si se ha movido
    void ratonMovido ( int x, int y );

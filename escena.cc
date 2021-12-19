@@ -175,13 +175,15 @@ void Escena::dibujar()
 
 void Escena::dibuja_objetos()
 {
+   calcularCoordenadas();
+
    glPushMatrix();
          glTranslatef(0.0, 0.0, -1500.0);
          glRotatef(20.0, 0, 0, 1);
          glRotatef(animacion_tierra, 0, 1, 0);
          esf->draw();
          glPushMatrix();
-            obtenerCoordenadas(0);
+            //obtenerCoordenadas(0);
          glPopMatrix();
       glPopMatrix();
 
@@ -191,9 +193,7 @@ void Escena::dibuja_objetos()
          glRotatef(animacion_luna, 0, 1, 0);
          glTranslatef(0.0, 0.0, 1100.0);
          luna->draw();
-         glPushMatrix();
-            obtenerCoordenadas(1);
-         glPopMatrix();
+         //obtenerCoordenadas(1); // <-----------------------
       glPopMatrix();
 
       glPushMatrix();
@@ -201,7 +201,7 @@ void Escena::dibuja_objetos()
          glRotatef(animacion_luna, 0, 0, 1);
          glRotatef(30.0, 0, 1, 0);
          glPushMatrix();
-            obtenerCoordenadas(2);
+            //obtenerCoordenadas(2);
          glPopMatrix();
          if (cubo->es_visible())
             cubo->draw();
@@ -211,7 +211,7 @@ void Escena::dibuja_objetos()
          glTranslatef(200.0, -50.0, -100.0);
          glRotatef(animacion_luna, 0, 0, 1);
          glRotatef(30.0, 0, 1, 0);
-         obtenerCoordenadas(3);
+         //obtenerCoordenadas(3);
          if (tetraedro->es_visible())
             tetraedro->draw();
       glPopMatrix();
@@ -220,7 +220,7 @@ void Escena::dibuja_objetos()
          glTranslatef(0.0, 15.0, 0.0);
          glScalef(0.6, 0.6, 0.6);
          ovn->draw();
-         obtenerCoordenadas(4);
+         //obtenerCoordenadas(4);
       glPopMatrix();
 }
 
@@ -702,13 +702,13 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
          camara[id_cam] -> girar(0.1, 0.0);//rotarYFirstPerson(0.1);
          break;
 	   case GLUT_KEY_RIGHT:
-         camara[id_cam] -> rotarYFirstPerson(-0.1);
+         camara[id_cam] -> girar(-0.1, 0.0);
          break;
 	   case GLUT_KEY_UP:
-         camara[id_cam] -> rotarXFirstPerson(-0.1);
+         camara[id_cam] -> girar(0.0, 0.1);
          break;
 	   case GLUT_KEY_DOWN:
-         camara[id_cam] -> rotarXFirstPerson(0.1);
+         camara[id_cam] -> girar(0.0, -0.1);
          break;
 	   case GLUT_KEY_PAGE_UP:
          Observer_distance *=1.2 ;
@@ -833,9 +833,21 @@ void Escena::obtenerCoordenadas(int id)
    //std::cout << "Coordenadas " << xCenterTriangle << ", " << yCenterTriangle << ", " << zCenterTriangle << "\n";
 }
 
+void Escena::calcularCoordenadas()
+{
+   pos_objetos[0] = Tupla3f (0.0, 0.0, -1500.0);
+   Tupla3f pos_lun (0.0, 0.0, 1100.0);
+   //aplicar rotacion
+   pos_lun(2) += -1500;
+   pos_objetos[1] = pos_lun;
+   pos_objetos[2] = Tupla3f(-200.0, 50.0, -100.0 );
+   pos_objetos[3] = Tupla3f(200.0, -50.0, -100.0);
+   pos_objetos[4] = Tupla3f(0.0, 15.0, 0.0);
+}
+
 void Escena::ratonMovido ( int x, int y )
 {
-   if ( estadoRaton)
+   if (estadoRaton)
    {
       camara[id_cam]->girar((float)(x-xant)/100, (float)(y-yant)/100);
 
@@ -843,6 +855,28 @@ void Escena::ratonMovido ( int x, int y )
       xant = x;
       yant = y;
    }
+
+   else
+   {
+      dibuja_seleccion();
+
+      GLint viewport[4];
+      GLfloat pixels[3];
+      glGetIntegerv(GL_VIEWPORT, viewport);
+      glReadPixels(x, viewport[3]-y, 1, 1, GL_RGB, GL_FLOAT, (void*)pixels);
+      Tupla3f color(pixels[0], pixels[1], pixels[2]);
+
+      //std::cout << "Color = " << color << std::endl;
+      int id = getColorObjeto(color);
+
+      if (id != -1)
+         objetos_sel[id]->cambiar_lineas();
+
+      std::cout << "gotcha " << id << "\n";
+      std::cout << "pos " << pos_objetos[id] << "\n";
+   }
+
+
 }
 
 void Escena::clickRaton( int boton, int estado, int x, int y)
