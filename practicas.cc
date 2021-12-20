@@ -103,6 +103,7 @@ void click_raton( int boton, int estado, int x, int y)
 
 void raton_movido(int x, int y)
 {
+   std::cout << "aaaaa\n";
    escena->ratonMovido(x, y);
 }
 
@@ -175,6 +176,7 @@ int main( int argc, char **argv )
 
    glutMouseFunc( click_raton );
    glutMotionFunc( raton_movido );
+   glutPassiveMotionFunc( raton_movido );
 
    // ejecutar del bucle de eventos
    glutMainLoop();

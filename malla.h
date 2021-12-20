@@ -50,6 +50,13 @@ class Malla3D
     void activar_seleccion();
     void desactivar_seleccion();
 
+    void activar_lock();
+    void desactivar_lock();
+    bool get_lock();
+
+    void activar_prelock();
+    void desactivar_prelock();
+
    GLuint CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram );
 
    protected:
@@ -70,6 +77,7 @@ class Malla3D
 
    std::vector<float> colorArray, colorRojo, colorVerde, colorSeleccion;
    Material m;
+   Material m_seleccion = Material (Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.1, 0.1, 0.1, 1.0), 100.0);
    Textura *textura = nullptr;
 
    int draw_size, draw_size_a1, draw_size_a2,
@@ -79,7 +87,7 @@ class Malla3D
 
    float visible = true;
    bool modo_ajedrez = false;
-   bool seleccion = false;
+   bool seleccion = false, isLocked = false, prelock = false;
    bool dibujar[3] = {true, false, false};
 
    // completar: tabla de colores, tabla de normales de vértices

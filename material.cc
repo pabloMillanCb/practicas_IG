@@ -15,6 +15,14 @@ Material::Material(Tupla4f mdifuso, Tupla4f mespecular, Tupla4f mambiente, float
     especular = mespecular;
     ambiente = mambiente;
     brillo = mbrillo;
+
+    difuso_s2 = (mdifuso)*0.5;
+    especular_s2 = (mespecular)*0.5;
+    ambiente_s2 = (mambiente)*0.5;
+
+    //difuso_s = (mdifuso)*1.2;
+    //especular_s = (mespecular)*1.2;
+    //ambiente_s = (mambiente)*1.2;
 }
 
 void Material::aplicar()
@@ -25,10 +33,31 @@ void Material::aplicar()
     glMaterialfv(GL_FRONT, GL_SHININESS, &brillo);
 }
 
+void Material::aplicar_seleccion()
+{
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, difuso_s);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, especular_s);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, ambiente_s);
+    glMaterialfv(GL_FRONT, GL_SHININESS, &brillo);
+}
+
+void Material::aplicar_seleccion2()
+{
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, difuso_s2);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, especular_s2);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, ambiente_s2);
+    glMaterialfv(GL_FRONT, GL_SHININESS, &brillo);
+}
+
 void Material::operator=(Material &m)
 {
     difuso = m.difuso;
     especular = m.especular;
     ambiente = m.ambiente;
     brillo = m.brillo;
+}
+
+void Material::aumentar_brillo(float f)
+{
+    brillo += f;
 }

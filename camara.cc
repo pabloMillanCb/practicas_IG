@@ -97,6 +97,26 @@
             at = eye + vector;
     }
 
+    void Camara::avanzar(bool dir)
+    {
+        std::cout << "{" << at(0) << ", " << at(1) << ", " << at(2) << "}\n";
+        std::cout << "mover}\n";
+        Tupla3f vector = devolverDireccion();
+
+        if (!dir)
+            vector = vector*(-1);
+
+        eye = eye + vector;
+    
+        if (!locked)
+            at = at + vector;
+    }
+
+    Tupla3f Camara::devolverDireccion()
+    {
+        return 10.0f*normalizar(at - eye);
+    }
+
     void Camara::zoom(float factor)
     {
         factor_zoom *= factor;
@@ -204,11 +224,6 @@
     {
         float modulo = sqrt(pow(t(0),2) + pow(t(1),2) + pow(t(2),2));
         return t*(1/modulo);
-    }
-
-    Tupla3f Camara::devolverDireccion()
-    {
-        return 10.0f*normalizar(at - eye);
     }
 
     void Camara::setPoint(int id)

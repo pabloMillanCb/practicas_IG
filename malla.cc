@@ -15,7 +15,7 @@ void Malla3D::drawSeleccion()
    glEnableClientState( GL_VERTEX_ARRAY );
    glVertexPointer( 3, GL_FLOAT , 0, v.data() ) ;
 
-   glColorPointer(3, GL_FLOAT, 0, &colorSeleccion[0] );
+   glColorPointer(3, GL_FLOAT, 0, &colorSeleccion[0]);
    //glColor3ub (0.0 ,1.0 ,0.0);
 
    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
@@ -54,7 +54,7 @@ void Malla3D::draw_ModoInmediato()
 
    if (dibujar[0])
    {
-      glColorPointer(3, GL_FLOAT, 0, &colorArray[0] );
+      glColorPointer(3, GL_FLOAT, 0, &colorArray[0] + prelock);
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
       drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , f.data());
    }
@@ -67,7 +67,7 @@ void Malla3D::draw_ModoInmediato()
       drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , f.data());
    }
       
-   if (dibujar[2])
+   if (dibujar[2] || (isLocked))
    {
       glColorPointer(3, GL_FLOAT, 0, &colorArray[0]+2 );
       glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
@@ -98,7 +98,11 @@ void Malla3D::draw_ModoDiferido()
    if (id_vbo_tri == 0)
       id_vbo_tri = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, f.size()*3*sizeof(int), f.data());
    if (id_vbo_color == 0)
-      id_vbo_color = CrearVBO(GL_ARRAY_BUFFER, colorArray.size()*sizeof(float), colorArray.data()+1);
+      id_vbo_color = CrearVBO(GL_ARRAY_BUFFER, colorArray.size()*sizeof(float), colorArray.data());
+   if (id_vbo_color2 == 0)
+      id_vbo_color2 = CrearVBO(GL_ARRAY_BUFFER, colorArray.size()*sizeof(float), colorArray.data()+1);
+   if (id_vbo_color3 == 0)
+      id_vbo_color3 = CrearVBO(GL_ARRAY_BUFFER, colorArray.size()*sizeof(float), colorArray.data()+2);
    if (id_vbo_nor == 0)
       id_vbo_nor = CrearVBO(GL_ARRAY_BUFFER, nv.size()*3*sizeof(float), nv.data());
 
@@ -131,27 +135,39 @@ void Malla3D::draw_ModoDiferido()
    glBindBuffer( GL_ARRAY_BUFFER , 0 ); // desactivar VBO de vér-tices.
    glEnableClientState( GL_VERTEX_ARRAY ); // habilitar tabla de vér-tices
 
-
-   glBindBuffer( GL_ARRAY_BUFFER , id_vbo_color );
-   glColorPointer(3, GL_FLOAT, 0, 0);
-   glBindBuffer( GL_ARRAY_BUFFER , 0 ); // desactivar VBO de vér-tices.
-
    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER , id_vbo_tri );// activar VBOde triángulos
    
    if (dibujar[0])
    {
+      if (prelock)
+         glBindBuffer( GL_ARRAY_BUFFER , id_vbo_color2 );
+      else
+         glBindBuffer( GL_ARRAY_BUFFER , id_vbo_color );
+      glColorPointer(3, GL_FLOAT, 0, 0);
+      glBindBuffer( GL_ARRAY_BUFFER , 0 ); // desactivar VBO de vér-tices.
+
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
       drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , 0);
    }
       
    if (dibujar[1])
    {
-      glPolygonMode(GL_FRONT_AND_BACK,GL_POINTS);
+      glBindBuffer( GL_ARRAY_BUFFER , id_vbo_color2 );
+      glColorPointer(3, GL_FLOAT, 0, 0);
+      glBindBuffer( GL_ARRAY_BUFFER , 0 ); // desactivar VBO de vér-tices.
+
+      std::cout <<" modo puntos\n";
+      glPolygonMode(GL_FRONT_AND_BACK,GL_POINT);
       drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , 0);
    }
       
-   if (dibujar[2])
+   if (dibujar[2] || (isLocked))
    {
+      glBindBuffer( GL_ARRAY_BUFFER , id_vbo_color3 );
+      glColorPointer(3, GL_FLOAT, 0, 0);
+      glBindBuffer( GL_ARRAY_BUFFER , 0 ); // desactivar VBO de vér-tices.
+
+      std::cout <<" modo lineas\n";
       glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
       drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , 0);
    }
@@ -182,8 +198,10 @@ void Malla3D::draw_ModoAjedrez()
       glVertexPointer( 3, GL_FLOAT , 0, v.data() );
 
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+      
       glColorPointer(3, GL_FLOAT, 0, &colorRojo[0] );
       drawElements( GL_TRIANGLES , draw_size_a1*3, GL_UNSIGNED_INT , f.data());
+
       glColorPointer(3, GL_FLOAT, 0, &colorVerde[0] );
       drawElements( GL_TRIANGLES , draw_size_a2*3, GL_UNSIGNED_INT , f.data() + f.size()/2);
    
@@ -240,11 +258,31 @@ void Malla3D::draw()
       drawSeleccion();
    }
 
-   else
+   /*else if (isLocked || prelock)
    {
+      std::cout << "Estoy seleccionado\n";
       if (glIsEnabled(GL_LIGHTING))
       {
-         m.aplicar();
+         glDisable(GL_LIGHTING);
+         drawSeleccion();
+         glEnable(GL_LIGHTING);
+      }
+      else
+         drawSeleccion();
+   }*/
+
+   else
+   {
+
+      if (glIsEnabled(GL_LIGHTING))
+      {
+         if (isLocked)
+            m.aplicar_seleccion2();
+         else if (prelock)
+            m.aplicar_seleccion();
+         else
+            m.aplicar();
+
          modo_ajedrez = false;
       }
 
@@ -318,10 +356,10 @@ void Malla3D::setMaterial(Material &mat)
 
 void Malla3D::generarColores()
 {
-   for (int i = 0; i < v.size()+2; i++)
+   for (int i = 0; i < v.size()+5; i++)
    {
-      //colorRojo.push_back(1); colorRojo.push_back(0); colorRojo.push_back(0);
-      //colorVerde.push_back(0); colorVerde.push_back(1); colorVerde.push_back(0);
+      colorRojo.push_back(1); colorRojo.push_back(0); colorRojo.push_back(0);
+      colorVerde.push_back(0); colorVerde.push_back(1); colorVerde.push_back(0);
       colorArray.push_back(1); colorArray.push_back(0); colorArray.push_back(1);
    }
 }
@@ -430,4 +468,29 @@ void Malla3D::activar_seleccion()
 void Malla3D::desactivar_seleccion()
 {
    seleccion = false;
+}
+
+void Malla3D::activar_lock()
+{
+   isLocked = true;
+}
+
+void Malla3D::desactivar_lock()
+{
+   isLocked = false;
+}
+
+bool Malla3D::get_lock()
+{
+   return isLocked;
+}
+
+void Malla3D::activar_prelock()
+{
+   prelock = true;
+}
+
+void Malla3D::desactivar_prelock()
+{
+   prelock = false;
 }

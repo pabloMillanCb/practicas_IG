@@ -25,12 +25,8 @@ Escena::Escena()
    // .....
    cubo = new Cubo(30);
    tetraedro = new Tetraedro();
-   peon = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
-   peon_r = new ObjRevolucion("./plys/peon.ply", 8, 1, true, true);
-   cil = new Cilindro(6, 6, 40, 20);
 
-   con = new Cono(6, 6, 2.3, 0.7, true);
-   esf = new Esfera(50, 50, 1000);
+   esf = new Esfera(200, 200, 1000);
    luna = new Esfera(50, 50, 60);
    skybox = new Esfera(100, 100, 3000);
    ovn = new Ovni();
@@ -38,10 +34,6 @@ Escena::Escena()
 
    objetos.push_back(cubo);
    objetos.push_back(tetraedro);
-   objetos.push_back(peon);
-   objetos.push_back(peon_r);
-   objetos.push_back(cil);
-   objetos.push_back(con);
    objetos.push_back(esf);
    objetos.push_back(luna);
    objetos.push_back(ply);
@@ -55,6 +47,7 @@ Escena::Escena()
    Material espacio(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.3, 0.3, 0.3, 1.0), 50.0);
    Material tierra(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.1, 0.1, 0.1, 1.0), 100.0);
    Material negro(Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), 200.0);
+   Material asteroide(Tupla4f(0.5f,0.0f,0.0f,1.0f), Tupla4f(0.7f,0.6f,0.6f,1.0f), Tupla4f(0.0f,0.0f,0.0f,1.0f), 100.0);
 
    lucesdir.push_back(LuzDireccional(Tupla2f(0.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0)));
    lucespos.push_back(LuzPosicional(Tupla3f(0.0, 0.0, 0.0), Tupla4f(1.0, 1.0, 1.0, 0.3), Tupla4f(1.0, 1.0, 1.0, 0.3)));
@@ -62,8 +55,8 @@ Escena::Escena()
    skybox->setMaterial(espacio);
    esf->setMaterial(tierra);
    luna->setMaterial(tierra);
-   cubo->setMaterial(bronce);
-   tetraedro->setMaterial(bronce);
+   cubo->setMaterial(asteroide);
+   tetraedro->setMaterial(asteroide);
 
    lucesdir[0].set_id(GL_LIGHT0);
    lucespos[0].set_id(GL_LIGHT1);
@@ -78,7 +71,7 @@ Escena::Escena()
    skybox->invertir_caras();
 
    objetos_sel.push_back(esf);
-   objetos_sel.push_back(luna);
+   //objetos_sel.push_back(luna);
    objetos_sel.push_back(cubo);
    objetos_sel.push_back(tetraedro);
    //Ovni, con id == 4
@@ -93,17 +86,19 @@ Escena::Escena()
    objetos_sel[0]->setColorSeleccion(Tupla3f(0.0, 1.0, 0.0));
    col_objetos.push_back(Tupla3f(0.0, 1.0, 0.0));
 
-   objetos_sel[1]->setColorSeleccion(Tupla3f(0.0, 1.0, 1.0));
-   col_objetos.push_back(Tupla3f(0.0, 1.0, 1.0));
+   //objetos_sel[1]->setColorSeleccion(Tupla3f(0.0, 1.0, 1.0));
+   //col_objetos.push_back(Tupla3f(0.0, 1.0, 1.0));
 
-   objetos_sel[2]->setColorSeleccion(Tupla3f(1.0, 0.0, 0.0));
+   objetos_sel[1]->setColorSeleccion(Tupla3f(1.0, 0.0, 0.0));
    col_objetos.push_back(Tupla3f(1.0, 0.0, 0.0));
 
-   objetos_sel[3]->setColorSeleccion(Tupla3f(1.0, 0.0, 1.0));
-   col_objetos.push_back(Tupla3f(1.0, 0.0, 1.0));
+   objetos_sel[2]->setColorSeleccion(Tupla3f(1.0, 1.0, 0.0));
+   col_objetos.push_back(Tupla3f(1.0, 1.0, 0.0));
 
    ovn->setColorSeleccion(Tupla3f(0.0, 0.0, 1.0));
    col_objetos.push_back(Tupla3f(0.0, 0.0, 1.0));
+
+   //glEnable(GL_LIGHTING);
 }
 
 //**************************************************************************
@@ -362,10 +357,6 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
       case '3':
          if (modoMenu == SELDIBUJADO)
          {
-            peon->cambiarTapas();
-            peon_r->cambiarTapas();
-            cil->cambiarTapas();
-            con->cambiarTapas();
             esf->cambiarTapas();
          }
 
@@ -464,6 +455,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             
             glDisable(GL_LIGHTING);
          }
+
+         else if (modoMenu == SELOBJETO)
+         {
+            animacion_activa = !animacion_activa;
+         }
          
          else if (glIsEnabled(GL_LIGHTING))
          {
@@ -471,15 +467,13 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             std::cout << "Variar angulo alfa\n";
          }
 
-         else
-         {
-            animacion_activa = !animacion_activa;
-         }
-
          break;
 
       case 'I':
-         glEnable(GL_LIGHTING);
+         if(glIsEnabled(GL_LIGHTING)) 
+            glDisable(GL_LIGHTING);
+         else
+            glEnable(GL_LIGHTING);
          modoMenu = NADA;
          break;
 
@@ -653,13 +647,15 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break;
 
       case 'W':
-            posicion = posicion + camara[id_cam]->devolverDireccion();
-            camara[id_cam]->mover(posicion(0), posicion(1), posicion(2));
+            //posicion = posicion + camara[id_cam]->devolverDireccion();
+            //camara[id_cam]->mover(posicion(0), posicion(1), posicion(2));
+            camara[id_cam]->avanzar(true);
          break;
 
       case 'E':
-            posicion = posicion - camara[id_cam]->devolverDireccion();
-            camara[id_cam]->mover(posicion(0), posicion(1), posicion(2));
+            //posicion = posicion - camara[id_cam]->devolverDireccion();
+            //camara[id_cam]->mover(posicion(0), posicion(1), posicion(2));
+            camara[id_cam]->avanzar(false);
          break;
 
       case 'X':
@@ -839,10 +835,10 @@ void Escena::calcularCoordenadas()
    Tupla3f pos_lun (0.0, 0.0, 1100.0);
    //aplicar rotacion
    pos_lun(2) += -1500;
-   pos_objetos[1] = pos_lun;
-   pos_objetos[2] = Tupla3f(-200.0, 50.0, -100.0 );
-   pos_objetos[3] = Tupla3f(200.0, -50.0, -100.0);
-   pos_objetos[4] = Tupla3f(0.0, 15.0, 0.0);
+   //pos_objetos[1] = pos_lun;
+   pos_objetos[1] = Tupla3f(-200.0, 50.0, -100.0 );
+   pos_objetos[2] = Tupla3f(200.0, -50.0, -100.0);
+   pos_objetos[3] = Tupla3f(0.0, 15.0, 0.0);
 }
 
 void Escena::ratonMovido ( int x, int y )
@@ -858,7 +854,14 @@ void Escena::ratonMovido ( int x, int y )
 
    else
    {
-      dibuja_seleccion();
+      if (glIsEnabled(GL_LIGHTING))
+         {
+            glDisable(GL_LIGHTING);
+            dibuja_seleccion();
+            glEnable(GL_LIGHTING);
+         }
+         else
+            dibuja_seleccion();
 
       GLint viewport[4];
       GLfloat pixels[3];
@@ -869,14 +872,19 @@ void Escena::ratonMovido ( int x, int y )
       //std::cout << "Color = " << color << std::endl;
       int id = getColorObjeto(color);
 
-      if (id != -1)
-         objetos_sel[id]->cambiar_lineas();
+      std::cout << "Seleccionado = " << id << std::endl;
 
-      std::cout << "gotcha " << id << "\n";
-      std::cout << "pos " << pos_objetos[id] << "\n";
+      for (int i = 0; i < objetos_sel.size(); i++)
+      {
+         objetos_sel[i]->desactivar_prelock();
+      }
+      ovn->desactivar_prelock();
+
+      if (id == 3)
+         ovn->activar_prelock();
+      else if (id != -1)
+         objetos_sel[id]->activar_prelock();
    }
-
-
 }
 
 void Escena::clickRaton( int boton, int estado, int x, int y)
@@ -898,11 +906,17 @@ void Escena::clickRaton( int boton, int estado, int x, int y)
 
    else if ( boton == GLUT_LEFT_BUTTON)
    {
-      //std::cout << "x = " << x << ", y = " << y << std::endl;
 
       if (estado != GLUT_DOWN)
       {
-         dibuja_seleccion();
+         if (glIsEnabled(GL_LIGHTING))
+         {
+            glDisable(GL_LIGHTING);
+            dibuja_seleccion();
+            glEnable(GL_LIGHTING);
+         }
+         else
+            dibuja_seleccion();
 
          GLint viewport[4];
          GLfloat pixels[3];
@@ -914,13 +928,43 @@ void Escena::clickRaton( int boton, int estado, int x, int y)
          int id = getColorObjeto(color);
 
          if (id == -1)
-            camara[id_cam]->unlock();
+         {  
+            ovn->desactivar_lock();
+            for (int i = 0; i < objetos_sel.size(); i++)
+               objetos_sel[i]->desactivar_lock();
+         }
+            
          else
+         {
             camara[id_cam]->lock(pos_objetos[id]);
 
-         std::cout << "gotcha " << id << "\n";
-         std::cout << "pos " << pos_objetos[id] << "\n";
+            for (int i = 0; i < objetos_sel.size(); i++)
+               objetos_sel[i]->desactivar_lock();
+            ovn->desactivar_lock();
+
+            if (id == 3)
+            {
+               ovn->activar_lock();
+            }
+               
+            else if (id != -1)
+            {
+               objetos_sel[id]->activar_lock();
+            }
+         }
       }
+   }
+
+   else if ( boton == 3 )
+   {
+      camara[id_cam]->zoom(1.05);
+      std::cout << "RRRRRRRRRRRRR\n";
+   }
+
+   else if ( boton == 4)
+   {
+      camara[id_cam]->zoom(0.95);
+      std::cout << "RRRRRRRRRRRRR\n";
    }
 }
 
@@ -928,8 +972,6 @@ int Escena::getColorObjeto(Tupla3f color)
 {
 
    int salida = -1;
-
-   std::cout << "Color es " << color << std::endl;
 
    for (int i = 0; i < col_objetos.size(); i++)
    {

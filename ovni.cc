@@ -228,3 +228,32 @@ void Ovni::setColorSeleccion(Tupla3f c)
    for (int i = 0; i < objetos.size(); i++)
         objetos[i]->setColorSeleccion(c);
 }
+
+void Ovni::activar_lock()
+{
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->activar_lock();
+}
+
+void Ovni::desactivar_lock()
+{
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->desactivar_lock();
+}
+
+bool Ovni::get_lock()
+{
+    return objetos[0]->get_lock();
+}
+
+void Ovni::activar_prelock()
+{
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->activar_prelock();
+}
+
+void Ovni::desactivar_prelock()
+{
+    for (int i = 0; i < objetos.size(); i++)
+        objetos[i]->desactivar_prelock();
+}

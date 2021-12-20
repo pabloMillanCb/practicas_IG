@@ -78,6 +78,13 @@ class Ovni
         void desactivar_seleccion();
         void setColorSeleccion(Tupla3f c);
 
+        void activar_lock();
+        void desactivar_lock();
+        bool get_lock();
+
+        void activar_prelock();
+        void desactivar_prelock();
+
 } ;
 
 

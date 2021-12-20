@@ -20,7 +20,7 @@ private:
     float leftz, rightz, bottomz, topz; //o bien aspect, fov, near, far
     float factor_zoom = 1;
 
-    bool locked = true;
+    bool locked = false;
 
     Tupla3f rotarEjeX(Tupla3f punto, float radianes) ; //Rota en el eje X un punto
     Tupla3f rotarEjeY(Tupla3f punto, float radianes) ; //Rota en el eje Y un punto
@@ -37,6 +37,7 @@ public:
 
     Camara(int tipo_);
     void mover(float x, float y, float z);
+    void avanzar(bool dir);
     void zoom(float factor);
     void actualizarRatio(float left_, float right_, float bottom_, float top_, float near_, float far_);
     void setObserver();
