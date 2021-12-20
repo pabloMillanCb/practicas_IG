@@ -35,7 +35,7 @@ private:
 
 public:
 
-    Camara(int tipo_);
+    Camara(int tipo_, Tupla3f eye_, Tupla3f at_);
     void mover(float x, float y, float z);
     void avanzar(bool dir);
     void zoom(float factor);

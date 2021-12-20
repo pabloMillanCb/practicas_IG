@@ -95,8 +95,6 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
         v.push_back(v[i]);
     }
 
-    std::cout << "Los vertices tienen que ser " << v.size() << std::endl;
-
     //Generacion de malla de triángulos del tronco
     for (int i = 0; i < num_instancias; i++)
     {
@@ -258,55 +256,25 @@ void ObjRevolucion::calcular_texturas()
     int tam_perfil_sin_polos = numero_puntos_perfil - tapa_sup - tapa_inf;
     int tam_v_tronco = tam_perfil_sin_polos*(numero_instancias+1);
 
-    /*std::cout << "numero_puntos_perfil = " << numero_puntos_perfil << std::endl;
-    std::cout << "tamano_perfil_sin_polos = " << tam_perfil_sin_polos << std::endl;
-    std::cout << "tam_v_tronco = " << tam_v_tronco << std::endl;
-    std::cout << "tam_v = " << v.size() << std::endl;
-    std::cout << "tam_v NORMAL = " << numero_instancias*numero_puntos_perfil << std::endl;*/
-
-    std::cout << "-------el perfil es " << numero_puntos_perfil << std::endl;
-    std::cout << "-------el perfil sin polos es " << tam_perfil_sin_polos << std::endl;
-    std::cout << "-------numero de instancias es " << numero_instancias << std::endl;
-    std::cout << "-------v_tronco es " << tam_v_tronco << std::endl;
-
-
    for (int i = 0; i <= numero_instancias; i++)
     {
         float si = float(i)/numero_instancias;
-        //std::cout << "si a = " << si << std::endl;
 
         for (int j = 0; j < tam_perfil_sin_polos; j++)
         {
             ct.push_back(Tupla2f(si, dp[j]/dp[dp.size()-1] )); 
-            //std::cout << "(" << si << ", " << dp[j]/dp[dp.size()-1] << ")" << std::endl;
         }
     }
-
-    std::cout << "Los vertices han sido " << ct.size() << std::endl;
-
-    std::cout << "HOLAAAAAAAAA"<< std::endl;
-    std::cout << "ct = " << ct.size() << std::endl;
-    std::cout << "v = " << v.size() << std::endl;
-    std::cout << "HOLAAAAAAAAA"<< std::endl;
 
     for (int k = 0; k < numero_instancias && tapa_sup; k++)
     {
         float si = float(k)/numero_instancias;
         ct.push_back(Tupla2f(si, 1));
-
-        //std::cout << "ct b = " << si << std::endl;
     }
 
     for (int k = 0; k < numero_instancias && tapa_inf; k++)
     {
         float si = float(k)/numero_instancias;
         ct.push_back(Tupla2f(si, 0));
-
-        //std::cout << "si c " << si << std::endl;
     }
-
-    std::cout << "ADIOOOS"<< std::endl;
-    std::cout << "ct = " << ct.size() << std::endl;
-    std::cout << "v = " << v.size() << std::endl;
-    std::cout << "ADIOOOS"<< std::endl;
 }

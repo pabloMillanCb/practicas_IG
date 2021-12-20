@@ -103,7 +103,6 @@ void click_raton( int boton, int estado, int x, int y)
 
 void raton_movido(int x, int y)
 {
-   std::cout << "aaaaa\n";
    escena->ratonMovido(x, y);
 }
 

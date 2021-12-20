@@ -13,8 +13,6 @@ Esfera::Esfera (const int num_vert_perfil, const int num_instancias_perf, const 
 
     v.push_back(Tupla3f(0.0, -radio, 0.0));
 
-    std::cout << "Con " << num_instancias_perf  << " se han creado " << v.size() << " puntos\n";
-
     int size_perfil = v.size();
     crearMalla(v, num_instancias_perf, 1, true, true);
     mezclarCaras();

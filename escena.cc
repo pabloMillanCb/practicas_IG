@@ -28,7 +28,7 @@ Escena::Escena()
 
    esf = new Esfera(200, 200, 1000);
    luna = new Esfera(50, 50, 60);
-   skybox = new Esfera(100, 100, 3000);
+   skybox = new Esfera(100, 100, 5000);
    ovn = new Ovni();
    ply = new ObjPLY("./plys/laboon.ply");
 
@@ -39,9 +39,9 @@ Escena::Escena()
    objetos.push_back(ply);
    objetos.push_back(skybox);
 
-   camara.push_back(new Camara(PERSPECTIVA));
-   camara.push_back(new Camara(PERSPECTIVA));
-   camara.push_back(new Camara(ORTOGONAL));
+   camara.push_back(new Camara(PERSPECTIVA,{0.0, 0.0, 250.0} ,{0.0, 0.0, -1.0}));
+   camara.push_back(new Camara(PERSPECTIVA,{400.0, 0.0, 250.0} ,{0.0, 0.0, -1.0}));
+   camara.push_back(new Camara(ORTOGONAL,{0.0, 0.0, 250.0} ,{0.0, -27.0, -1.0}));
 
    Material bronce(Tupla4f(0.714, 0.4284, 0.18144, 1.0), Tupla4f(0.393548, 0.271906, 0.166721, 1.0), Tupla4f(0.2125, 0.1275, 0.054, 1.0), 50.0);
    Material espacio(Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.0, 0.0, 0.0, 1.0), Tupla4f(0.3, 0.3, 0.3, 1.0), 50.0);
@@ -97,8 +97,6 @@ Escena::Escena()
 
    ovn->setColorSeleccion(Tupla3f(0.0, 0.0, 1.0));
    col_objetos.push_back(Tupla3f(0.0, 0.0, 1.0));
-
-   //glEnable(GL_LIGHTING);
 }
 
 //**************************************************************************
@@ -118,6 +116,8 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 
    change_projection( float(UI_window_width)/float(UI_window_height) );
 	glViewport( 0, 0, UI_window_width, UI_window_height );
+
+   glEnable(GL_LIGHTING);
 }
 
 
@@ -312,9 +312,15 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
          if (modoMenu == SELCAMARA)
          {
+            camara[id_cam]->unlock();
+
             id_cam = 0;
             camara[id_cam] -> setProyeccion();
             std::cout << "Camara 1 activada\n";
+
+            for (int i = 0; i < objetos_sel.size(); i++)
+               objetos_sel[i]->desactivar_lock();
+            ovn->desactivar_lock();
 
             change_observer();
             change_projection(0);
@@ -345,9 +351,15 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
          if (modoMenu == SELCAMARA)
          {
+            camara[id_cam]->unlock();
+
             id_cam = 1;
             camara[id_cam] -> setProyeccion();
             std::cout << "Camara 2 activada\n";
+
+            for (int i = 0; i < objetos_sel.size(); i++)
+               objetos_sel[i]->desactivar_lock();
+            ovn->desactivar_lock();
 
             change_observer();
             change_projection(0);
@@ -365,9 +377,15 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          
          if (modoMenu == SELCAMARA)
          {
+            camara[id_cam]->unlock();
+
             id_cam = 2;
             camara[id_cam] -> setProyeccion();
             std::cout << "Camara 3 activada\n";
+
+            for (int i = 0; i < objetos_sel.size(); i++)
+               objetos_sel[i]->desactivar_lock();
+            ovn->desactivar_lock();
 
             change_observer();
             change_projection(0);
@@ -847,7 +865,6 @@ void Escena::ratonMovido ( int x, int y )
    {
       camara[id_cam]->girar((float)(x-xant)/100, (float)(y-yant)/100);
 
-      std::cout << "Muevo " << x-xant << " " << y-yant << std::endl;
       xant = x;
       yant = y;
    }
@@ -871,8 +888,6 @@ void Escena::ratonMovido ( int x, int y )
 
       //std::cout << "Color = " << color << std::endl;
       int id = getColorObjeto(color);
-
-      std::cout << "Seleccionado = " << id << std::endl;
 
       for (int i = 0; i < objetos_sel.size(); i++)
       {
@@ -932,6 +947,8 @@ void Escena::clickRaton( int boton, int estado, int x, int y)
             ovn->desactivar_lock();
             for (int i = 0; i < objetos_sel.size(); i++)
                objetos_sel[i]->desactivar_lock();
+
+            camara[id_cam]->unlock();
          }
             
          else
@@ -955,16 +972,16 @@ void Escena::clickRaton( int boton, int estado, int x, int y)
       }
    }
 
-   else if ( boton == 3 )
+   else if ( boton == 4 )
    {
       camara[id_cam]->zoom(1.05);
-      std::cout << "RRRRRRRRRRRRR\n";
+      change_projection(0);
    }
 
-   else if ( boton == 4)
+   else if ( boton == 3)
    {
       camara[id_cam]->zoom(0.95);
-      std::cout << "RRRRRRRRRRRRR\n";
+      change_projection(0);
    }
 }
 

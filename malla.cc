@@ -156,7 +156,6 @@ void Malla3D::draw_ModoDiferido()
       glColorPointer(3, GL_FLOAT, 0, 0);
       glBindBuffer( GL_ARRAY_BUFFER , 0 ); // desactivar VBO de vér-tices.
 
-      std::cout <<" modo puntos\n";
       glPolygonMode(GL_FRONT_AND_BACK,GL_POINT);
       drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , 0);
    }
@@ -167,7 +166,6 @@ void Malla3D::draw_ModoDiferido()
       glColorPointer(3, GL_FLOAT, 0, 0);
       glBindBuffer( GL_ARRAY_BUFFER , 0 ); // desactivar VBO de vér-tices.
 
-      std::cout <<" modo lineas\n";
       glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
       drawElements( GL_TRIANGLES , draw_size*3, GL_UNSIGNED_INT , 0);
    }
@@ -186,7 +184,6 @@ void Malla3D::draw_ModoDiferido()
    {
       glDisable(GL_TEXTURE_2D);
       glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-      //std::cout << "deshabilita textura\n";
    }
 }
 

@@ -1,11 +1,11 @@
 #include "camara.h"
 #include <iostream>
 
-    Camara::Camara(int tipo_)
+    Camara::Camara(int tipo_, Tupla3f eye_, Tupla3f at_)
     {
         up = {0, 1, 0};
-        at = {0.01, 0, -1};
-        eye = {0, 0, 250};
+        at = at_;
+        eye = eye_;
 
         near = 50.0;
         far = 2000.0;
@@ -46,9 +46,7 @@
 
     void Camara::rotarYExaminar(float angle)
     {
-        std:: cout << "at 1 " << at << std::endl;
         eye = at + rotarEjeY(eye-at, angle);
-        std:: cout << "at 2 " << at << std::endl;
     }
 
     void Camara::rotarZExaminar(float angle)
@@ -63,7 +61,6 @@
 
     void Camara::rotarXFirstPerson(float angle)
     {
-        std::cout << "{" << at(0) << ", " << at(1) << ", " << at(2) << "}\n";
 
         Tupla3f p = at-eye;
         p = alinearEjes(p);
@@ -89,8 +86,6 @@
 
     void Camara::mover(float x, float y, float z)
     {
-        std::cout << "{" << at(0) << ", " << at(1) << ", " << at(2) << "}\n";
-        std::cout << "mover}\n";
         Tupla3f vector = at - eye;
         eye = {x, y, z};
         if (!locked)
@@ -99,8 +94,6 @@
 
     void Camara::avanzar(bool dir)
     {
-        std::cout << "{" << at(0) << ", " << at(1) << ", " << at(2) << "}\n";
-        std::cout << "mover}\n";
         Tupla3f vector = devolverDireccion();
 
         if (!dir)
@@ -136,12 +129,10 @@
     {
         if (tipo == PERSPECTIVA)
         {
-            std:: cout << "persectiva\n";
             glFrustum(left*factor_zoom, right*factor_zoom, bottom*factor_zoom, top*factor_zoom, near, far);
         }
         else if (tipo == ORTOGONAL)
         {
-            std:: cout << "ortogonal\n";
             glOrtho(left*factor_zoom, right*factor_zoom, bottom*factor_zoom, top*factor_zoom, near, far);
         }
     }
@@ -183,14 +174,12 @@
     {
         if (locked)
         {
-            std::cout << "locked\n";
             rotarYExaminar(-x);
             rotarXExaminar(-y);
         }
 
         else
         {
-            std::cout << "unlocked\n";
             rotarYFirstPerson(-x);
             rotarXFirstPerson(y);
         }
