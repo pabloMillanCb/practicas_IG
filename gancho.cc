@@ -10,6 +10,11 @@ Gancho::Gancho(Cilindro *len, Cilindro *cab, Cono *ant, Cono *antR, Cilindro *an
     antenaConoR = antR;
     antenaCilindro = antCil;
     antenaEsfera = antEsf;
+
+    Material gris({0.4, 0.5, 0.4, 1.0}, {1.0, 1.0, 1.0, 1.0}, {0.0, 0.05, 0.0, 1.0}, 100);
+
+    antenaCono->setMaterial(gris);
+    antenaConoR->setMaterial(gris);
 }
 void Gancho::draw()
 {

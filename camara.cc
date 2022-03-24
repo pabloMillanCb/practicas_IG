@@ -56,7 +56,7 @@
         p = rotarEjeZ(p, angle);
         p = desalinearEjes(p);
         //if ( at(0)*p(0) >= 0 )
-            eye = at + p;
+        eye = at + p;
     }
 
     void Camara::rotarXFirstPerson(float angle)

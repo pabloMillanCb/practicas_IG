@@ -435,7 +435,7 @@ void Malla3D::calcular_normales()
 
    for (int i = 0; i < nv.size(); i++)
    {
-      Tupla3f aux = normalizar(nv[i]);
+      nv[i] = normalizar(nv[i]);
       //nv[i] = nv[i].normalized();
    }
 }

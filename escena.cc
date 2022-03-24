@@ -149,7 +149,6 @@ void Escena::dibujar()
    else
    {
       ejes.draw();
-
    }
 
    glPushMatrix();
@@ -322,7 +321,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                objetos_sel[i]->desactivar_lock();
             ovn->desactivar_lock();
 
-            change_observer();
+            //change_observer();
             change_projection(0);
          }
 
@@ -361,7 +360,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                objetos_sel[i]->desactivar_lock();
             ovn->desactivar_lock();
 
-            change_observer();
+            //change_observer();
             change_projection(0);
          }
          break;
@@ -370,6 +369,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          if (modoMenu == SELDIBUJADO)
          {
             esf->cambiarTapas();
+            luna->cambiarTapas();
          }
 
          if (modoMenu == GRADOSLIBERTAD || modoMenu == SELVELOCIDAD)
@@ -387,7 +387,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                objetos_sel[i]->desactivar_lock();
             ovn->desactivar_lock();
 
-            change_observer();
+            //change_observer();
             change_projection(0);
          }
          
